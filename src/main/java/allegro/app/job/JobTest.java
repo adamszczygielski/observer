@@ -24,14 +24,15 @@ public class JobTest {
         TimerTask repeatedTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Task performed on " + new Date());
+                System.out.println("Task started on " + new Date());
                 itemService.populateDatabase();
+                System.out.println("Task ended on " + new Date());
             }
         };
         Timer timer = new Timer("Timer");
 
         long delay = 30000L;
-        long period = 120000L;
+        long period = 15000L;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
 
         return null;

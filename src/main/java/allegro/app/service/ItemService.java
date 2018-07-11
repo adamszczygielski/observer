@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.thymeleaf.util.StringUtils;
 
@@ -55,7 +56,6 @@ public class ItemService {
 
     public List<ItemDto> fetchItems(Long searchId) {
         List<Item> itemList = itemRepository.findActiveItems(searchId);
-
         return itemAssembler.toDtoList(itemList);
     }
 
@@ -80,15 +80,14 @@ public class ItemService {
                 .collect(Collectors.toList());
 
         if(searchList.size()>0) {
-            for(Search s : searchList) {
-                populateDatabase(s.getId());
+            for(Search search : searchList) {
+                populateDatabaseBySearch(search);
             }
         }
     }
 
-    public void populateDatabase(Long searchId) {
+    public void populateDatabaseBySearch(Search search) {
 
-        Search search = searchRepository.findBySearchId(searchId);
         List<ItemsListType> itemsListTypeList = fetchItemList(search.getKeywords());
 
         if(!CollectionUtils.isEmpty(itemsListTypeList)) {
@@ -102,7 +101,7 @@ public class ItemService {
                 List<Item> itemList = itemsListTypeAssembler.toDtoList(newItems);
 
                 for(Item i : itemList) {
-                    i.setSearchId(searchId);
+                    i.setSearchId(search.getId());
                 }
                 itemRepository.saveAll(itemList);
             }

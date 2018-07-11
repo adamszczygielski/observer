@@ -11,7 +11,7 @@ create table if not exists search
 create table if not exists item
 (
    item_id bigint not null,
-   search_id bigint not null,
+   search_id bigint,
    creation_date timestamp,
    title varchar(255) not null,
    price varchar(255) not null,

@@ -14,7 +14,4 @@ import java.util.List;
 @Repository
 @ComponentScan(basePackageClasses = Item.class)
 public interface SearchViewRepository extends JpaRepository<SearchView, Long>{
-
-    @Query("SELECT s FROM SearchView s")
-    List<SearchView> findSearch();
 }

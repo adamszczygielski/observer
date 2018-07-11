@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +35,8 @@ public class Search {
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
+
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "SEARCH_ID")
+    private List<Item> itemList;
 }
