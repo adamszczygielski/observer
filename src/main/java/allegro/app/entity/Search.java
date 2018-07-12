@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -24,8 +22,11 @@ public class Search {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "KEY_WORDS")
-    private String keywords;
+    @Column(name = "KEYWORD")
+    private String keyword;
+
+    @Column(name = "CATEGORY")
+    private String category;
 
     @Column(name = "LAST_UPDATE")
     private Timestamp lastUpdate;

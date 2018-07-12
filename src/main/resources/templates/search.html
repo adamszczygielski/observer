@@ -21,7 +21,8 @@
     <table class = "table" xmlns:th="http://www.w3.org/1999/xhtml">
         <thead>
         <tr>
-            <th>Keywords</th>
+            <th>Keyword</th>
+            <th>Category</th>
             <th>Last update</th>
             <th>Interval [min]</th>
             <th>Active</th>
@@ -31,7 +32,8 @@
         </thead>
         <tbody>
             <tr th:each="searchItem : ${search}">
-                <td><a th:href="@{/item/list/preview/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.keywords}"></span></a></td>
+                <td><a th:href="@{/item/list/preview/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.keyword}"></span></a></td>
+                <td th:text="${searchItem.category}"></td>
                 <td th:text="${searchItem.lastUpdate}"></td>
                 <td th:text="${searchItem.timeInterval}"></td>
                 <td><a th:href="@{/search/switch/} + ${searchItem.id}"><span th:text="${searchItem.isActive}"></span></a></td>
@@ -46,7 +48,10 @@
             <tr>
                 <form action="#" th:action="@{/search/add}" th:object="${searchDto}" method="post">
                     <td>
-                        <p><input class="form-control form-control-sm col-sm-5" type="text" th:field="*{keywords}" /></p>
+                        <p><input class="form-control form-control-sm col-sm-5" type="text" th:field="*{keyword}" /></p>
+                    </td>
+                    <td>
+                        <p><input class="form-control form-control-sm col-sm-3" type="text" th:field="*{category}" /></p>
                     </td>
                     <td></td>
                     <td>

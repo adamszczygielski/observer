@@ -17,6 +17,7 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Modifying
+    @Transactional
     @Query("UPDATE Item i SET i.isActive = CASE WHEN i.isActive = true THEN false ELSE true END WHERE i.itemId =:itemId")
     void switchIsActive(@Param("itemId") Long itemId);
 

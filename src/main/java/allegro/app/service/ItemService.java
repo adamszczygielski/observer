@@ -10,6 +10,7 @@ import allegro.app.entity.Search;
 import allegro.app.repository.ItemRepository;
 import allegro.app.repository.SearchRepository;
 import allegro.app.wsdl.*;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -65,7 +66,7 @@ public class ItemService {
         if(search == null) {
             return new ArrayList<>();
         }
-        List<ItemsListType> itemsListTypeList = fetchItemList(search.getKeywords());
+        List<ItemsListType> itemsListTypeList = fetchItemList(search);
 
         if(CollectionUtils.isEmpty(itemsListTypeList)) {
             return new ArrayList<>();
@@ -88,7 +89,7 @@ public class ItemService {
 
     public void populateDatabaseBySearch(Search search) {
 
-        List<ItemsListType> itemsListTypeList = fetchItemList(search.getKeywords());
+        List<ItemsListType> itemsListTypeList = fetchItemList(search);
 
         if(!CollectionUtils.isEmpty(itemsListTypeList)) {
             List<Long> itemIdsList = itemRepository.fetchItemIds();
@@ -115,7 +116,7 @@ public class ItemService {
         itemRepository.switchIsActive(itemId);
     }
 
-    private List<ItemsListType> fetchItemList(String keyword) {
+    private List<ItemsListType> fetchItemList(Search search) {
         DoGetItemsListRequest doGetItemsListRequest = new DoGetItemsListRequest();
         doGetItemsListRequest.setWebapiKey(webapiKey);
         doGetItemsListRequest.setCountryId(1);
@@ -123,12 +124,25 @@ public class ItemService {
         doGetItemsListRequest.setResultOffset(0);
 
         ArrayOfFilteroptionstype arrayOfFilteroptionstype = new ArrayOfFilteroptionstype();
-        FilterOptionsType filterOptionsType = new FilterOptionsType();
-        filterOptionsType.setFilterId("search");
+
+        //filtr keywords
+        FilterOptionsType searchFilter = new FilterOptionsType();
+        searchFilter.setFilterId("search");
         ArrayOfString arrayOfString = new ArrayOfString();
-        arrayOfString.getItem().add(keyword);
-        filterOptionsType.setFilterValueId(arrayOfString);
-        arrayOfFilteroptionstype.getItem().add(filterOptionsType);
+        arrayOfString.getItem().add(search.getKeyword());
+        searchFilter.setFilterValueId(arrayOfString);
+        arrayOfFilteroptionstype.getItem().add(searchFilter);
+
+        //filtr category
+        if(search.getCategory() != null) {
+            FilterOptionsType categoryFilter = new FilterOptionsType();
+            categoryFilter.setFilterId("category");
+            ArrayOfString categories = new ArrayOfString();
+            categories.getItem().add(search.getCategory());
+            categoryFilter.setFilterValueId(categories);
+            arrayOfFilteroptionstype.getItem().add(categoryFilter);
+        }
+
         doGetItemsListRequest.setFilterOptions(arrayOfFilteroptionstype);
 
         SortOptionsType sortOptionsType = new SortOptionsType();

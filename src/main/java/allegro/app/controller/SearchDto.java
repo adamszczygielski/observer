@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 public class SearchDto {
 
     @Setter(AccessLevel.NONE)
-    String keywords;
-
+    String keyword;
+    String category;
     Long interval;
 
-    public void setKeywords(String keywords) {
-        this.keywords = Utils.stringNormalizer(keywords);
+    public void setKeyword(String keyword) {
+        this.keyword = Utils.stringNormalizer(keyword);
     }
 }

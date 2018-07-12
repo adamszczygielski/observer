@@ -19,8 +19,11 @@ public class SearchView implements Serializable {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "KEY_WORDS")
-    private String keywords;
+    @Column(name = "KEYWORD")
+    private String keyword;
+
+    @Column(name = "CATEGORY")
+    private String category;
 
     @Getter(AccessLevel.NONE)
     @Column(name = "LAST_UPDATE")
