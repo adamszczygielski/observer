@@ -1,10 +1,9 @@
 package allegro.app.common;
 
-import allegro.app.controller.SearchDto;
+import allegro.app.api.SearchDto;
 import allegro.app.entity.Search;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Component

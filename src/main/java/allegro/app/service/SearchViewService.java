@@ -1,7 +1,7 @@
 package allegro.app.service;
 
 import allegro.app.common.SearchAssembler;
-import allegro.app.controller.SearchDto;
+import allegro.app.api.SearchDto;
 import allegro.app.entity.Search;
 import allegro.app.entity.SearchView;
 import allegro.app.repository.SearchRepository;

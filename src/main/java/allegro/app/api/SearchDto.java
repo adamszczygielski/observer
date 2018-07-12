@@ -1,4 +1,4 @@
-package allegro.app.controller;
+package allegro.app.api;
 
 import allegro.app.common.Utils;
 import lombok.*;

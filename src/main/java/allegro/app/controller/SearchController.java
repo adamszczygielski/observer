@@ -1,5 +1,6 @@
 package allegro.app.controller;
 
+import allegro.app.api.SearchDto;
 import allegro.app.service.SearchViewService;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
