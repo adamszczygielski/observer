@@ -104,10 +104,14 @@ public class ItemService {
                 for(Item i : itemList) {
                     i.setSearchId(search.getId());
                 }
-                itemRepository.saveAll(itemList);
+
+                Search SearchWithNewItems = search;
+                SearchWithNewItems.getItemList().addAll(itemList);
+                SearchWithNewItems.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                searchRepository.save(SearchWithNewItems);
+                return;
             }
         }
-
         search.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         searchRepository.save(search);
     }
@@ -125,7 +129,6 @@ public class ItemService {
 
         ArrayOfFilteroptionstype arrayOfFilteroptionstype = new ArrayOfFilteroptionstype();
 
-        //filtr keywords
         FilterOptionsType searchFilter = new FilterOptionsType();
         searchFilter.setFilterId("search");
         ArrayOfString arrayOfString = new ArrayOfString();
@@ -133,8 +136,7 @@ public class ItemService {
         searchFilter.setFilterValueId(arrayOfString);
         arrayOfFilteroptionstype.getItem().add(searchFilter);
 
-        //filtr category
-        if(search.getCategory() != null) {
+        if(!org.springframework.util.StringUtils.isEmpty(search.getCategory())) {
             FilterOptionsType categoryFilter = new FilterOptionsType();
             categoryFilter.setFilterId("category");
             ArrayOfString categories = new ArrayOfString();

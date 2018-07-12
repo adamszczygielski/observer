@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @ComponentScan(basePackageClasses = SearchViewRepository.class)
@@ -36,7 +37,7 @@ public class SearchViewService {
     }
 
     public void deleteSearch(Long id) {
-        searchRepository.deleteById(id);
+        Optional.ofNullable(searchRepository.findBySearchId(id)).ifPresent(searchRepository::delete);
     }
 
     public void addSearch(SearchDto searchDto) {

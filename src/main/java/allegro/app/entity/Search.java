@@ -37,7 +37,7 @@ public class Search {
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "SEARCH_ID")
     private List<Item> itemList;
 }

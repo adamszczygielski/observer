@@ -31,7 +31,7 @@ public class JobTest {
         };
         Timer timer = new Timer("Timer");
 
-        long delay = 30000L;
+        long delay = 19000L;
         long period = 15000L;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
 
