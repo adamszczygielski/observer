@@ -34,15 +34,19 @@ public class SearchViewService {
     }
 
     public void switchIsActive(Long id) {
-        searchRepository.switchIsActive(id);
+        Optional<Search> search = searchRepository.findById(id);
+        if(search.isPresent()) {
+            Search newSearch = search.get();
+            newSearch.setIsActive(!newSearch.getIsActive());
+            searchRepository.save(newSearch);
+        }
     }
 
     public void deleteSearch(Long id) {
-        Optional.ofNullable(searchRepository.findBySearchId(id)).ifPresent(searchRepository::delete);
+        searchRepository.findById(id).ifPresent(s -> searchRepository.delete(s));
     }
 
     public void addSearch(SearchDto searchDto) {
-        Search search = searchAssembler.toSearch(searchDto);
-        searchRepository.save(search);
+        Optional.ofNullable(searchDto).ifPresent(s -> searchRepository.save(searchAssembler.toSearch(s)));
     }
 }

@@ -7,6 +7,7 @@ import allegro.app.common.ItemAssembler;
 import allegro.app.common.ItemsListTypeAssembler;
 import allegro.app.entity.Item;
 import allegro.app.entity.Search;
+import allegro.app.notification.NotificationService;
 import allegro.app.repository.ItemRepository;
 import allegro.app.repository.SearchRepository;
 import allegro.app.wsdl.*;
@@ -110,6 +111,12 @@ public class ItemService {
                 searchWithNewItems.getItemList().addAll(itemList);
                 searchWithNewItems.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 searchRepository.save(searchWithNewItems);
+
+                if(search.getIsActive()) {
+                    NotificationService.sendEmailNotification(searchWithNewItems);
+                }
+
+
                 return;
             }
         }
