@@ -9,6 +9,7 @@ import allegro.app.repository.SearchViewRepository;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

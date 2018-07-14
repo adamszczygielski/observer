@@ -76,7 +76,8 @@ public class ItemService {
     }
 
     public void populateDatabase() {
-        List<Search> searchList = searchRepository.fetchActiveSearchList().stream().filter(s -> s.getLastUpdate()
+
+        List<Search> searchList = searchRepository.findAll().stream().filter(s -> s.getLastUpdate()
                 .before(new Timestamp(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(s.getTimeInterval()))))
                 .collect(Collectors.toList());
 
@@ -87,7 +88,7 @@ public class ItemService {
         }
     }
 
-    public void populateDatabaseBySearch(Search search) {
+    private void populateDatabaseBySearch(Search search) {
 
         List<ItemsListType> itemsListTypeList = fetchItemList(search);
 
@@ -105,10 +106,10 @@ public class ItemService {
                     i.setSearchId(search.getId());
                 }
 
-                Search SearchWithNewItems = search;
-                SearchWithNewItems.getItemList().addAll(itemList);
-                SearchWithNewItems.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-                searchRepository.save(SearchWithNewItems);
+                Search searchWithNewItems = search;
+                searchWithNewItems.getItemList().addAll(itemList);
+                searchWithNewItems.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                searchRepository.save(searchWithNewItems);
                 return;
             }
         }

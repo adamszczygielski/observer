@@ -5,9 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>-->
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>-->
     <script>
         setTimeout(function(){
             window.location.reload(1);
@@ -17,15 +14,15 @@
 <body>
 
 <div class="container">
-    <h2>Search items</h2>
-    <table class = "table" xmlns:th="http://www.w3.org/1999/xhtml">
+    <h4>Search items</h4>
+    <table class="table table-sm table-striped" xmlns:th="http://www.w3.org/1999/xhtml">
         <thead>
         <tr>
             <th>Keyword</th>
             <th>Category ID</th>
             <th>Last update</th>
             <th>Interval [min]</th>
-            <th>Active</th>
+            <th>Notification</th>
             <th>New</th>
             <th></th>
         </tr>
@@ -51,21 +48,21 @@
                         <p><input class="form-control form-control-sm col-sm-5" type="text" th:field="*{keyword}" /></p>
                     </td>
                     <td>
-                        <p><input class="form-control form-control-sm col-sm-3" type="text" th:field="*{category}" /></p>
+                        <p><input class="form-control form-control-sm col-sm-5" type="text" th:field="*{category}" /></p>
                     </td>
-                    <td></td>
+                    <td>2000-01-01 00:00</td>
                     <td>
                         <select th:field="*{interval}" class="form-control form-control-sm col-sm-6">
-                            <option value="0">0 min</option>
-                            <option value="5">5 min</option>
-                            <option value="15">15 min</option>
-                            <option value="60">60 min</option>
-                            <option value="180">180 min</option>
-                            <option value="360">360 min</option>
+                            <option value="0">0</option>
+                            <option value="2">2</option>
+                            <option value="15">15</option>
+                            <option value="60">60</option>
+                            <option value="180">180</option>
+                            <option value="360">360</option>
                         </select>
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td>false</td>
+                    <td>0</td>
                     <td>
                         <button class="btn btn-success btn-sm" type="submit">Submit</button>
                     </td>

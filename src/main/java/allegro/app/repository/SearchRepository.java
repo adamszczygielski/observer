@@ -20,9 +20,6 @@ public interface SearchRepository extends JpaRepository<Search, Long> {
     @Query("UPDATE Search s SET s.isActive = CASE WHEN s.isActive = true THEN false ELSE true END WHERE s.id =:searchId")
     void switchIsActive(@Param("searchId") Long searchId);
 
-    @Query("SELECT s FROM Search s WHERE s.isActive = true")
-    List<Search> fetchActiveSearchList();
-
     @Query("SELECT s FROM Search s WHERE s.id =:searchId")
     Search findBySearchId(@Param("searchId") Long searchId);
 }

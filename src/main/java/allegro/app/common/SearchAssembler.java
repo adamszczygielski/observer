@@ -14,7 +14,7 @@ public class SearchAssembler {
         search.setKeyword(searchDto.getKeyword());
         search.setCategory(searchDto.getCategory());
         search.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        search.setIsActive(true);
+        search.setIsActive(false);
         search.setTimeInterval(searchDto.getInterval());
 
         return search;
