@@ -14,7 +14,7 @@ public class NotificationService {
     public static void sendEmailNotification(Search search) {
 
         final String username = "allegro-app@neostrada.pl";
-        final String password = "tZ5M6bYPb3hbsSMh0vlW";
+        final String password = "";
 
         Properties props = new Properties();
         props.put("mail.smtp.starttls.enable", "true");

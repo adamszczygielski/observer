@@ -112,10 +112,9 @@ public class ItemService {
                 searchWithNewItems.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 searchRepository.save(searchWithNewItems);
 
-                if(search.getIsActive()) {
-                    NotificationService.sendEmailNotification(searchWithNewItems);
-                }
-
+//                if(search.getIsActive()) {
+//                    NotificationService.sendEmailNotification(searchWithNewItems);
+//                }
 
                 return;
             }

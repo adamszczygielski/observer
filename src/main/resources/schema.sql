@@ -1,7 +1,7 @@
 create table if not exists search
 (
     id bigint auto_increment not null,
-    key_words varchar(255) not null,
+    keyword varchar(255) not null,
     category varchar(255),
     last_update timestamp,
     time_interval integer not null,
