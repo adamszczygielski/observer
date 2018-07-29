@@ -5,16 +5,12 @@ import allegro.application.api.SearchDto;
 import allegro.application.entity.SearchView;
 import allegro.application.repository.SearchRepository;
 import allegro.application.repository.SearchViewRepository;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@ComponentScan(basePackageClasses = SearchViewRepository.class)
-@ComponentScan(basePackageClasses = SearchRepository.class)
-@ComponentScan(basePackageClasses = SearchAssembler.class)
 public class SearchViewService {
 
     private SearchViewRepository searchViewRepository;

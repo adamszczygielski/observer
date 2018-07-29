@@ -2,7 +2,6 @@ package allegro.application.job;
 
 import allegro.application.service.ItemService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Date;
@@ -10,7 +9,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @Configuration
-@ComponentScan(basePackageClasses = ItemService.class)
 public class JobTest {
 
     ItemService itemService;

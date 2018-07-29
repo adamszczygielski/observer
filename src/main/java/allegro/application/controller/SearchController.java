@@ -2,7 +2,6 @@ package allegro.application.controller;
 
 import allegro.application.api.SearchDto;
 import allegro.application.service.SearchViewService;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@ComponentScan(basePackageClasses = SearchViewService.class)
-@ComponentScan(basePackageClasses = SearchDto.class)
 public class SearchController {
 
     private SearchViewService searchViewService;

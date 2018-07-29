@@ -11,7 +11,6 @@ import allegro.application.repository.ItemRepository;
 import allegro.application.repository.SearchRepository;
 import allegro.application.wsdl.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -22,12 +21,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
-@ComponentScan(basePackageClasses = SOAPConnector.class)
-@ComponentScan(basePackageClasses = Assembler.class)
-@ComponentScan(basePackageClasses = ItemAssembler.class)
-@ComponentScan(basePackageClasses = ItemRepository.class)
-@ComponentScan(basePackageClasses = SearchRepository.class)
-@ComponentScan(basePackageClasses = ItemsListTypeAssembler.class)
 public class ItemService {
 
     @Value("${allegro.webapi.key}")
