@@ -14,7 +14,7 @@ public class Assembler implements BaseAssembler<ItemsListType, ItemDto> {
         itemDto.setCreationDate(null);
         itemDto.setTitle(itemsListType.getItemTitle());
         itemDto.setUrl(Utils.itemIdToUrl(itemsListType.getItemId()));
-        itemDto.setPrice(Utils.priceToString(itemsListType.getPriceInfo()));
+        itemDto.setPrice(Utils.priceInfoTypeToString(itemsListType.getPriceInfo().getItem()));
 
         return itemDto;
     }

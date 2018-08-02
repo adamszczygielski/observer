@@ -9,6 +9,7 @@ import allegro.application.entity.Item;
 import allegro.application.entity.Search;
 import allegro.application.repository.ItemRepository;
 import allegro.application.repository.SearchRepository;
+import allegro.application.repository.SoapRepository;
 import allegro.application.wsdl.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,39 +24,32 @@ import java.util.stream.Collectors;
 @Service
 public class ItemService {
 
-    @Value("${allegro.webapi.key}")
-    private String webapiKey;
-
-    @Value("${allegro.webapi.url}")
-    private String webServiceUrl;
-
-    private SOAPConnector soapConnector;
     private Assembler assembler;
     private ItemAssembler itemAssembler;
     private ItemRepository itemRepository;
     private SearchRepository searchRepository;
     private ItemsListTypeAssembler itemsListTypeAssembler;
+    private SoapRepository soapRepository;
 
-    public ItemService(SOAPConnector soapConnector, Assembler assembler, ItemRepository itemRepository,
-                       SearchRepository searchRepository, ItemAssembler itemAssembler, ItemsListTypeAssembler itemsListTypeAssembler) {
-        this.soapConnector = soapConnector;
+    public ItemService(Assembler assembler, ItemRepository itemRepository, SearchRepository searchRepository,
+                       ItemAssembler itemAssembler, ItemsListTypeAssembler itemsListTypeAssembler, SoapRepository soapRepository) {
         this.assembler = assembler;
         this.itemRepository = itemRepository;
         this.searchRepository = searchRepository;
         this.itemAssembler = itemAssembler;
         this.itemsListTypeAssembler = itemsListTypeAssembler;
+        this.soapRepository = soapRepository;
     }
 
     public List<ItemDto> fetchItems(Long searchId) {
-        List<Item> itemList = itemRepository.findActiveItems(searchId);
-        return itemAssembler.toDtoList(itemList);
+        return itemAssembler.toDtoList(itemRepository.findActiveItems(searchId));
     }
 
     public List<ItemDto> fetchItemsPreview(Long searchId) {
         Optional<Search> search = searchRepository.findById(searchId);
 
         if(search.isPresent()) {
-            List<ItemsListType> itemsListTypeList = fetchItemList(search.get(),0,100);
+            List<ItemsListType> itemsListTypeList = soapRepository.fetchItemList(search.get(),0,100);
             if(!CollectionUtils.isEmpty(itemsListTypeList)) {
                 return assembler.toDtoList(itemsListTypeList);
             }
@@ -70,8 +64,7 @@ public class ItemService {
     }
 
     private void populateDatabase(Search search) {
-
-        List<ItemsListType> itemsListTypeList = fetchItemList(search, 0, 100);
+        List<ItemsListType> itemsListTypeList = soapRepository.fetchItemList(search, 0, 100);
 
         if(!CollectionUtils.isEmpty(itemsListTypeList)) {
             List<Long> itemIdsList = search.getItemList().stream()
@@ -100,48 +93,5 @@ public class ItemService {
             item.setIsActive(false);
             itemRepository.save(item);
         });
-    }
-
-    private List<ItemsListType> fetchItemList(Search search, int offset, int size) {
-        DoGetItemsListRequest doGetItemsListRequest = new DoGetItemsListRequest();
-        doGetItemsListRequest.setWebapiKey(webapiKey);
-        doGetItemsListRequest.setCountryId(1);
-        doGetItemsListRequest.setResultSize(100);
-        doGetItemsListRequest.setResultOffset(0);
-
-        ArrayOfFilteroptionstype arrayOfFilteroptionstype = new ArrayOfFilteroptionstype();
-
-        FilterOptionsType searchFilter = new FilterOptionsType();
-        searchFilter.setFilterId("search");
-        ArrayOfString arrayOfString = new ArrayOfString();
-        arrayOfString.getItem().add(search.getKeyword());
-        searchFilter.setFilterValueId(arrayOfString);
-        arrayOfFilteroptionstype.getItem().add(searchFilter);
-
-        if(!StringUtils.isEmpty(search.getCategory())) {
-            FilterOptionsType categoryFilter = new FilterOptionsType();
-            categoryFilter.setFilterId("category");
-            ArrayOfString categories = new ArrayOfString();
-            categories.getItem().add(search.getCategory());
-            categoryFilter.setFilterValueId(categories);
-            arrayOfFilteroptionstype.getItem().add(categoryFilter);
-        }
-
-        doGetItemsListRequest.setFilterOptions(arrayOfFilteroptionstype);
-
-        SortOptionsType sortOptionsType = new SortOptionsType();
-        sortOptionsType.setSortType("startingTime");
-        sortOptionsType.setSortOrder("desc");
-        doGetItemsListRequest.setSortOptions(sortOptionsType);
-
-        DoGetItemsListResponse doGetItemsListResponse = (DoGetItemsListResponse) soapConnector.callWebService(webServiceUrl, doGetItemsListRequest);
-
-        List<ItemsListType> itemsListTypeList = new ArrayList<>();
-
-        if(doGetItemsListResponse != null && doGetItemsListResponse.getItemsCount() > 0) {
-            itemsListTypeList = doGetItemsListResponse.getItemsList().getItem();
-        }
-
-        return itemsListTypeList;
     }
 }

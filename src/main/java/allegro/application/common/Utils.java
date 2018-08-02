@@ -22,11 +22,11 @@ public class Utils {
         return "https://allegro.pl/i" + Long.toString(itemId) + ".html";
     }
 
-    public static String priceToString(ArrayOfPriceinfotype arrayOfPriceinfotype) {
+    public static String priceInfoTypeToString(List<PriceInfoType> priceInfoTypeList) {
         String price = "";
         boolean isFirstIteration = true;
 
-        for(PriceInfoType priceInfoType : arrayOfPriceinfotype.getItem()) {
+        for(PriceInfoType priceInfoType : priceInfoTypeList) {
                 if(isFirstIteration) {
                     price = PriceType.valueOf(priceInfoType.getPriceType().toUpperCase()).priceType + ": " + (int) priceInfoType.getPriceValue();
                     isFirstIteration = false;
