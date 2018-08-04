@@ -36,9 +36,6 @@ public class Item implements Serializable {
     @Column(name = "PRICE")
     private String price;
 
-    @Column(name = "URL")
-    private String url;
-
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 

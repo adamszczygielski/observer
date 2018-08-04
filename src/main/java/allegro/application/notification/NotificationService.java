@@ -1,5 +1,6 @@
 package allegro.application.notification;
 
+import allegro.application.common.Utils;
 import allegro.application.entity.Item;
 import allegro.application.entity.Search;
 
@@ -45,12 +46,12 @@ public class NotificationService {
         }
     }
 
-    public static String prepareMessage(Search search) {
-        String text = search.getKeyword() + "\n" + "--------------------" + "\n";
+    private static String prepareMessage(Search search) {
+        StringBuilder text = new StringBuilder(search.getKeyword() + "\n" + "--------------------" + "\n");
         for(Item item : search.getItemList()) {
-            text = text + item.getTitle() + " (" + item.getUrl() + ")\n";
+            text.append(item.getTitle()).append(" (").append(Utils.itemIdToUrl(item.getItemId())).append(")\n");
         }
 
-        return  text;
+        return text.toString();
     }
 }

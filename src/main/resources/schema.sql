@@ -16,7 +16,6 @@ create table if not exists item
    creation_date timestamp,
    title varchar(255) not null,
    price varchar(255) not null,
-   url varchar(255) not null,
    is_active boolean not null,
    foreign key (search_id) references search(id)
 );

@@ -27,7 +27,6 @@ public class ItemsListTypeAssembler implements BaseAssembler<ItemsListType, Item
 
         item.setCreationDate(new Timestamp(System.currentTimeMillis()));
         item.setTitle(itemsListType.getItemTitle());
-        item.setUrl(Utils.itemIdToUrl(itemsListType.getItemId()));
         item.setIsActive(true);
 
         return item;
