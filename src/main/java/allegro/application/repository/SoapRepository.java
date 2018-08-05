@@ -29,8 +29,8 @@ public class SoapRepository {
         DoGetItemsListRequest doGetItemsListRequest = new DoGetItemsListRequest();
         doGetItemsListRequest.setWebapiKey(webapiKey);
         doGetItemsListRequest.setCountryId(1);
-        doGetItemsListRequest.setResultSize(100);
-        doGetItemsListRequest.setResultOffset(0);
+        doGetItemsListRequest.setResultSize(size);
+        doGetItemsListRequest.setResultOffset(offset);
 
         ArrayOfFilteroptionstype arrayOfFilteroptionstype = new ArrayOfFilteroptionstype();
 

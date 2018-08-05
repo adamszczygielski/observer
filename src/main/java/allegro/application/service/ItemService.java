@@ -70,26 +70,39 @@ public class ItemService {
     }
 
     private void populateDatabase(Search search) {
-        List<ItemsListType> itemsListTypeList = soapRepository.fetchItemList(search, 0, 100);
+        List<ItemsListType> itemsListTypeList = soapRepository.fetchItemList(search, 0, 1);
 
-        if(!CollectionUtils.isEmpty(itemsListTypeList)) {
-            List<Long> itemIdsList = search.getItemList().stream()
-                    .map(i -> i.getItemId()).collect(Collectors.toCollection(ArrayList::new));
-
-            List<ItemsListType> newItems = itemsListTypeList
-                    .stream().filter(item -> !itemIdsList.contains(item.getItemId()))
-                    .collect(Collectors.toList());
-
-            if(newItems.size()>0) {
-                List<Item> itemList = itemsListTypeAssembler.toDtoList(newItems).stream()
-                        .map(item -> {item.setSearchId(search.getId()); return item;})
-                        .collect(Collectors.toList());
-
-                search.getItemList().addAll(itemList);
-//                if(search.getIsActive()) { NotificationService.sendEmailNotification(searchWithNewItems); }
-            }
+        if(CollectionUtils.isEmpty(itemsListTypeList)) {
+            updateSearch(search);
+            return;
         }
 
+        List<Long> oldItemIds = search.getItemList().stream().map(Item::getItemId).collect(Collectors.toList());
+        List<Long> newItemIds = itemsListTypeList.stream().map(ItemsListType::getItemId).collect(Collectors.toList());
+
+        if(oldItemIds.containsAll(newItemIds)) {
+            updateSearch(search);
+            return;
+        }
+
+        itemsListTypeList = soapRepository.fetchItemList(search, 0, 50);
+
+        List<ItemsListType> ItemsListTypeList = itemsListTypeList
+                .stream().filter(item -> !oldItemIds.contains(item.getItemId()))
+                .collect(Collectors.toList());
+
+        if(ItemsListTypeList.size()>0) {
+            List<Item> newItemList = itemsListTypeAssembler.toDtoList(ItemsListTypeList).stream()
+                    .map(item -> {item.setSearchId(search.getId()); return item;})
+                    .collect(Collectors.toList());
+
+            search.getItemList().addAll(newItemList);
+        }
+
+        updateSearch(search);
+    }
+
+    private void updateSearch(Search search) {
         search.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         searchRepository.save(search);
     }
