@@ -42,7 +42,13 @@ public class ItemService {
     }
 
     public List<ItemDto> fetchItems(Long searchId) {
-        return itemAssembler.toDtoList(itemRepository.findActiveItems(searchId));
+        Optional<List<Item>> itemList = itemRepository.findActiveItems(searchId);
+
+        if(itemList.isPresent()) {
+            return itemAssembler.toDtoList(itemList.get());
+        }
+
+        return new ArrayList<>();
     }
 
     public List<ItemDto> fetchItemsPreview(Long searchId) {

@@ -8,10 +8,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT i FROM Item i WHERE i.searchId =:searchId AND i.isActive = true")
-    List<Item> findActiveItems(@Param("searchId") Long searchId);
+    Optional<List<Item>> findActiveItems(@Param("searchId") Long searchId);
 }
