@@ -1,6 +1,7 @@
 package allegro.application.common;
 
 import allegro.application.wsdl.PriceInfoType;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
@@ -26,6 +27,11 @@ public class Utils {
     }
 
     static String priceInfoTypeToString(List<PriceInfoType> priceInfoTypeList) {
+
+        if(CollectionUtils.isEmpty(priceInfoTypeList)) {
+            return "";
+        }
+
         StringBuilder sb = new StringBuilder();
 
         priceInfoTypeList.forEach(p -> {
