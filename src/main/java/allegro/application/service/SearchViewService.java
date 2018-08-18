@@ -5,23 +5,19 @@ import allegro.application.api.SearchDto;
 import allegro.application.entity.SearchView;
 import allegro.application.repository.SearchRepository;
 import allegro.application.repository.SearchViewRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class SearchViewService {
 
     private SearchViewRepository searchViewRepository;
     private SearchRepository searchRepository;
     private SearchAssembler searchAssembler;
-
-    public SearchViewService(SearchViewRepository searchViewRepository, SearchRepository searchRepository, SearchAssembler searchAssembler) {
-        this.searchViewRepository = searchViewRepository;
-        this.searchRepository = searchRepository;
-        this.searchAssembler = searchAssembler;
-    }
 
     public List<SearchView> fetchSearchViewList() {
         return searchViewRepository.findAll();

@@ -14,8 +14,8 @@ import java.util.TimeZone;
 
 public class Utils {
 
-    private static Locale polishLocale = new Locale("pl", "PL");
-    private static TimeZone polishTimeZone = TimeZone.getTimeZone("Europe/Warsaw");
+    private static final Locale polishLocale = new Locale("pl", "PL");
+    private static final TimeZone polishTimeZone = TimeZone.getTimeZone("Europe/Warsaw");
 
     public static String itemIdToUrl(Long itemId) {
 

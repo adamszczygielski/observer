@@ -11,6 +11,7 @@ import allegro.application.repository.ItemRepository;
 import allegro.application.repository.SearchRepository;
 import allegro.application.repository.SoapRepository;
 import allegro.application.wsdl.*;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ItemService {
 
     private Assembler assembler;
@@ -30,16 +32,6 @@ public class ItemService {
     private SearchRepository searchRepository;
     private ItemsListTypeAssembler itemsListTypeAssembler;
     private SoapRepository soapRepository;
-
-    public ItemService(Assembler assembler, ItemRepository itemRepository, SearchRepository searchRepository,
-                       ItemAssembler itemAssembler, ItemsListTypeAssembler itemsListTypeAssembler, SoapRepository soapRepository) {
-        this.assembler = assembler;
-        this.itemRepository = itemRepository;
-        this.searchRepository = searchRepository;
-        this.itemAssembler = itemAssembler;
-        this.itemsListTypeAssembler = itemsListTypeAssembler;
-        this.soapRepository = soapRepository;
-    }
 
     public List<ItemDto> fetchItems(Long searchId) {
         Optional<List<Item>> itemList = itemRepository.findActiveItems(searchId);

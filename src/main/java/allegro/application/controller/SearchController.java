@@ -2,6 +2,7 @@ package allegro.application.controller;
 
 import allegro.application.api.SearchDto;
 import allegro.application.service.SearchViewService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,13 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@AllArgsConstructor
 public class SearchController {
 
     private SearchViewService searchViewService;
-
-    public SearchController(SearchViewService searchViewService) {
-        this.searchViewService = searchViewService;
-    }
 
     @RequestMapping("/search/list")
     public String listSearchItems(Model model) {
