@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <script>
-    setTimeout(function(){
-        window.location.reload(1);
-    }, 120000);
+        setTimeout(function(){
+            window.location.reload(1);
+        }, 120000);
     </script>
 </head>
 <body>
 
 <div class="container">
     <h4>Search items</h4>
-    <table class="table table-sm table-striped" xmlns:th="http://www.w3.org/1999/xhtml">
+    <table id="items-table" class="table table-sm table-striped" xmlns:th="http://www.w3.org/1999/xhtml">
         <thead>
         <tr>
             <th>Keyword</th>
@@ -70,6 +70,16 @@
         </tbody>
     </table>
 </div>
+<script>
+    var table = document.getElementById("items-table"), sumVal = 0;
 
+    for(var i = 1; i < table.rows.length - 1; i++) {
+        sumVal = sumVal + parseInt(table.rows[i].cells[5].innerText);
+    };
+
+    if(sumVal > 0) {
+        document.title = document.title + " " + "[" + sumVal + "]";
+    }
+</script>
 </body>
 </html>
