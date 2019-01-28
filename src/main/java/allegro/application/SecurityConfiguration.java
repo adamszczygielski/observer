@@ -9,8 +9,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests().antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/**").authenticated()
+        httpSecurity.authorizeRequests()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/search/**").authenticated()
                 .and().formLogin().permitAll();
 
         httpSecurity.csrf().disable();
