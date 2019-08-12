@@ -5,16 +5,12 @@ import lombok.*;
 import org.springframework.util.StringUtils;
 
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class SearchDto {
 
-    @Setter(AccessLevel.NONE)
-    String keyword;
-    @Setter(AccessLevel.NONE)
-    String category;
-    Long interval;
+    private String keyword;
+    private String category;
+    private Long interval;
 
     public void setKeyword(String keyword) {
         this.keyword = Utils.stringNormalizer(keyword);
@@ -26,5 +22,15 @@ public class SearchDto {
         } else {
             this.category = category;
         }
+    }
+
+    public void setInterval(Long interval) {
+        this.interval = interval;
+    }
+
+    public SearchDto(String keyword, String category, Long interval) {
+        setKeyword(keyword);
+        setCategory(category);
+        setInterval(interval);
     }
 }

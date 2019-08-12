@@ -13,9 +13,9 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class ItemDto {
 
-    Long itemId;
-    String title;
-    Timestamp creationDate;
-    String price;
-    String url;
+    private Long itemId;
+    private String title;
+    private Timestamp creationDate;
+    private String price;
+    private String url;
 }

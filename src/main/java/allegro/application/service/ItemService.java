@@ -1,7 +1,6 @@
 package allegro.application.service;
 
 import allegro.application.api.ItemDto;
-import allegro.application.SOAPConnector;
 import allegro.application.common.Assembler;
 import allegro.application.common.ItemAssembler;
 import allegro.application.common.ItemsListTypeAssembler;
@@ -12,10 +11,8 @@ import allegro.application.repository.SearchRepository;
 import allegro.application.repository.SoapRepository;
 import allegro.application.wsdl.*;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -62,24 +59,21 @@ public class ItemService {
     }
 
     private void populateDatabase(Search search) {
-        List<ItemsListType> itemsListTypeList = soapRepository.fetchItemList(search, 0, 1);
 
-        if(CollectionUtils.isEmpty(itemsListTypeList)) {
-            updateSearch(search);
-            return;
-        }
-
+        List<ItemsListType> fetchedItemList = soapRepository.fetchItemList(search, 0, 1);
         List<Long> oldItemIds = search.getItemList().stream().map(Item::getItemId).collect(Collectors.toList());
-        List<Long> newItemIds = itemsListTypeList.stream().map(ItemsListType::getItemId).collect(Collectors.toList());
+        List<Long> fetchedItemIdList = fetchedItemList.stream().map(ItemsListType::getItemId).collect(Collectors.toList());
 
-        if(oldItemIds.containsAll(newItemIds)) {
+        if(CollectionUtils.isEmpty(fetchedItemList) || oldItemIds.containsAll(fetchedItemIdList)) {
+            removeNonExistingItems(search, fetchedItemIdList);
             updateSearch(search);
             return;
         }
 
-        itemsListTypeList = soapRepository.fetchItemList(search, 0, 50);
+        fetchedItemList = soapRepository.fetchItemList(search, 0, 50);
+        fetchedItemIdList = fetchedItemList.stream().map(ItemsListType::getItemId).collect(Collectors.toList());
 
-        List<ItemsListType> ItemsListTypeList = itemsListTypeList
+        List<ItemsListType> ItemsListTypeList = fetchedItemList
                 .stream().filter(item -> !oldItemIds.contains(item.getItemId()))
                 .collect(Collectors.toList());
 
@@ -91,7 +85,13 @@ public class ItemService {
             search.getItemList().addAll(newItemList);
         }
 
+        removeNonExistingItems(search, fetchedItemIdList);
         updateSearch(search);
+    }
+
+    private void removeNonExistingItems(Search search, List<Long> fetchedItemIds) {
+        search.getItemList()
+                .removeIf(item -> !item.getIsActive() && !fetchedItemIds.contains(item.getItemId()));
     }
 
     private void updateSearch(Search search) {
