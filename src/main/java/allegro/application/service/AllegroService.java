@@ -39,7 +39,7 @@ public class AllegroService implements ItemService {
 
     public List<ItemDto> getPreview(Search search) {
         ListingResponseOffers listingResponseOffers = fetchItems(search.getKeyword(), search.getCategory());
-        return mapper.toItemDto(listingResponseOffers, search);
+        return mapper.toItemDto(listingResponseOffers);
     }
 
     private ListingResponseOffers fetchItems(String phrase, String categoryId) {

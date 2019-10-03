@@ -16,6 +16,7 @@ import java.util.List;
 
 @Component
 public class AllegroMapper {
+
     public List<Item> toItem(ListingResponseOffers listingResponseOffers, Search search) {
         ArrayList<Item> items = new ArrayList<>();
         listingResponseOffers.getRegular().forEach(listingOffer -> {
@@ -35,7 +36,7 @@ public class AllegroMapper {
         return item;
     }
 
-    public List<ItemDto> toItemDto(ListingResponseOffers listingResponseOffers, Search search) {
+    public List<ItemDto> toItemDto(ListingResponseOffers listingResponseOffers) {
         ArrayList<ItemDto> items = new ArrayList<>();
         listingResponseOffers.getRegular().forEach(listingOffer -> {
             items.add(toItemDto(listingOffer));

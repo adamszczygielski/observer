@@ -1,7 +1,8 @@
 package allegro.application.api;
 
 import allegro.application.common.Utils;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
 @Getter
@@ -13,7 +14,7 @@ public class SearchDto {
     private Long interval;
 
     public void setKeyword(String keyword) {
-        this.keyword = Utils.stringNormalizer(keyword);
+        this.keyword = Utils.keywordNormalizer(keyword);
     }
 
     public void setCategory(String category) {
@@ -25,12 +26,6 @@ public class SearchDto {
     }
 
     public void setInterval(Long interval) {
-        this.interval = interval;
-    }
-
-    public SearchDto(String keyword, String category, Long interval) {
-        setKeyword(keyword);
-        setCategory(category);
-        setInterval(interval);
+        this.interval = Math.abs(interval);
     }
 }

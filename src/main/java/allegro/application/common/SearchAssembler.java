@@ -16,7 +16,6 @@ public class SearchAssembler {
         search.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         search.setIsActive(false);
         search.setTimeInterval(searchDto.getInterval());
-
         return search;
     }
 }

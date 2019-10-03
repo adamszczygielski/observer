@@ -4,9 +4,7 @@ import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.text.Normalizer;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -29,9 +27,10 @@ public class Utils {
         return simpleDateFormat.format(timestamp);
     }
 
-    public static String stringNormalizer(String input) {
+    public static String keywordNormalizer(String input) {
         return Normalizer
                 .normalize(input, Normalizer.Form.NFD)
+                .substring(0, Math.min(input.length(), 30))
                 .replaceAll("[^\\p{ASCII}]", "")
                 .replaceAll(" +", " ")
                 .toLowerCase();
