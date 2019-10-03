@@ -1,6 +1,6 @@
 package allegro.application.controller;
 
-import allegro.application.service.ItemService;
+import allegro.application.service.ApplicationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 public class ItemController {
 
-    private ItemService itemService;
+    private ApplicationService itemService;
 
     @RequestMapping("/item/list/preview/{searchId}")
     public String fetchItemsPreview(Model model, @PathVariable Long searchId) {
