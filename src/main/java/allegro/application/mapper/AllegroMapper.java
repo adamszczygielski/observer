@@ -1,8 +1,8 @@
 package allegro.application.mapper;
 
 import allegro.application.api.ItemDto;
-import allegro.application.entity.Item;
-import allegro.application.entity.Search;
+import allegro.application.domain.Item;
+import allegro.application.domain.Search;
 import allegro.application.model.ListingOffer;
 import allegro.application.model.ListingResponseOffers;
 import allegro.application.model.OfferPrice;

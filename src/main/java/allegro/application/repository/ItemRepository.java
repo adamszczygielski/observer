@@ -1,6 +1,6 @@
 package allegro.application.repository;
 
-import allegro.application.entity.Item;
+import allegro.application.domain.Item;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

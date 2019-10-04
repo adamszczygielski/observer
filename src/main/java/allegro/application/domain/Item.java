@@ -1,4 +1,4 @@
-package allegro.application.entity;
+package allegro.application.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

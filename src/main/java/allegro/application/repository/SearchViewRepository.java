@@ -1,6 +1,6 @@
 package allegro.application.repository;
 
-import allegro.application.entity.SearchView;
+import allegro.application.domain.SearchView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

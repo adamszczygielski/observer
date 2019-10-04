@@ -1,7 +1,7 @@
 package allegro.application.common;
 
 import allegro.application.api.ItemDto;
-import allegro.application.entity.Item;
+import allegro.application.domain.Item;
 import org.springframework.stereotype.Component;
 
 @Component

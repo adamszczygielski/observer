@@ -14,7 +14,7 @@
 <body>
 
 <div class="container">
-    <h4>Search items</h4>
+    <h4>Search queries</h4>
     <table id="items-table" class="table table-sm table-striped" xmlns:th="http://www.w3.org/1999/xhtml">
         <thead>
         <tr>
@@ -53,10 +53,9 @@
                     <td></td>
                     <td>
                         <select th:field="*{interval}" class="form-control form-control-sm col-sm-6">
-                            <option value="0">0</option><!-- for testing purposes -->
                             <option value="5">5</option>
                             <option value="30">30</option>
-                            <option value="120">20</option>
+                            <option value="120">120</option>
                             <option value="360">360</option>
                         </select>
                     </td>

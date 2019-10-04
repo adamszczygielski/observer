@@ -2,8 +2,8 @@ package allegro.application.service;
 
 import allegro.application.api.ItemDto;
 import allegro.application.common.ItemAssembler;
-import allegro.application.entity.Item;
-import allegro.application.entity.Search;
+import allegro.application.domain.Item;
+import allegro.application.domain.Search;
 import allegro.application.repository.ItemRepository;
 import allegro.application.repository.SearchRepository;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class ApplicationService {
     private ItemAssembler itemAssembler;
     private ItemRepository itemRepository;
     private SearchRepository searchRepository;
-    private AllegroService allegroService;
+    private ItemService allegroService;
     private final Logger log = Logger.getLogger(getClass().getName());
 
     public List<ItemDto> fetchItems(Long searchId) {

@@ -1,7 +1,8 @@
-package allegro.application.entity;
+package allegro.application.domain;
 
 import allegro.application.common.Utils;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 @Getter
 @Table(name = "SEARCH_V")
@@ -40,6 +40,9 @@ public class SearchView implements Serializable {
     private Long count;
 
     public String getLastUpdate() {
+        if(lastUpdate.getTime() == 0) {
+            return "--:--:--";
+        }
         return Utils.timestampToShortString(lastUpdate);
     }
 }

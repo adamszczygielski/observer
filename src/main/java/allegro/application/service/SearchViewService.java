@@ -2,7 +2,7 @@ package allegro.application.service;
 
 import allegro.application.common.SearchAssembler;
 import allegro.application.api.SearchDto;
-import allegro.application.entity.SearchView;
+import allegro.application.domain.SearchView;
 import allegro.application.repository.SearchRepository;
 import allegro.application.repository.SearchViewRepository;
 import lombok.AllArgsConstructor;

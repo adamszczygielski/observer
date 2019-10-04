@@ -1,7 +1,7 @@
 package allegro.application.common;
 
 import allegro.application.api.SearchDto;
-import allegro.application.entity.Search;
+import allegro.application.domain.Search;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -13,7 +13,7 @@ public class SearchAssembler {
         Search search = new Search();
         search.setKeyword(searchDto.getKeyword());
         search.setCategory(searchDto.getCategory());
-        search.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        search.setLastUpdate(new Timestamp(0));
         search.setIsActive(false);
         search.setTimeInterval(searchDto.getInterval());
         return search;
