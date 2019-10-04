@@ -30,7 +30,8 @@ public class AllegroService implements ItemService {
     @Value("${allegro.token.private}")
     private String privateToken;
     private static String accessToken;
-    private static LocalDateTime accessTokenTime = LocalDateTime.MIN;
+    private static LocalDateTime accessTokenCreateTime = LocalDateTime.MIN;
+    private static long accessTokenLifeTime = 5;
 
     @Autowired
     private AllegroMapper mapper;
@@ -74,7 +75,7 @@ public class AllegroService implements ItemService {
     }
 
     private String fetchAccessToken() {
-        if(accessTokenTime.plusHours(5).isAfter(LocalDateTime.now())) {
+        if(accessTokenCreateTime.plusHours(accessTokenLifeTime).isAfter(LocalDateTime.now())) {
             return accessToken;
         }
 
@@ -94,7 +95,7 @@ public class AllegroService implements ItemService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Map> response = restTemplate.exchange(uriComponents.toUriString(), HttpMethod.POST, entity, Map.class);
 
-        accessTokenTime = LocalDateTime.now();
+        accessTokenCreateTime = LocalDateTime.now();
         accessToken = response.getBody().get("access_token").toString();
         return accessToken;
     }
