@@ -1,6 +1,7 @@
 package allegro.application.mapper;
 
 import allegro.application.api.ItemDto;
+import allegro.application.common.Utils;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
 import allegro.application.model.ListingOffer;
@@ -8,7 +9,6 @@ import allegro.application.model.ListingResponseOffers;
 import allegro.application.model.OfferPrice;
 import allegro.application.model.OfferSellingMode;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -51,15 +51,8 @@ public class AllegroMapper {
         itemDto.setTitle(listingOffer.getName());
         itemDto.setCreationDate(null);
         itemDto.setPrice(getPrice(listingOffer.getSellingMode()));
-        itemDto.setUrl(getUrl(itemId));
+        itemDto.setUrl(Utils.itemIdToUrl(itemId));
         return itemDto;
-    }
-
-    private String getUrl(Long itemId) {
-        if(StringUtils.isEmpty(itemId)) {
-            return "";
-        }
-        return "https://allegro.pl/i" + itemId + ".html";
     }
 
     private String getPrice(OfferSellingMode offerSellingMode) {

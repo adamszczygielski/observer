@@ -5,12 +5,10 @@ import org.springframework.util.StringUtils;
 import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class Utils {
 
-    private static final Locale polishLocale = new Locale("pl", "PL");
     private static final TimeZone polishTimeZone = TimeZone.getTimeZone("Europe/Warsaw");
 
     public static String itemIdToUrl(Long itemId) {
@@ -23,7 +21,6 @@ public class Utils {
     public static String timestampToShortString(Timestamp timestamp) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         simpleDateFormat.setTimeZone(polishTimeZone);
-
         return simpleDateFormat.format(timestamp);
     }
 
