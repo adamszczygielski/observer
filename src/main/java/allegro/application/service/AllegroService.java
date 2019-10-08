@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AllegroService implements ItemService {
@@ -71,7 +72,10 @@ public class AllegroService implements ItemService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<ListingResponse> response = restTemplate.exchange(uriComponents.toUriString(), HttpMethod.GET, entity, ListingResponse.class);
 
-        return response.getBody().getItems();
+        return Optional.of(response)
+                .map(HttpEntity::getBody)
+                .map(ListingResponse::getItems)
+                .orElse(new ListingResponseOffers());
     }
 
     private String fetchAccessToken() {
@@ -96,7 +100,12 @@ public class AllegroService implements ItemService {
         ResponseEntity<Map> response = restTemplate.exchange(uriComponents.toUriString(), HttpMethod.POST, entity, Map.class);
 
         accessTokenCreateTime = LocalDateTime.now();
-        accessToken = response.getBody().get("access_token").toString();
+        accessToken = Optional.of(response)
+                .map(HttpEntity::getBody)
+                .map(m -> m.get("access_token"))
+                .map(Object::toString)
+                .orElse("");
+
         return accessToken;
     }
 }
