@@ -22,7 +22,7 @@
             <th>Category ID</th>
             <th>Last update</th>
             <th>Interval [min]</th>
-            <th>Notification</th>
+<!--            <th>Notification</th>-->
             <th>New</th>
             <th></th>
         </tr>
@@ -33,7 +33,7 @@
                 <td th:text="${searchItem.category}"></td>
                 <td th:text="${searchItem.lastUpdate}"></td>
                 <td th:text="${searchItem.timeInterval}"></td>
-                <td><a th:href="@{/search/switch/} + ${searchItem.id}"><span th:text="${searchItem.isActive}"></span></a></td>
+<!--                <td><a th:href="@{/search/switch/} + ${searchItem.id}"><span th:text="${searchItem.isActive}"></span></a></td>-->
                 <td><a th:href="@{/item/list/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.count}"></span></a></td>
                 <td>
                     <form th:action="@{/search/delete/__${searchItem.id}__}" th:method="delete" onsubmit="return confirm('Do your really want to delete this entry');">
@@ -59,7 +59,7 @@
                             <option value="360">360</option>
                         </select>
                     </td>
-                    <td>false</td>
+<!--                    <td>false</td>-->
                     <td>0</td>
                     <td>
                         <button class="btn btn-success btn-sm" type="submit">Submit</button>
