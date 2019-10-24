@@ -20,9 +20,13 @@ import java.sql.Timestamp;
 public class Item implements Serializable {
 
     @Id
-    @Column(name = "ITEM_ID")
+    @Column(name = "ITEM_ID", unique=true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotFound(action= NotFoundAction.IGNORE)
     private Long itemId;
+
+    @Column(name = "ORIGIN_ID")
+    private String originId;
 
     @Column(name = "SEARCH_ID")
     private Long searchId;
@@ -35,6 +39,9 @@ public class Item implements Serializable {
 
     @Column(name = "PRICE")
     private String price;
+
+    @Column(name = "URL")
+    private String url;
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;

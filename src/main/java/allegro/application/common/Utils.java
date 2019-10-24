@@ -11,7 +11,7 @@ public class Utils {
 
     private static final TimeZone polishTimeZone = TimeZone.getTimeZone("Europe/Warsaw");
 
-    public static String itemIdToUrl(Long itemId) {
+    public static String itemIdToUrl(String itemId) {
         if(StringUtils.isEmpty(itemId)) {
             return "";
         }

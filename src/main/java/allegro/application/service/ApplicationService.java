@@ -26,11 +26,12 @@ public class ApplicationService {
     private ItemRepository itemRepository;
     private SearchRepository searchRepository;
     private ItemService allegroService;
+    private ItemService olxSerivce;
     private final Logger log = Logger.getLogger(getClass().getName());
 
     public List<ItemDto> fetchItems(Long searchId) {
         Optional<List<Item>> itemList = itemRepository.findActiveItems(searchId);
-        if(itemList.isPresent()) {
+        if (itemList.isPresent()) {
             return itemAssembler.toDtoList(itemList.get());
         }
         return new ArrayList<>();
@@ -38,8 +39,13 @@ public class ApplicationService {
 
     public List<ItemDto> fetchItemsPreview(Long searchId) {
         Optional<Search> search = searchRepository.findById(searchId);
-        if(search.isPresent()) {
-            return allegroService.getPreview(search.get());
+        if (search.isPresent()) {
+            if (search.get().getSource().equals("allegro")) {
+                return allegroService.getPreview(search.get());
+            }
+            if(search.get().getSource().equals("olx")) {
+                return olxSerivce.getPreview(search.get());
+            }
         }
         return new ArrayList<>();
     }
@@ -60,15 +66,26 @@ public class ApplicationService {
     }
 
     private void updateSearch(Search search) {
-        log.log(Level.INFO, "---------- Updating search query with id: " + search.getId());
-        List<Item> fetchedItems = allegroService.getItems(search);
-        log.log(Level.INFO, "---------- Fetched " + fetchedItems.size() + " items" );
-        List<Long> fetchedItemIds = fetchedItems.stream().map(Item::getItemId).collect(Collectors.toList());
+        List<Item> fetchedItems;
+
+        if (search.getSource().equals("allegro")) {
+            log.log(Level.INFO, "---------- Updating search query with id: " + search.getId() + ", source: " + search.getSource());
+            fetchedItems = allegroService.getItems(search);
+        } else if (search.getSource().equals("olx")) {
+            log.log(Level.INFO, "---------- Updating search query with id: " + search.getId() + ", source: " + search.getSource());
+            fetchedItems = olxSerivce.getItems(search);
+        } else {
+            log.log(Level.WARNING, "---------- No service implementation for source: " + search.getSource() + " unable to fetch items!");
+            return;
+        }
+
+        log.log(Level.INFO, "---------- Fetched " + fetchedItems.size() + " items");
+        List<String> fetchedItemIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
         //remove checked, non-existing items
-        search.getItemList().removeIf(item -> !item.getIsActive() && !fetchedItemIds.contains(item.getItemId()));
-        List<Long> searchItemIds = search.getItemList().stream().map(Item::getItemId).collect(Collectors.toList());
+        search.getItemList().removeIf(item -> !item.getIsActive() && !fetchedItemIds.contains(item.getOriginId()));
+        List<String> searchItemIds = search.getItemList().stream().map(Item::getOriginId).collect(Collectors.toList());
         //filter new items, add all
-        fetchedItems.removeIf(item -> searchItemIds.contains(item.getItemId()));
+        fetchedItems.removeIf(item -> searchItemIds.contains(item.getOriginId()));
         log.log(Level.INFO, "---------- There's " + fetchedItems.size() + " new items");
         search.getItemList().addAll(fetchedItems);
         //save to db

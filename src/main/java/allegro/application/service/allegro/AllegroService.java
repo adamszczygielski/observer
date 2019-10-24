@@ -3,9 +3,9 @@ package allegro.application.service.allegro;
 import allegro.application.api.ItemDto;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
-import allegro.application.mapper.AllegroMapper;
-import allegro.application.model.ListingResponse;
-import allegro.application.model.ListingResponseOffers;
+import allegro.application.service.allegro.mapper.AllegroMapper;
+import allegro.application.service.allegro.model.ListingResponse;
+import allegro.application.service.allegro.model.ListingResponseOffers;
 import allegro.application.service.ItemService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -41,13 +41,13 @@ public class AllegroService implements ItemService {
         return mapper.toItemDto(listingResponseOffers);
     }
 
-    private ListingResponseOffers fetchItems(String phrase, String categoryId) {
+    private ListingResponseOffers fetchItems(String keyword, String categoryId) {
 
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("api.allegro.pl")
                 .pathSegment("offers", "listing")
-                .queryParam("phrase", phrase.replaceAll(" ", "+"));
+                .queryParam("phrase", keyword.replaceAll(" ", "+"));
 
         if (!StringUtils.isEmpty(categoryId)) {
             uriComponentsBuilder.queryParam("category.id", categoryId);

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Allegro app</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <h4>Items preview</h4>
+    <table class="table table-sm table-striped" xmlns:th="http://www.w3.org/1999/xhtml">
+        <thead>
+            <tr>
+                <th>Item ID</th>
+                <th>Title</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${items}">
+                <td><a th:href="${item.url}" target="_blank"><span th:text="${item.originId}"></span></a></td>
+                <td th:text="${item.title}"></td>
+                <td th:text="${item.price}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

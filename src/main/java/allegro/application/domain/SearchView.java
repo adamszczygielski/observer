@@ -36,6 +36,9 @@ public class SearchView implements Serializable {
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 
+    @Column(name = "SOURCE")
+    private String source;
+
     @Column(name = "COUNT")
     private Long count;
 

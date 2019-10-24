@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class AllegroTokenService {
+class AllegroTokenService {
 
     @Value("${allegro.token.private}")
     private String privateToken;
@@ -21,7 +21,7 @@ public class AllegroTokenService {
     private static LocalDateTime accessTokenCreateTime = LocalDateTime.MIN;
     private static long accessTokenLifeTime = 5;
 
-    public String fetchAccessToken() {
+    protected String fetchAccessToken() {
         if(accessTokenCreateTime.plusHours(accessTokenLifeTime).isAfter(LocalDateTime.now())) {
             return "Bearer " + accessToken;
         }

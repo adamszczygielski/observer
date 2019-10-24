@@ -19,7 +19,7 @@ public class ItemController {
     @RequestMapping("/item/list/preview/{searchId}")
     public String fetchItemsPreview(Model model, @PathVariable Long searchId) {
         model.addAttribute("items", itemService.fetchItemsPreview(searchId));
-        return "items";
+        return "items-preview";
     }
 
     @RequestMapping("/item/list/{searchId}")

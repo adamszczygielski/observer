@@ -22,6 +22,7 @@
             <th>Category ID</th>
             <th>Last update</th>
             <th>Interval [min]</th>
+            <th>Source</th>
 <!--            <th>Notification</th>-->
             <th>New</th>
             <th></th>
@@ -33,6 +34,7 @@
                 <td th:text="${searchItem.category}"></td>
                 <td th:text="${searchItem.lastUpdate}"></td>
                 <td th:text="${searchItem.timeInterval}"></td>
+                <td th:text="${searchItem.source}"></td>
 <!--                <td><a th:href="@{/search/switch/} + ${searchItem.id}"><span th:text="${searchItem.isActive}"></span></a></td>-->
                 <td><a th:href="@{/item/list/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.count}"></span></a></td>
                 <td>
@@ -57,6 +59,12 @@
                             <option value="30">30</option>
                             <option value="120">120</option>
                             <option value="360">360</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select th:field="*{source}" class="form-control form-control-sm col-sm-6">
+                            <option value="allegro">allegro</option>
+                            <option value="olx">olx</option>
                         </select>
                     </td>
 <!--                    <td>false</td>-->

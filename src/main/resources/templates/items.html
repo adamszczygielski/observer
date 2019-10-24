@@ -21,7 +21,7 @@
         </thead>
         <tbody>
             <tr th:each="item : ${items}">
-                <td><a th:href="${item.url}" target="_blank"><span th:text="${item.itemId}"></span></a></td>
+                <td><a th:href="${item.url}" target="_blank"><span th:text="${item.originId}"></span></a></td>
                 <td th:text="${item.title}"></td>
                 <td th:text="${item.price}"></td>
                 <td>
