@@ -11,9 +11,13 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 class AllegroTokenService {
+
+    private final Logger log = Logger.getLogger(getClass().getName());
 
     @Value("${allegro.token.private}")
     private String privateToken;
@@ -25,6 +29,8 @@ class AllegroTokenService {
         if(accessTokenCreateTime.plusHours(accessTokenLifeTime).isAfter(LocalDateTime.now())) {
             return "Bearer " + accessToken;
         }
+
+        log.log(Level.INFO, "---------- Private token expired. Fetching new one.");
 
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .scheme("https")

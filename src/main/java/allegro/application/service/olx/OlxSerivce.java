@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 @AllArgsConstructor
 public class OlxSerivce implements ItemService {
+
+    private final Logger log = Logger.getLogger(getClass().getName());
 
     private ItemAssembler itemAssembler;
 
@@ -58,6 +62,7 @@ public class OlxSerivce implements ItemService {
 
         int quantity = titles.size();
         if(prices.size() != quantity || urls.size() != quantity || originIds.size() != quantity) {
+            log.log(Level.SEVERE, "---------- Parser error while trying to fetch: " + search.getKeyword());
             return items;
         }
 

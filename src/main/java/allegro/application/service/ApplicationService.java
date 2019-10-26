@@ -61,7 +61,7 @@ public class ApplicationService {
         List<Search> searchList = searchRepository.findAll().stream()
                 .filter(s -> s.getLastUpdate().before(new Timestamp(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(s.getTimeInterval()))))
                 .collect(Collectors.toList());
-        log.log(Level.INFO, "---------- Found " + searchList.size() + " search queries to update");
+        log.log(Level.INFO, "---------- Found " + searchList.size() + " search queries to execute");
         searchList.forEach(this::updateSearch);
     }
 
@@ -69,10 +69,10 @@ public class ApplicationService {
         List<Item> fetchedItems;
 
         if (search.getSource().equals("allegro")) {
-            log.log(Level.INFO, "---------- Updating search query with id: " + search.getId() + ", source: " + search.getSource());
+            log.log(Level.INFO, "---------- Executing search query with id: " + search.getId() + ", source: " + search.getSource());
             fetchedItems = allegroService.getItems(search);
         } else if (search.getSource().equals("olx")) {
-            log.log(Level.INFO, "---------- Updating search query with id: " + search.getId() + ", source: " + search.getSource());
+            log.log(Level.INFO, "---------- Executing search query with id: " + search.getId() + ", source: " + search.getSource());
             fetchedItems = olxSerivce.getItems(search);
         } else {
             log.log(Level.WARNING, "---------- No service implementation for source: " + search.getSource() + " unable to fetch items!");
@@ -90,7 +90,7 @@ public class ApplicationService {
         search.getItemList().addAll(fetchedItems);
         //save to db
         search.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        log.log(Level.INFO, "---------- Saved to database");
+        log.log(Level.INFO, "---------- Saving result to Database");
         searchRepository.save(search);
     }
 }
