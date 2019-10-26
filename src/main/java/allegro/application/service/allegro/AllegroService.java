@@ -47,7 +47,10 @@ public class AllegroService implements ItemService {
                 .scheme("https")
                 .host("api.allegro.pl")
                 .pathSegment("offers", "listing")
-                .queryParam("phrase", keyword.replaceAll(" ", "+"));
+                .queryParam("phrase", keyword.replaceAll(" ", "+"))
+                .queryParam("fallback", "false")
+                .queryParam("sort", "-startTime")
+                .queryParam("limit", "20");
 
         if (!StringUtils.isEmpty(categoryId)) {
             uriComponentsBuilder.queryParam("category.id", categoryId);
