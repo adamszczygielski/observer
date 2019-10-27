@@ -18,7 +18,7 @@ public class SearchController {
 
     @RequestMapping("/search/list")
     public String listSearchItems(Model model) {
-        model.addAttribute("search", searchViewService.fetchSearchViewList());
+        model.addAttribute("searchViewDto", searchViewService.fetchSearchViewList());
         model.addAttribute("searchDto", new SearchDto());
         return "search";
     }

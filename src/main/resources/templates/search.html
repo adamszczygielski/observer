@@ -29,7 +29,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr th:each="searchItem : ${search}">
+            <tr th:each="searchItem : ${searchViewDto}">
                 <td><a th:href="@{/item/list/preview/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.keyword}"></span></a></td>
                 <td th:text="${searchItem.category}"></td>
                 <td th:text="${searchItem.lastUpdate}"></td>
