@@ -32,7 +32,7 @@ public class AllegroMapper {
         item.setCreationDate(new Timestamp(System.currentTimeMillis()));
         item.setTitle(listingOffer.getName());
         item.setPrice(getPrice(listingOffer.getSellingMode()));
-        item.setUrl(Utils.itemIdToUrl(listingOffer.getId()));
+        item.setUrl(getUrl(listingOffer));
         item.setIsActive(true);
         return item;
     }
@@ -52,12 +52,20 @@ public class AllegroMapper {
         itemDto.setTitle(listingOffer.getName());
         itemDto.setCreationDate(null);
         itemDto.setPrice(getPrice(listingOffer.getSellingMode()));
-        itemDto.setUrl(Utils.itemIdToUrl(listingOffer.getId()));
+        itemDto.setUrl(getUrl(listingOffer));
         return itemDto;
     }
 
     private String getPrice(OfferSellingMode offerSellingMode) {
         OfferPrice offerPrice = offerSellingMode.getPrice();
         return offerPrice.getAmount() + " " + offerPrice.getCurrency();
+    }
+
+    private String getUrl(ListingOffer listingOffer) {
+        if(listingOffer.getVendor() != null) {
+            return listingOffer.getVendor().getUrl();
+        } else {
+            return "https://allegro.pl/i" + listingOffer.getId() + ".html";
+        }
     }
 }

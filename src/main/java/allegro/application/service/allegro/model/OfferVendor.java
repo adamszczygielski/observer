@@ -35,7 +35,8 @@ public class OfferVendor {
    */
   @JsonAdapter(IdEnum.Adapter.class)
   public enum IdEnum {
-    CHARYTATYWNI_ALLEGRO("CHARYTATYWNI_ALLEGRO");
+    CHARYTATYWNI_ALLEGRO("CHARYTATYWNI_ALLEGRO"),
+    ALLEGRO_LOKALNIE("ALLEGRO_LOKALNIE");
 
     private String value;
 
