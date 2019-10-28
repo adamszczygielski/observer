@@ -78,19 +78,22 @@ public class ApplicationService {
             log.log(Level.WARNING, "---------- No service implementation for source: " + search.getSource() + " unable to fetch items!");
             return;
         }
-
         log.log(Level.INFO, "---------- Fetched " + fetchedItems.size() + " items");
+
         List<String> fetchedItemIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
+
         //remove checked, non-existing items
         search.getItemList().removeIf(item -> !item.getIsActive() && !fetchedItemIds.contains(item.getOriginId()));
         List<String> searchItemIds = search.getItemList().stream().map(Item::getOriginId).collect(Collectors.toList());
+
         //filter new items, add all
         fetchedItems.removeIf(item -> searchItemIds.contains(item.getOriginId()));
         log.log(Level.INFO, "---------- There's " + fetchedItems.size() + " new items");
         search.getItemList().addAll(fetchedItems);
+
         //save to db
         search.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        log.log(Level.INFO, "---------- Saving result to Database");
         searchRepository.save(search);
+        log.log(Level.INFO, "---------- Result saved to Database");
     }
 }
