@@ -25,8 +25,7 @@ public class ApplicationService {
     private ItemAssembler itemAssembler;
     private ItemRepository itemRepository;
     private SearchRepository searchRepository;
-    private ItemService allegroService;
-    private ItemService olxSerivce;
+    private ItemServiceFactory itemServiceFactory;
     private final Logger log = Logger.getLogger(getClass().getName());
 
     public List<ItemDto> fetchItems(Long searchId) {
@@ -38,14 +37,11 @@ public class ApplicationService {
     }
 
     public List<ItemDto> fetchItemsPreview(Long searchId) {
-        Optional<Search> search = searchRepository.findById(searchId);
-        if (search.isPresent()) {
-            if (search.get().getSource().equals("allegro")) {
-                return allegroService.getPreview(search.get());
-            }
-            if(search.get().getSource().equals("olx")) {
-                return olxSerivce.getPreview(search.get());
-            }
+        Optional<Search> searchOptional = searchRepository.findById(searchId);
+        if (searchOptional.isPresent()) {
+            Search search = searchOptional.get();
+            ItemService itemService = itemServiceFactory.createItemService(search);
+            return itemService.getPreview(search);
         }
         return new ArrayList<>();
     }
@@ -68,16 +64,9 @@ public class ApplicationService {
     private void updateSearch(Search search) {
         List<Item> fetchedItems;
 
-        if (search.getSource().equals("allegro")) {
-            log.log(Level.INFO, "---------- Executing search query with id: " + search.getId() + ", source: " + search.getSource());
-            fetchedItems = allegroService.getItems(search);
-        } else if (search.getSource().equals("olx")) {
-            log.log(Level.INFO, "---------- Executing search query with id: " + search.getId() + ", source: " + search.getSource());
-            fetchedItems = olxSerivce.getItems(search);
-        } else {
-            log.log(Level.WARNING, "---------- No service implementation for source: " + search.getSource() + " unable to fetch items!");
-            return;
-        }
+        log.log(Level.INFO, "---------- Executing search query with id: " + search.getId() + ", source: " + search.getSource());
+        ItemService itemService = itemServiceFactory.createItemService(search);
+        fetchedItems = itemService.getItems(search);
         log.log(Level.INFO, "---------- Fetched " + fetchedItems.size() + " items");
 
         List<String> fetchedItemIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
