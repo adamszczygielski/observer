@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Allegro app</title>
+    <title>Items</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/bootstrap.min.css">
+    <script>
+        setTimeout(function(){
+            window.location.reload(1);
+        }, 120000);
+    </script>
 </head>
 <body>
 
 <div class="container">
     <h4>New items</h4>
-    <table class="table table-sm table-striped" xmlns:th="http://www.w3.org/1999/xhtml">
+    <table id="items-table" class="table table-sm table-striped" xmlns:th="http://www.w3.org/1999/xhtml">
         <thead>
             <tr>
                 <th>Item ID</th>
@@ -34,6 +39,6 @@
         </tbody>
     </table>
 </div>
-
+<script type="text/javascript" src="/item-counter.js"></script>
 </body>
 </html>

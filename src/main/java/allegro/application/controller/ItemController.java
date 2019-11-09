@@ -28,6 +28,12 @@ public class ItemController {
         return "items";
     }
 
+    @RequestMapping("/item/list")
+    public String fetchAllActiveItems(Model model) {
+        model.addAttribute("items", itemService.fetchActiveItems());
+        return "items";
+    }
+
     @RequestMapping(value = "/item/delete/{id}", method = RequestMethod.DELETE)
     public String deleteItem(@PathVariable Long id, HttpServletRequest request) {
         itemService.deleteItem(id);

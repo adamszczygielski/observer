@@ -14,5 +14,8 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT i FROM Item i WHERE i.searchId =:searchId AND i.isActive = true")
-    Optional<List<Item>> findActiveItems(@Param("searchId") Long searchId);
+    Optional<List<Item>> findActiveItemsBySeachId(@Param("searchId") Long searchId);
+
+    @Query("SELECT i FROM Item i WHERE i.isActive = true")
+    Optional<List<Item>> findActiveItems();
 }

@@ -29,7 +29,15 @@ public class ApplicationService {
     private final Logger log = Logger.getLogger(getClass().getName());
 
     public List<ItemDto> fetchItems(Long searchId) {
-        Optional<List<Item>> itemList = itemRepository.findActiveItems(searchId);
+        Optional<List<Item>> itemList = itemRepository.findActiveItemsBySeachId(searchId);
+        if (itemList.isPresent()) {
+            return itemAssembler.toDtoList(itemList.get());
+        }
+        return new ArrayList<>();
+    }
+
+    public List<ItemDto> fetchActiveItems() {
+        Optional<List<Item>> itemList = itemRepository.findActiveItems();
         if (itemList.isPresent()) {
             return itemAssembler.toDtoList(itemList.get());
         }
