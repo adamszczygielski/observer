@@ -24,7 +24,7 @@ public class SearchViewAssembler implements BaseAssembler <SearchView, SearchVie
 
     private String toString(Timestamp lastUpdate) {
         if(lastUpdate.getTime() == 0) {
-            return "--:--:--";
+            return "";
         }
         return Utils.timestampToShortString(lastUpdate);
     }
