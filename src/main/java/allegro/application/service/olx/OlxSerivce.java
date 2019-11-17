@@ -72,7 +72,7 @@ public class OlxSerivce implements ItemService {
             item.setSearchId(search.getId());
             item.setCreationDate(new Timestamp(System.currentTimeMillis()));
             item.setTitle(titles.get(i).text());
-            item.setPrice(prices.get(i).text());
+            item.setPrice(getPrice(prices.get(i).text()));
             item.setUrl(getItemUrl(urls.get(i)));
             item.setIsActive(true);
             items.add(item);
@@ -90,5 +90,9 @@ public class OlxSerivce implements ItemService {
     private String getItemUrl(Element element) {
         String url = element.attr("href");
         return url.substring(0, url.indexOf("#"));
+    }
+
+    private String getPrice(String price) {
+        return price.replace(" ", "").replace("zł", ".00 PLN");
     }
 }
