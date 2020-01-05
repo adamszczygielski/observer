@@ -89,7 +89,11 @@ public class OlxSerivce implements ItemService {
 
     private String getItemUrl(Element element) {
         String url = element.attr("href");
-        return url.substring(0, url.indexOf("#"));
+        int endIndex = url.indexOf("#");
+        if(endIndex > 0) {
+            return url.substring(0, endIndex);
+        }
+        return url;
     }
 
     private String getPrice(String price) {
