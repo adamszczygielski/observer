@@ -3,20 +3,17 @@ package allegro.application.service.allegro;
 import allegro.application.api.ItemDto;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
+import allegro.application.rest.RestInvoker;
+import allegro.application.service.ItemService;
 import allegro.application.service.allegro.mapper.AllegroMapper;
 import allegro.application.service.allegro.model.ListingResponse;
 import allegro.application.service.allegro.model.ListingResponseOffers;
-import allegro.application.service.ItemService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
@@ -28,6 +25,7 @@ public class AllegroService implements ItemService {
 
     private AllegroMapper mapper;
     private AllegroTokenService tokenService;
+    private RestInvoker restInvoker;
 
     @Override
     public List<Item> getItems(Search search) {
@@ -43,6 +41,24 @@ public class AllegroService implements ItemService {
 
     private ListingResponseOffers fetchItems(String keyword, String categoryId) {
 
+        ListingResponse listingResponse = restInvoker.get(
+                createRequestUrl(keyword, categoryId), createRequestHttpEntity(), ListingResponse.class);
+
+        return Optional.of(listingResponse)
+                .map(ListingResponse::getItems)
+                .orElse(new ListingResponseOffers());
+    }
+
+    private HttpEntity<String> createRequestHttpEntity() {
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        requestHeaders.set("Accept", "application/vnd.allegro.public.v1+json");
+        requestHeaders.add("Authorization", tokenService.fetchAccessToken());
+
+        return new HttpEntity<>(requestHeaders);
+    }
+
+    private String createRequestUrl(String keyword, String categoryId) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("api.allegro.pl")
@@ -55,20 +71,7 @@ public class AllegroService implements ItemService {
         if (!StringUtils.isEmpty(categoryId)) {
             uriComponentsBuilder.queryParam("category.id", categoryId);
         }
-        UriComponents uriComponents = uriComponentsBuilder.build();
 
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.set("Accept", "application/vnd.allegro.public.v1+json");
-        requestHeaders.add("Authorization", tokenService.fetchAccessToken());
-
-        final HttpEntity<String> entity = new HttpEntity<>(requestHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<ListingResponse> response = restTemplate.exchange(uriComponents.toUriString(), HttpMethod.GET, entity, ListingResponse.class);
-
-        return Optional.of(response)
-                .map(HttpEntity::getBody)
-                .map(ListingResponse::getItems)
-                .orElse(new ListingResponseOffers());
+        return uriComponentsBuilder.build().toUriString();
     }
 }

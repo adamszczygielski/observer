@@ -1,60 +1,71 @@
 package allegro.application.service.allegro;
 
+import allegro.application.rest.RestInvoker;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
 class AllegroTokenService {
 
+    private static final int TOKEN_LIFETIME_HOURS = 5;
+
+    private final String privateToken;
+
     private final Logger log = Logger.getLogger(getClass().getName());
 
-    @Value("${allegro.token.private}")
-    private String privateToken;
-    private static String accessToken;
-    private static LocalDateTime accessTokenCreateTime = LocalDateTime.MIN;
-    private static long accessTokenLifeTime = 5;
+    private final RestInvoker restInvoker;
+
+    private JwtToken jwtToken;
+
+    public AllegroTokenService(@Value("${allegro.token.private}") String privateToken, RestInvoker restInvoker) {
+        this.privateToken = privateToken;
+        this.restInvoker = restInvoker;
+    }
 
     protected String fetchAccessToken() {
-        if(accessTokenCreateTime.plusHours(accessTokenLifeTime).isAfter(LocalDateTime.now())) {
-            return "Bearer " + accessToken;
+        if (validateToken(jwtToken)) {
+            return "Bearer " + jwtToken.getValue();
         }
 
         log.log(Level.INFO, "---------- Private token expired. Fetching new one.");
 
-        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+        JwtToken newJwtToken = restInvoker.post(createRequestUrl(), createRequestHttpEntity(), JwtToken.class);
+        newJwtToken.setCreateDate(LocalDateTime.now());
+        jwtToken = newJwtToken;
+
+        return "Bearer " + jwtToken.getValue();
+    }
+
+    private String createRequestUrl() {
+        return UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("allegro.pl")
                 .pathSegment("auth", "oauth", "token")
                 .queryParam("grant_type", "client_credentials")
-                .build();
+                .build().toUriString();
+    }
 
+    private HttpEntity<String> createRequestHttpEntity() {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         requestHeaders.add("Authorization", privateToken);
+        return new HttpEntity<>(requestHeaders);
+    }
 
-        final HttpEntity<String> entity = new HttpEntity<>(requestHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Map> response = restTemplate.exchange(uriComponents.toUriString(), HttpMethod.POST, entity, Map.class);
-
-        accessTokenCreateTime = LocalDateTime.now();
-        accessToken = Optional.of(response)
-                .map(HttpEntity::getBody)
-                .map(m -> m.get("access_token"))
-                .map(Object::toString)
-                .orElse("");
-
-        return "Bearer " + accessToken;
+    private boolean validateToken(JwtToken jwtToken) {
+        if (jwtToken != null) {
+            return jwtToken.getCreateDate().plusHours(TOKEN_LIFETIME_HOURS).isAfter(LocalDateTime.now());
+        }
+        return false;
     }
 }

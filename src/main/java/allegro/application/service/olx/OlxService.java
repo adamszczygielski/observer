@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 @Service
 @AllArgsConstructor
-public class OlxSerivce implements ItemService {
+public class OlxService implements ItemService {
 
     private final Logger log = Logger.getLogger(getClass().getName());
 

@@ -9,17 +9,20 @@ import org.springframework.stereotype.Component;
 class ItemServiceFactory {
 
     private ItemService allegroService;
-    private ItemService olxSerivce;
+    private ItemService olxService;
     private ItemService ebayService;
 
     protected ItemService createItemService(Search search) {
-        if (search.getSource().equals("allegro")) {
-            return allegroService;
-        } else if (search.getSource().equals("olx")) {
-            return olxSerivce;
-        } else if (search.getSource().equals("ebay")) {
-            return ebayService;
+
+        switch (search.getSource()) {
+            case "allegro":
+                return allegroService;
+            case "olx":
+                return olxService;
+            case "ebay":
+                return ebayService;
+            default:
+                throw new IllegalArgumentException("No service implementation for: " + search.getSource());
         }
-        throw new IllegalArgumentException("No service implementation for: " + search.getSource());
     }
 }
