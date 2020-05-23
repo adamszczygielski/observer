@@ -23,15 +23,9 @@ public class SearchController {
         return "search";
     }
 
-    @RequestMapping("/search/switch/{id}")
-    public String switchIsActive(@PathVariable Long id, HttpServletRequest request) {
-        searchViewService.switchIsActive(id);
-        return goBack(request);
-    }
-
-    @RequestMapping("/search/delete/{id}")
-    public String deleteSearch(@PathVariable Long id, HttpServletRequest request) {
-        searchViewService.deleteSearch(id);
+    @RequestMapping("/search/delete/{searchId}")
+    public String deleteSearch(@PathVariable Long searchId, HttpServletRequest request) {
+        searchViewService.deleteSearch(searchId);
         return goBack(request);
     }
 

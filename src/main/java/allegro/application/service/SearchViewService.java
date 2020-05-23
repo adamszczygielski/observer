@@ -1,10 +1,9 @@
 package allegro.application.service;
 
+import allegro.application.api.SearchDto;
 import allegro.application.api.SearchViewDto;
 import allegro.application.common.SearchAssembler;
-import allegro.application.api.SearchDto;
 import allegro.application.common.SearchViewAssembler;
-import allegro.application.domain.SearchView;
 import allegro.application.repository.SearchRepository;
 import allegro.application.repository.SearchViewRepository;
 import lombok.AllArgsConstructor;
@@ -26,15 +25,8 @@ public class SearchViewService {
         return searchViewAssembler.toDtoList(searchViewRepository.findAll());
     }
 
-    public void switchIsActive(Long id) {
-        searchRepository.findById(id).ifPresent(search -> {
-            search.setIsActive(!search.getIsActive());
-            searchRepository.save(search);
-        });
-    }
-
-    public void deleteSearch(Long id) {
-        searchRepository.findById(id).ifPresent(s -> searchRepository.delete(s));
+    public void deleteSearch(Long searchId) {
+        searchRepository.deleteBySearchId(searchId);
     }
 
     public void addSearch(SearchDto searchDto) {

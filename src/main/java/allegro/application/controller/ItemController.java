@@ -34,9 +34,9 @@ public class ItemController {
         return "items";
     }
 
-    @RequestMapping(value = "/item/delete/{id}", method = RequestMethod.DELETE)
-    public String deleteItem(@PathVariable Long id, HttpServletRequest request) {
-        itemService.deleteItem(id);
+    @RequestMapping(value = "/item/delete/{itemId}", method = RequestMethod.DELETE)
+    public String deleteItem(@PathVariable Long itemId, HttpServletRequest request) {
+        itemService.deleteItem(itemId);
         return "redirect:" + request.getHeader("Referer");
     }
 }
