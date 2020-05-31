@@ -63,9 +63,9 @@
                     </td>
                     <td>
                         <select th:field="*{source}" class="form-control form-control-sm col-sm-6">
-                            <option value="allegro">allegro</option>
-                            <option value="olx">olx</option>
-                            <option value="ebay">ebay</option>
+                            <option th:each="sourceOpt : ${T(allegro.application.api.Source).values()}"
+                                    th:value="${sourceOpt}" th:text="${sourceOpt.label}">
+                            </option>
                         </select>
                     </td>
 <!--                    <td>false</td>-->

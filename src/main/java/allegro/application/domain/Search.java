@@ -1,18 +1,12 @@
 package allegro.application.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Table(name = "SEARCH")
 @Entity
 public class Search {
@@ -37,8 +31,8 @@ public class Search {
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 
-    @Column(name = "SOURCE")
-    private String source;
+    @Column(name = "SOURCE_ID")
+    private Long sourceId;
 
     @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "SEARCH_ID")

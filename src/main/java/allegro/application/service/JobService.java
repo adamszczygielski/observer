@@ -1,5 +1,6 @@
 package allegro.application.service;
 
+import allegro.application.api.Source;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
 import allegro.application.repository.SearchRepository;
@@ -33,8 +34,9 @@ public class JobService {
     private void updateSearch(Search search) {
         List<Item> fetchedItems;
 
-        log.log(Level.INFO, "---------- Executing search query with id: " + search.getId() + ", source: " + search.getSource());
-        ItemService itemService = itemServiceFactory.createItemService(search.getSource());
+        log.log(Level.INFO, "---------- Executing search query with id: " + search.getId() + ", source: " + search.getSourceId());
+        Source source = Source.getSource(search.getSourceId());
+        ItemService itemService = itemServiceFactory.createItemService(source);
         fetchedItems = itemService.getItems(search);
         log.log(Level.INFO, "---------- Fetched " + fetchedItems.size() + " items");
 

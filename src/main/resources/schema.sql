@@ -10,7 +10,7 @@ create table if not exists search
     last_update timestamp,
     time_interval integer not null,
     is_active boolean not null,
-    "SOURCE" varchar(255),
+    source_id bigint not null,
     primary key(id),
 );
 
@@ -28,8 +28,8 @@ create table if not exists item
 );
 
 create or replace view search_v as (
-select s.id, s.keyword, s.category, s.last_update, s.time_interval, s.is_active, s.source, count(i.item_id) as count
+select s.id, s.keyword, s.category, s.last_update, s.time_interval, s.is_active, s.source_id, count(i.item_id) as count
 from search s
 left join item i on s.id = i.search_id and i.is_active = true
 group by s.keyword, s.id, s.category
-order by count desc, s.keyword, s.source);
+order by count desc, s.keyword, s.source_id);

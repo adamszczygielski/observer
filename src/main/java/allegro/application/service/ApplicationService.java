@@ -1,6 +1,7 @@
 package allegro.application.service;
 
 import allegro.application.api.ItemDto;
+import allegro.application.api.Source;
 import allegro.application.common.ItemAssembler;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
@@ -44,7 +45,8 @@ public class ApplicationService {
             return new ArrayList<>();
         }
         Search search = searchOptional.get();
-        ItemService itemService = itemServiceFactory.createItemService(search.getSource());
+        Source source = Source.getSource(search.getSourceId());
+        ItemService itemService = itemServiceFactory.createItemService(source);
         return itemService.getPreview(search);
     }
 

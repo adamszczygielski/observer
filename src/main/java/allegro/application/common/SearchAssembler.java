@@ -15,7 +15,7 @@ public class SearchAssembler {
         search.setCategory(searchDto.getCategory());
         search.setLastUpdate(new Timestamp(0));
         search.setIsActive(false);
-        search.setSource(searchDto.getSource());
+        search.setSourceId(searchDto.getSource().getId());
         search.setTimeInterval(searchDto.getInterval());
         return search;
     }

@@ -12,7 +12,7 @@ public class SearchDto {
     private String keyword;
     private String category;
     private Long interval;
-    private String source;
+    private Source source;
 
     public void setKeyword(String keyword) {
         this.keyword = Utils.keywordNormalizer(keyword);
@@ -30,7 +30,7 @@ public class SearchDto {
         this.interval = Math.abs(interval);
     }
 
-    public void setSource(String source) {
+    public void setSource(Source source) {
         this.source = source;
     }
 }

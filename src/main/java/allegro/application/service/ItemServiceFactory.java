@@ -1,5 +1,6 @@
 package allegro.application.service;
 
+import allegro.application.api.Source;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,17 +12,17 @@ class ItemServiceFactory {
     private ItemService olxService;
     private ItemService ebayService;
 
-    protected ItemService createItemService(String source) {
+    protected ItemService createItemService(Source source) {
 
         switch (source) {
-            case "allegro":
+            case ALLEGRO:
                 return allegroService;
-            case "olx":
+            case OLX:
                 return olxService;
-            case "ebay":
+            case EBAY:
                 return ebayService;
             default:
-                throw new IllegalArgumentException("No service implementation for: " + source);
+                throw new IllegalArgumentException("No service implementation for : " + source.getLabel());
         }
     }
 }

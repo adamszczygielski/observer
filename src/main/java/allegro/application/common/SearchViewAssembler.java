@@ -2,6 +2,7 @@ package allegro.application.common;
 
 import allegro.application.api.SearchViewDto;
 import allegro.application.domain.SearchView;
+import allegro.application.api.Source;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -15,7 +16,7 @@ public class SearchViewAssembler implements BaseAssembler <SearchView, SearchVie
         searchViewDto.setId(searchView.getId());
         searchViewDto.setKeyword(searchView.getKeyword());
         searchViewDto.setCategory(searchView.getCategory());
-        searchViewDto.setSource(searchView.getSource());
+        searchViewDto.setSource(Source.getSource(searchView.getSourceId()).getLabel());
         searchViewDto.setLastUpdate(toString(searchView.getLastUpdate()));
         searchViewDto.setTimeInterval(searchView.getTimeInterval());
         searchViewDto.setCount(searchView.getCount());

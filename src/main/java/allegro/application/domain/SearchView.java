@@ -32,8 +32,8 @@ public class SearchView {
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 
-    @Column(name = "SOURCE")
-    private String source;
+    @Column(name = "SOURCE_ID")
+    private Long sourceId;
 
     @Column(name = "COUNT")
     private Long count;

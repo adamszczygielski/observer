@@ -12,7 +12,7 @@ public class ItemAssembler implements BaseAssembler<Item, ItemDto>  {
         ItemDto itemDto = new ItemDto();
         itemDto.setItemId(item.getItemId());
         itemDto.setOriginId(item.getOriginId());
-        itemDto.setCreationDate(null);
+        itemDto.setCreationDate(item.getCreationDate());
         itemDto.setTitle(item.getTitle());
         itemDto.setUrl(item.getUrl());
         itemDto.setPrice(item.getPrice());
