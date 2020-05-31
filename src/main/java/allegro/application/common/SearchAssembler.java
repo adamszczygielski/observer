@@ -13,7 +13,7 @@ public class SearchAssembler {
         Search search = new Search();
         search.setKeyword(searchDto.getKeyword());
         search.setCategory(searchDto.getCategory());
-        search.setLastUpdate(new Timestamp(0));
+        search.setDateUpdated(new Timestamp(0));
         search.setIsActive(false);
         search.setSourceId(searchDto.getSource().getId());
         search.setTimeInterval(searchDto.getInterval());

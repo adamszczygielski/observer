@@ -15,7 +15,7 @@ public class SearchDto {
     private Source source;
 
     public void setKeyword(String keyword) {
-        this.keyword = Utils.keywordNormalizer(keyword);
+        this.keyword = Utils.normalize(keyword);
     }
 
     public void setCategory(String category) {

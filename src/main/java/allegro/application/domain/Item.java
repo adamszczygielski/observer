@@ -14,10 +14,10 @@ import java.sql.Timestamp;
 public class Item implements Serializable {
 
     @Id
-    @Column(name = "ITEM_ID", unique=true, nullable = false)
+    @Column(name = "ID", unique=true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotFound(action= NotFoundAction.IGNORE)
-    private Long itemId;
+    private Long id;
 
     @Column(name = "ORIGIN_ID")
     private String originId;
@@ -25,8 +25,8 @@ public class Item implements Serializable {
     @Column(name = "SEARCH_ID")
     private Long searchId;
 
-    @Column(name = "CREATION_DATE")
-    private Timestamp creationDate;
+    @Column(name = "DATE_CREATED")
+    private Timestamp dateCreated;
 
     @Column(name = "TITLE")
     private String title;

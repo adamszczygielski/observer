@@ -1,7 +1,5 @@
 package allegro.application.common;
 
-import org.springframework.util.StringUtils;
-
 import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -9,15 +7,16 @@ import java.util.TimeZone;
 
 public class Utils {
 
-    private static final TimeZone polishTimeZone = TimeZone.getTimeZone("Europe/Warsaw");
+    private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Europe/Warsaw");
+    private static final String DATE_PATTERN = "HH:mm:ss";
 
-    public static String timestampToShortString(Timestamp timestamp) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-        simpleDateFormat.setTimeZone(polishTimeZone);
+    public static String toString(Timestamp timestamp) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
+        simpleDateFormat.setTimeZone(TIME_ZONE);
         return simpleDateFormat.format(timestamp);
     }
 
-    public static String keywordNormalizer(String input) {
+    public static String normalize(String input) {
         return Normalizer
                 .normalize(input, Normalizer.Form.NFD)
                 .substring(0, Math.min(input.length(), 30))

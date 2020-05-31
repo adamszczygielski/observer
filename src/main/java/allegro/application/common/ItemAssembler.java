@@ -10,9 +10,9 @@ public class ItemAssembler implements BaseAssembler<Item, ItemDto>  {
     @Override
     public ItemDto toDto(Item item) {
         ItemDto itemDto = new ItemDto();
-        itemDto.setItemId(item.getItemId());
+        itemDto.setItemId(item.getId());
         itemDto.setOriginId(item.getOriginId());
-        itemDto.setCreationDate(item.getCreationDate());
+        itemDto.setDateCreated(item.getDateCreated());
         itemDto.setTitle(item.getTitle());
         itemDto.setUrl(item.getUrl());
         itemDto.setPrice(item.getPrice());

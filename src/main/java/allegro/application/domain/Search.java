@@ -22,8 +22,8 @@ public class Search {
     @Column(name = "CATEGORY")
     private String category;
 
-    @Column(name = "LAST_UPDATE")
-    private Timestamp lastUpdate;
+    @Column(name = "DATE_UPDATED")
+    private Timestamp dateUpdated;
 
     @Column(name = "TIME_INTERVAL")
     private Long timeInterval;

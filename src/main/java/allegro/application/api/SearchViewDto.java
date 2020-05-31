@@ -14,5 +14,5 @@ public class SearchViewDto implements Serializable {
     private Long timeInterval;
     private String source;
     private Long count;
-    private String lastUpdate;
+    private String dateUpdated;
 }

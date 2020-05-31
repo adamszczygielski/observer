@@ -6,13 +6,14 @@ import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @Component
-class ItemServiceFactory {
+class ItemServiceFactory implements AbstractFactory<ItemService> {
 
-    private ItemService allegroService;
-    private ItemService olxService;
-    private ItemService ebayService;
+    private final ItemService allegroService;
+    private final ItemService olxService;
+    private final ItemService ebayService;
 
-    protected ItemService createItemService(Source source) {
+    @Override
+    public ItemService create(Source source) {
 
         switch (source) {
             case ALLEGRO:

@@ -20,7 +20,7 @@
         <tr>
             <th>Keyword</th>
             <th>Category ID</th>
-            <th>Last update</th>
+            <th>Updated</th>
             <th>Interval [min]</th>
             <th>Source</th>
 <!--            <th>Notification</th>-->
@@ -32,7 +32,7 @@
             <tr th:each="searchItem : ${searchViewDto}">
                 <td><a th:href="@{/item/list/preview/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.keyword}"></span></a></td>
                 <td th:text="${searchItem.category}"></td>
-                <td th:text="${searchItem.lastUpdate}"></td>
+                <td th:text="${searchItem.dateUpdated}"></td>
                 <td th:text="${searchItem.timeInterval}"></td>
                 <td th:text="${searchItem.source}"></td>
 <!--                <td><a th:href="@{/search/switch/} + ${searchItem.id}"><span th:text="${searchItem.isActive}"></span></a></td>-->

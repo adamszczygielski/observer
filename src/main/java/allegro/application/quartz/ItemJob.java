@@ -19,7 +19,7 @@ public class ItemJob implements Job {
     @Override
     public void execute(JobExecutionContext arg0) {
         log.log(Level.INFO, "---------- Job started at: " + new Timestamp(System.currentTimeMillis()));
-        jobService.updateDatabase();
+        jobService.execute();
         log.log(Level.INFO, "---------- Job stopped at: " + new Timestamp(System.currentTimeMillis()));
     }
 }

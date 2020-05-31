@@ -10,7 +10,7 @@ public class ItemDto {
     private Long itemId;
     private String originId;
     private String title;
-    private Timestamp creationDate;
+    private Timestamp dateCreated;
     private String price;
     private String url;
     private String source;

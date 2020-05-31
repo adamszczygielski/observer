@@ -17,7 +17,7 @@ public class SearchViewAssembler implements BaseAssembler <SearchView, SearchVie
         searchViewDto.setKeyword(searchView.getKeyword());
         searchViewDto.setCategory(searchView.getCategory());
         searchViewDto.setSource(Source.getSource(searchView.getSourceId()).getLabel());
-        searchViewDto.setLastUpdate(toString(searchView.getLastUpdate()));
+        searchViewDto.setDateUpdated(toString(searchView.getDateUpdated()));
         searchViewDto.setTimeInterval(searchView.getTimeInterval());
         searchViewDto.setCount(searchView.getCount());
         return searchViewDto;
@@ -27,6 +27,6 @@ public class SearchViewAssembler implements BaseAssembler <SearchView, SearchVie
         if(lastUpdate.getTime() == 0) {
             return "";
         }
-        return Utils.timestampToShortString(lastUpdate);
+        return Utils.toString(lastUpdate);
     }
 }

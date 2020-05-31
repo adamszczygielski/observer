@@ -18,10 +18,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ApplicationService {
 
-    private ItemAssembler itemAssembler;
-    private ItemRepository itemRepository;
-    private SearchRepository searchRepository;
-    private ItemServiceFactory itemServiceFactory;
+    private final ItemAssembler itemAssembler;
+    private final ItemRepository itemRepository;
+    private final SearchRepository searchRepository;
+    private final ItemServiceFactory itemServiceFactory;
 
     public List<ItemDto> fetchItems(Long searchId) {
         Optional<List<Item>> itemList = itemRepository.findActiveItemsBySeachId(searchId);
@@ -46,7 +46,7 @@ public class ApplicationService {
         }
         Search search = searchOptional.get();
         Source source = Source.getSource(search.getSourceId());
-        ItemService itemService = itemServiceFactory.createItemService(source);
+        ItemService itemService = itemServiceFactory.create(source);
         return itemService.getPreview(search);
     }
 
