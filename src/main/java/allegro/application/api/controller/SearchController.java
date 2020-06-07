@@ -1,6 +1,8 @@
 package allegro.application.api.controller;
 
 import allegro.application.api.SearchDto;
+import allegro.application.common.SearchAssembler;
+import allegro.application.common.SearchViewAssembler;
 import allegro.application.service.SearchService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 public class SearchController {
 
     private final SearchService searchService;
+    private final SearchAssembler searchAssembler;
+    private final SearchViewAssembler searchViewAssembler;
 
     @RequestMapping("/search/list")
     public String fetchSearchViewList(Model model) {
-        model.addAttribute("searchViewDto", searchService.fetchSearchViewList());
+        model.addAttribute("searchViewDto", searchViewAssembler.toDtoList(searchService.fetchSearchViewList()));
         model.addAttribute("searchDto", new SearchDto());
         return "search";
     }
@@ -31,7 +35,7 @@ public class SearchController {
 
     @RequestMapping(value = "/search/add", method = RequestMethod.POST)
     public String addSearch(@ModelAttribute("searchDto") SearchDto searchDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
-        searchService.addSearch(searchDto);
+        searchService.addSearch(searchAssembler.toSearch(searchDto));
         return goBack(request);
     }
 

@@ -18,6 +18,6 @@ public class JwtToken implements Serializable {
 
     @JsonProperty("access_token")
     private String value;
-    private LocalDateTime createDate;
+    private LocalDateTime dateCreated;
 
 }

@@ -39,7 +39,7 @@ class AllegroTokenService {
         log.log(Level.INFO, "---------- Private token expired. Fetching new one.");
 
         JwtToken newJwtToken = restInvoker.post(createRequestUrl(), createRequestHttpEntity(), JwtToken.class);
-        newJwtToken.setCreateDate(LocalDateTime.now());
+        newJwtToken.setDateCreated(LocalDateTime.now());
         jwtToken = newJwtToken;
 
         return "Bearer " + jwtToken.getValue();
@@ -64,7 +64,7 @@ class AllegroTokenService {
 
     private boolean validateToken(JwtToken jwtToken) {
         if (jwtToken != null) {
-            return jwtToken.getCreateDate().plusHours(TOKEN_LIFETIME_HOURS).isAfter(LocalDateTime.now());
+            return jwtToken.getDateCreated().plusHours(TOKEN_LIFETIME_HOURS).isAfter(LocalDateTime.now());
         }
         return false;
     }

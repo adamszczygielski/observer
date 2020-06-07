@@ -1,6 +1,5 @@
 package allegro.application.service.source.allegro;
 
-import allegro.application.api.ItemDto;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
 import allegro.application.rest.RestInvoker;
@@ -23,20 +22,14 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AllegroService implements ItemService {
 
-    private AllegroMapper mapper;
-    private AllegroTokenService tokenService;
-    private RestInvoker restInvoker;
+    private final AllegroMapper mapper;
+    private final AllegroTokenService tokenService;
+    private final RestInvoker restInvoker;
 
     @Override
     public List<Item> getItems(Search search) {
         ListingResponseOffers listingResponseOffers = fetchItems(search.getKeyword(), search.getCategory());
         return mapper.toItem(listingResponseOffers, search);
-    }
-
-    @Override
-    public List<ItemDto> getPreview(Search search) {
-        ListingResponseOffers listingResponseOffers = fetchItems(search.getKeyword(), search.getCategory());
-        return mapper.toItemDto(listingResponseOffers);
     }
 
     private ListingResponseOffers fetchItems(String keyword, String categoryId) {

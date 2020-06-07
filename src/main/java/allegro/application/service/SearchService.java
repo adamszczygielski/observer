@@ -1,9 +1,7 @@
 package allegro.application.service;
 
-import allegro.application.api.SearchDto;
-import allegro.application.api.SearchViewDto;
-import allegro.application.common.SearchAssembler;
-import allegro.application.common.SearchViewAssembler;
+import allegro.application.domain.Search;
+import allegro.application.domain.SearchView;
 import allegro.application.repository.SearchRepository;
 import allegro.application.repository.SearchViewRepository;
 import lombok.AllArgsConstructor;
@@ -17,19 +15,17 @@ import java.util.Optional;
 public class SearchService {
 
     private final SearchViewRepository searchViewRepository;
-    private final SearchViewAssembler searchViewAssembler;
     private final SearchRepository searchRepository;
-    private final SearchAssembler searchAssembler;
 
-    public List<SearchViewDto> fetchSearchViewList() {
-        return searchViewAssembler.toDtoList(searchViewRepository.findAll());
+    public List<SearchView> fetchSearchViewList() {
+        return searchViewRepository.findAll();
     }
 
     public void deleteSearch(Long searchId) {
         searchRepository.deleteBySearchId(searchId);
     }
 
-    public void addSearch(SearchDto searchDto) {
-        Optional.ofNullable(searchDto).ifPresent(s -> searchRepository.save(searchAssembler.toSearch(s)));
+    public void addSearch(Search search) {
+        Optional.ofNullable(search).ifPresent(s -> searchRepository.save(search));
     }
 }

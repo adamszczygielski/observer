@@ -1,6 +1,5 @@
 package allegro.application.service.source.ebay;
 
-import allegro.application.api.ItemDto;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
 import allegro.application.rest.RestInvoker;
@@ -37,12 +36,6 @@ public class EbayService implements ItemService {
     public List<Item> getItems(Search search) {
         List<SearchItem> searchItemList = fetchItems(search.getKeyword());
         return mapper.toItem(searchItemList, search);
-    }
-
-    @Override
-    public List<ItemDto> getPreview(Search search) {
-        List<SearchItem> searchItemList = fetchItems(search.getKeyword());
-        return mapper.toItemDto(searchItemList);
     }
 
     public List<SearchItem> fetchItems(String keyword) {

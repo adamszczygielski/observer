@@ -1,7 +1,5 @@
 package allegro.application.service.source.olx;
 
-import allegro.application.api.ItemDto;
-import allegro.application.common.ItemAssembler;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
 import allegro.application.service.ItemService;
@@ -26,18 +24,9 @@ public class OlxService implements ItemService {
 
     private final Logger log = Logger.getLogger(getClass().getName());
 
-    private ItemAssembler itemAssembler;
-
     @Override
     public List<Item> getItems(Search search) {
         return fetchItems(search);
-    }
-
-    @Override
-    public List<ItemDto> getPreview(Search search) {
-       List<ItemDto> itemDtos = itemAssembler.toDtoList(fetchItems(search));
-       itemDtos.forEach(i -> i.setItemId(-1L));
-       return itemDtos;
     }
 
     private List<Item> fetchItems(Search search) {

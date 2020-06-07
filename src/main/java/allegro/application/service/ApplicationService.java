@@ -1,8 +1,6 @@
 package allegro.application.service;
 
-import allegro.application.api.ItemDto;
 import allegro.application.api.Source;
-import allegro.application.common.ItemAssembler;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
 import allegro.application.repository.ItemRepository;
@@ -18,28 +16,19 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ApplicationService {
 
-    private final ItemAssembler itemAssembler;
     private final ItemRepository itemRepository;
     private final SearchRepository searchRepository;
     private final ItemServiceFactory itemServiceFactory;
 
-    public List<ItemDto> fetchItems(Long searchId) {
-        Optional<List<Item>> itemList = itemRepository.findActiveItemsBySeachId(searchId);
-        if (itemList.isPresent()) {
-            return itemAssembler.toDtoList(itemList.get());
-        }
-        return new ArrayList<>();
+    public List<Item> fetchItems(Long searchId) {
+        return itemRepository.findActiveItemsBySeachId(searchId).orElseGet(ArrayList::new);
     }
 
-    public List<ItemDto> fetchActiveItems() {
-        Optional<List<Item>> itemList = itemRepository.findActiveItems();
-        if (itemList.isPresent()) {
-            return itemAssembler.toDtoList(itemList.get());
-        }
-        return new ArrayList<>();
+    public List<Item> fetchActiveItems() {
+        return itemRepository.findActiveItems().orElseGet(ArrayList::new);
     }
 
-    public List<ItemDto> fetchItemsPreview(Long searchId) {
+    public List<Item> fetchItemsPreview(Long searchId) {
         Optional<Search> searchOptional = searchRepository.findById(searchId);
         if(!searchOptional.isPresent()) {
             return new ArrayList<>();
@@ -47,7 +36,7 @@ public class ApplicationService {
         Search search = searchOptional.get();
         Source source = Source.getSource(search.getSourceId());
         ItemService itemService = itemServiceFactory.create(source);
-        return itemService.getPreview(search);
+        return itemService.getItems(search);
     }
 
     public void deleteItem(Long itemId) {
