@@ -18,14 +18,6 @@ public class EbayMapper {
 
     private final DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
-    public List<ItemDto> toItemDto(List<SearchItem> searchItemList) {
-        ArrayList<ItemDto> items = new ArrayList<>();
-        searchItemList.forEach(searchItem -> {
-            items.add(toItemDto(searchItem));
-        });
-        return items;
-    }
-
     public List<Item> toItem(List<SearchItem> searchItemList, Search search) {
         ArrayList<Item> items = new ArrayList<>();
         searchItemList.forEach(searchItem -> {

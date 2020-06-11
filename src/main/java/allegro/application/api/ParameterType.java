@@ -9,7 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 public enum ParameterType {
 
-    CATEGORY(1L, "Category");
+    CATEGORY(1L, "Category"),
+    PRICE_FROM(2L, "Price from"),
+    PRICE_TO(3L, "Price to");
 
     private static final Map<Long, ParameterType> ENUM_MAP;
 

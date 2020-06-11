@@ -14,6 +14,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/search/**").authenticated()
                 .antMatchers("/item/delete/**").authenticated()
                 .antMatchers("/item/list/**").permitAll()
+                .antMatchers("/api/allegro/**").permitAll()
                 .and().formLogin().permitAll();
 
         httpSecurity.csrf().disable();

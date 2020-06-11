@@ -38,7 +38,7 @@ public class EbayService implements ItemService {
         return mapper.toItem(searchItemList, search);
     }
 
-    public List<SearchItem> fetchItems(String keyword) {
+    private List<SearchItem> fetchItems(String keyword) {
 
         FindItemsByKeywordsResponse findItemsByKeywordsResponse = restInvoker.get(
                 createRequestUrl(keyword), createRequestHttpEntity(), FindItemsByKeywordsResponse.class);

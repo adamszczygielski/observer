@@ -1,12 +1,9 @@
 package allegro.application.service.source.allegro.mapper;
 
-import allegro.application.api.ItemDto;
+import allegro.application.api.allegro.AllegroCategoryDto;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
-import allegro.application.service.source.allegro.model.ListingOffer;
-import allegro.application.service.source.allegro.model.ListingResponseOffers;
-import allegro.application.service.source.allegro.model.OfferPrice;
-import allegro.application.service.source.allegro.model.OfferSellingMode;
+import allegro.application.service.source.allegro.model.*;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -16,7 +13,7 @@ import java.util.List;
 @Component
 public class AllegroMapper {
 
-    public List<Item> toItem(ListingResponseOffers listingResponseOffers, Search search) {
+    public List<Item> toItems(ListingResponseOffers listingResponseOffers, Search search) {
         ArrayList<Item> items = new ArrayList<>();
         listingResponseOffers.getRegular().forEach(listingOffer -> {
             items.add(toItem(listingOffer, search.getId()));
@@ -36,25 +33,6 @@ public class AllegroMapper {
         return item;
     }
 
-    public List<ItemDto> toItemDto(ListingResponseOffers listingResponseOffers) {
-        ArrayList<ItemDto> items = new ArrayList<>();
-        listingResponseOffers.getRegular().forEach(listingOffer -> {
-            items.add(toItemDto(listingOffer));
-        });
-        return items;
-    }
-
-    private ItemDto toItemDto(ListingOffer listingOffer) {
-        ItemDto itemDto = new ItemDto();
-        itemDto.setItemId(-1L);
-        itemDto.setOriginId(listingOffer.getId());
-        itemDto.setTitle(listingOffer.getName());
-        itemDto.setDateCreated(null);
-        itemDto.setPrice(getPrice(listingOffer.getSellingMode()));
-        itemDto.setUrl(getUrl(listingOffer));
-        return itemDto;
-    }
-
     private String getPrice(OfferSellingMode offerSellingMode) {
         OfferPrice offerPrice = offerSellingMode.getPrice();
         return offerPrice.getAmount() + " " + offerPrice.getCurrency();
@@ -67,4 +45,20 @@ public class AllegroMapper {
             return "https://allegro.pl/i" + listingOffer.getId() + ".html";
         }
     }
+
+    public List<AllegroCategoryDto> toAllegroCategories(List<CategoryDto> categories) {
+        ArrayList<AllegroCategoryDto> allegroCategories = new ArrayList<>();
+
+        categories.forEach(categoryDto -> {
+            allegroCategories.add(
+                    AllegroCategoryDto.builder()
+                        .id(categoryDto.getId())
+                        .name(categoryDto.getName())
+                        .leaf(categoryDto.getLeaf())
+                        .build());
+        });
+
+        return allegroCategories;
+    }
+
 }
