@@ -1,13 +1,13 @@
 package allegro.application.api.allegro;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @Builder
 public class AllegroCategoryDto {
 
-    private String id;
-    private String name;
-    private Boolean leaf;
+    private final String id;
+    private final String name;
+    private final Boolean leaf;
 }

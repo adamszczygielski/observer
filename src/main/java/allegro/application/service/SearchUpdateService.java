@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class JobService {
+public class SearchUpdateService {
 
     private final SearchRepository searchRepository;
     private final ItemServiceFactory itemServiceFactory;

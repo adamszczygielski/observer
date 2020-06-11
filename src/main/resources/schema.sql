@@ -1,6 +1,6 @@
-drop view if exists search_v;
-drop table if exists item;
-drop table if exists search;
+--drop view if exists search_v;
+--drop table if exists item;
+--drop table if exists search;
 
 create table if not exists search
 (
