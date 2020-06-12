@@ -30,22 +30,23 @@
         </thead>
         <tbody>
             <tr th:each="searchItem : ${searchViewDto}">
-                <td><a th:href="@{/item/list/preview/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.keyword}"></span></a></td>
+                <td><a th:href="@{/items/} + ${searchItem.id} + @{/preview}" target="_blank"><span th:text="${searchItem.keyword}"></span></a></td>
                 <td th:text="${searchItem.category}"></td>
                 <td th:text="${searchItem.dateUpdated}"></td>
                 <td th:text="${searchItem.timeInterval}"></td>
                 <td th:text="${searchItem.source}"></td>
-<!--                <td><a th:href="@{/search/switch/} + ${searchItem.id}"><span th:text="${searchItem.isActive}"></span></a></td>-->
-                <td><a th:href="@{/item/list/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.count}"></span></a></td>
                 <td>
-                    <form th:action="@{/search/delete/__${searchItem.id}__}" th:method="delete" onsubmit="return confirm('Do your really want to delete this entry');">
+                    <a th:href="@{/items/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.count}"></span></a>
+                </td>
+                <td>
+                    <form th:action="@{/searches/__${searchItem.id}__}" th:method="delete" onsubmit="return confirm('Do your really want to delete this entry');">
                         <input type="hidden">
                         <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                     </form>
                 </td>
             </tr>
             <tr>
-                <form action="#" th:action="@{/search/add}" th:object="${searchDto}" method="post">
+                <form action="#" th:action="@{/searches}" th:object="${searchDto}" method="post">
                     <td>
                         <p><input class="form-control form-control-sm col-sm-5" type="text" th:field="*{keyword}" /></p>
                     </td>

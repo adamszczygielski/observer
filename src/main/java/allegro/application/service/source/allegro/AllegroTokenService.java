@@ -16,18 +16,18 @@ import java.util.logging.Logger;
 @Service
 class AllegroTokenService {
 
-    private static final int TOKEN_LIFETIME_HOURS = 5;
-
+    private final int jwtTokenHours;
     private final String privateToken;
+    private final RestInvoker restInvoker;
 
     private final Logger log = Logger.getLogger(getClass().getName());
 
-    private final RestInvoker restInvoker;
-
     private JwtToken jwtToken;
 
-    public AllegroTokenService(@Value("${allegro.token.private}") String privateToken, RestInvoker restInvoker) {
+    public AllegroTokenService(@Value("${allegro.token.private}") String privateToken, RestInvoker restInvoker,
+                               @Value("${allegro.token.jwt.hours}") String jwtTokenHours) {
         this.privateToken = privateToken;
+        this.jwtTokenHours = Integer.parseInt(jwtTokenHours);
         this.restInvoker = restInvoker;
     }
 
@@ -64,7 +64,7 @@ class AllegroTokenService {
 
     private boolean validateToken(JwtToken jwtToken) {
         if (jwtToken != null) {
-            return jwtToken.getDateCreated().plusHours(TOKEN_LIFETIME_HOURS).isAfter(LocalDateTime.now());
+            return jwtToken.getDateCreated().plusHours(jwtTokenHours).isAfter(LocalDateTime.now());
         }
         return false;
     }

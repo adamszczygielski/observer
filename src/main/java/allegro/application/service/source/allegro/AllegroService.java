@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class AllegroService implements ItemService {
     private final AllegroMapper mapper;
     private final AllegroTokenService tokenService;
     private final RestInvoker restInvoker;
+    private final HashMap<String, CategoriesDto> categoriesDtoCache = new HashMap<>();
 
     @Override
     public List<Item> getItems(Search search) {
@@ -42,8 +44,13 @@ public class AllegroService implements ItemService {
     }
 
     private List<CategoryDto> fetchCategories(String parentId) {
-        CategoriesDto categoriesDto = restInvoker.get(
-                createCategoryRequestUrl(parentId), createRequestHttpEntity(), CategoriesDto.class);
+        CategoriesDto categoriesDto = categoriesDtoCache.get(parentId);
+        if(categoriesDto == null) {
+            categoriesDto = restInvoker.get(
+                    createCategoryRequestUrl(parentId), createRequestHttpEntity(), CategoriesDto.class);
+
+            categoriesDtoCache.putIfAbsent(parentId, categoriesDto);
+        }
 
         return Optional.of(categoriesDto)
                 .map(CategoriesDto::getCategories)
@@ -51,7 +58,6 @@ public class AllegroService implements ItemService {
     }
 
     private ListingResponseOffers fetchItems(String keyword, String categoryId) {
-
         ListingResponse listingResponse = restInvoker.get(
                 createListingRequestUrl(keyword, categoryId), createRequestHttpEntity(), ListingResponse.class);
 

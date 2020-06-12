@@ -30,7 +30,7 @@
                 <td th:text="${item.title}"></td>
                 <td th:text="${item.price}"></td>
                 <td>
-                    <form th:action="@{/item/delete/__${item.itemId}__}" th:method="delete">
+                    <form th:action="@{/items/__${item.itemId}__}" th:method="delete">
                         <input type="hidden">
                         <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                     </form>

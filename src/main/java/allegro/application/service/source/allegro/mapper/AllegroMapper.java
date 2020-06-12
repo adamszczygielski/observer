@@ -52,10 +52,10 @@ public class AllegroMapper {
         categories.forEach(categoryDto -> {
             allegroCategories.add(
                     AllegroCategoryDto.builder()
-                        .id(categoryDto.getId())
-                        .name(categoryDto.getName())
-                        .leaf(categoryDto.getLeaf())
-                        .build());
+                            .id(categoryDto.getId())
+                            .name(categoryDto.getName())
+                            .leaf(categoryDto.getLeaf())
+                            .build());
         });
 
         return allegroCategories;
