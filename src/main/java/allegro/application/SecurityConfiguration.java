@@ -11,10 +11,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/search/**").authenticated()
-                .antMatchers("/item/delete/**").authenticated()
-                .antMatchers("/item/list/**").permitAll()
-                .antMatchers("/api/allegro/**").permitAll()
+                .antMatchers("/searches/**").authenticated()
+                .antMatchers("/items/**").authenticated()
                 .and().formLogin().permitAll();
 
         httpSecurity.csrf().disable();
