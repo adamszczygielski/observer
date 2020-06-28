@@ -1,0 +1,6 @@
+setTimeout(
+    function() {
+        window.location.reload(1);
+    },
+    120000
+);

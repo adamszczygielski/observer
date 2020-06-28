@@ -1,32 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <title>Items</title>
+    <title>Allegro form</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/bootstrap.min.css">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h2>Category</h2>
+<body onload="javascript:getCategories()">
 
-<!--    <form name='f' th:object="${searchDto}" method='GET'>-->
-<!--        <table>-->
-<!--            <tr>-->
-<!--                <td>Select category:</td>-->
-<!--                <td>-->
-<!--                    <select th:field="*{category}">-->
-<!--                        <option value=""> &#45;&#45; </option>-->
-<!--                        <option th:each="c : ${categories}"-->
-<!--                                th:value="${c.id}"-->
-<!--                                th:utext="${c.name}"/>-->
-<!--                    </select>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><input name="submit" type="submit" value="submit" /></td>-->
-<!--            </tr>-->
-<!--        </table>-->
-<!--    </form>-->
+<div class="container float-left">
+    <h4>Categories</h4>
 
+    <form id="categoryForm">
+        <select id="category">
+        </select>
+        <input disabled type="text" id="iCategoryId" name="iCategoryId"><br>
+    </form>
+
+    <button onclick="getCategories()">Select</button>
+    <button onclick="clearCategories()">Clear</button>
+</div>
+
+<script>
+    function clearCategories() {
+        document.getElementById("category").length = 0;
+        getCategories();
+    }
+</script>
+<script>
+    function getCategories() {
+        var request = new XMLHttpRequest()
+        var select = document.getElementById("category");
+
+        var selectedId = '';
+
+        if(typeof select.options[select.selectedIndex] != 'undefined') {
+            selectedId = select.options[select.selectedIndex].value;
+        }
+
+        request.open('GET', 'http://127.0.0.1/util/categories/allegro?id=' + selectedId, true);
+
+        request.onload = function () {
+            var data = JSON.parse(this.response);
+            document.getElementById("iCategoryId").value = selectedId;
+
+            if(Object.keys(data).length == 0) return;
+            select.options.length = 0;
+
+            data.forEach((category) => {
+                var el = document.createElement("option");
+                el.textContent = category.name;
+                el.value = category.id;
+                select.appendChild(el);
+            })
+        }
+        request.send()
+    }
+</script>
 </body>
 </html>
