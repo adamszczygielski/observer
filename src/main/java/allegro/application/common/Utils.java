@@ -10,6 +10,9 @@ public class Utils {
     private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Europe/Warsaw");
     private static final String DATE_PATTERN = "HH:mm:ss";
 
+    private Utils() {
+    }
+
     public static String toString(Timestamp timestamp) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
         simpleDateFormat.setTimeZone(TIME_ZONE);

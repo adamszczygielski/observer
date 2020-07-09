@@ -31,7 +31,7 @@ create table if not exists parameter
 (
     id bigint auto_increment not null,
     search_id bigint not null,
-    parameter_type_id smallint not null,
+    type_id smallint not null,
     value varchar(255),
     foreign key (search_id) references search(id) on delete cascade
 );

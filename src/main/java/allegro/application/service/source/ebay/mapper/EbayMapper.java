@@ -1,6 +1,5 @@
 package allegro.application.service.source.ebay.mapper;
 
-import allegro.application.api.ItemDto;
 import allegro.application.domain.Item;
 import allegro.application.domain.Search;
 import allegro.application.service.source.ebay.model.Amount;
@@ -36,17 +35,6 @@ public class EbayMapper {
         item.setUrl(searchItem.getViewItemURL());
         item.setIsActive(true);
         return item;
-    }
-
-    private ItemDto toItemDto(SearchItem searchItem) {
-        ItemDto itemDto = new ItemDto();
-        itemDto.setItemId(-1L);
-        itemDto.setOriginId(searchItem.getItemId());
-        itemDto.setTitle(searchItem.getTitle());
-        itemDto.setDateCreated(null);
-        itemDto.setPrice(getPrice(searchItem.getSellingStatus()));
-        itemDto.setUrl(searchItem.getViewItemURL());
-        return itemDto;
     }
 
     private String getPrice(SellingStatus sellingStatus) {
