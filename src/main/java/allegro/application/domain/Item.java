@@ -40,7 +40,7 @@ public class Item implements Serializable {
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "SEARCH_ID", insertable = false, updatable = false)
-    private Search search;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "SEARCH_ID", insertable = false, updatable = false)
+//    private Search search;
 }

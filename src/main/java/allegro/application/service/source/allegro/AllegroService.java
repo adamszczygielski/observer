@@ -1,7 +1,9 @@
 package allegro.application.service.source.allegro;
 
+import allegro.application.api.ParameterType;
 import allegro.application.api.allegro.AllegroCategoryDto;
 import allegro.application.domain.Item;
+import allegro.application.domain.Parameter;
 import allegro.application.domain.Search;
 import allegro.application.rest.RestInvoker;
 import allegro.application.service.ItemService;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -34,8 +37,8 @@ public class AllegroService implements ItemService {
 
     @Override
     public List<Item> getItems(Search search) {
-        ListingResponseOffers listingResponseOffers = fetchItems(search.getKeyword(), search.getCategory());
-        return mapper.toItems(listingResponseOffers, search);
+        ListingResponseOffers listingResponseOffers = fetchItems(search.getKeyword(), search.getCategory(), search.getParameterList());
+        return mapper.toItems(listingResponseOffers, search.getId());
     }
 
     public List<AllegroCategoryDto> getCategories(String parentId) {
@@ -57,9 +60,9 @@ public class AllegroService implements ItemService {
                 .orElseGet(ArrayList::new);
     }
 
-    private ListingResponseOffers fetchItems(String keyword, String categoryId) {
+    private ListingResponseOffers fetchItems(String keyword, String categoryId, List<Parameter> parameters) {
         ListingResponse listingResponse = restInvoker.get(
-                createListingRequestUrl(keyword, categoryId), createRequestHttpEntity(), ListingResponse.class);
+                createListingRequestUrl(keyword, categoryId, parameters), createRequestHttpEntity(), ListingResponse.class);
 
         return Optional.of(listingResponse)
                 .map(ListingResponse::getItems)
@@ -75,7 +78,7 @@ public class AllegroService implements ItemService {
         return new HttpEntity<>(requestHeaders);
     }
 
-    private String createListingRequestUrl(String keyword, String categoryId) {
+    private String createListingRequestUrl(String keyword, String categoryId, List<Parameter> parameters) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("api.allegro.pl")
@@ -87,6 +90,13 @@ public class AllegroService implements ItemService {
 
         if (!StringUtils.isEmpty(categoryId)) {
             uriComponentsBuilder.queryParam("category.id", categoryId);
+        }
+
+        if(!CollectionUtils.isEmpty(parameters)) {
+            String priceFrom = getParameterValue(parameters, ParameterType.PRICE_FROM);
+            if(priceFrom != null) {
+                uriComponentsBuilder.queryParam("price_from", priceFrom);
+            }
         }
 
         return uriComponentsBuilder.build().toUriString();
@@ -103,5 +113,10 @@ public class AllegroService implements ItemService {
         }
 
         return uriComponentsBuilder.build().toUriString();
+    }
+
+    private String getParameterValue(List<Parameter> parameters, ParameterType parameterType) {
+        return parameters.stream().filter(p -> p.getTypeId().equals(parameterType.getId())).findFirst()
+                .map(Parameter::getValue).orElse(null);
     }
 }

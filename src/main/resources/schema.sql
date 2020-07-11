@@ -1,4 +1,5 @@
 --drop view if exists search_v;
+--drop table if exists parameter;
 --drop table if exists item;
 --drop table if exists search;
 
@@ -32,7 +33,7 @@ create table if not exists parameter
     id bigint auto_increment not null,
     search_id bigint not null,
     type_id smallint not null,
-    value varchar(255),
+    value varchar(255) not null,
     foreign key (search_id) references search(id) on delete cascade
 );
 

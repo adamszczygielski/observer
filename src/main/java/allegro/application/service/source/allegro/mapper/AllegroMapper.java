@@ -2,7 +2,6 @@ package allegro.application.service.source.allegro.mapper;
 
 import allegro.application.api.allegro.AllegroCategoryDto;
 import allegro.application.domain.Item;
-import allegro.application.domain.Search;
 import allegro.application.service.source.allegro.model.*;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +12,10 @@ import java.util.List;
 @Component
 public class AllegroMapper {
 
-    public List<Item> toItems(ListingResponseOffers listingResponseOffers, Search search) {
+    public List<Item> toItems(ListingResponseOffers listingResponseOffers, Long searchId) {
         ArrayList<Item> items = new ArrayList<>();
         listingResponseOffers.getRegular().forEach(listingOffer -> {
-            items.add(toItem(listingOffer, search.getId()));
+            items.add(toItem(listingOffer, searchId));
         });
         return items;
     }

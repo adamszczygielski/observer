@@ -6,8 +6,10 @@ import allegro.application.domain.Search;
 import allegro.application.repository.SearchRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +24,7 @@ public class SearchUpdateService {
 
     private final Logger log = Logger.getLogger(getClass().getName());
 
+    @Transactional
     public void execute() {
         List<Search> searchList = searchRepository.findAllToUpdate(new Timestamp(System.currentTimeMillis()));
         log.log(Level.INFO, "---------- Found " + searchList.size() + " search queries to execute");
@@ -39,8 +42,11 @@ public class SearchUpdateService {
 
         List<String> fetchedItemIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
 
-        //remove checked, non-existing items
-        search.getItemList().removeIf(item -> !item.getIsActive() && !fetchedItemIds.contains(item.getOriginId()));
+        //remove checked, non-existing items, older than specific amount of time
+        search.getItemList().removeIf(item -> !item.getIsActive()
+                && !fetchedItemIds.contains(item.getOriginId())
+                && item.getDateCreated().toLocalDateTime().plusHours(48).isBefore(LocalDateTime.now()));
+
         List<String> searchItemIds = search.getItemList().stream().map(Item::getOriginId).collect(Collectors.toList());
 
         //filter new items, add all

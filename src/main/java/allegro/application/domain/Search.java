@@ -34,7 +34,11 @@ public class Search {
     @Column(name = "SOURCE_ID")
     private Long sourceId;
 
-    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "SEARCH_ID")
     private List<Item> itemList;
+
+    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "SEARCH_ID")
+    private List<Parameter> parameterList;
 }
