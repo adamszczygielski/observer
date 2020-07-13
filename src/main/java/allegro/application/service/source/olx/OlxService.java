@@ -12,11 +12,12 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static allegro.application.common.Utils.now;
 
 @Service
 @AllArgsConstructor
@@ -51,7 +52,7 @@ public class OlxService implements ItemService {
 
         int quantity = titles.size();
         if(prices.size() != quantity || urls.size() != quantity || originIds.size() != quantity) {
-            log.log(Level.SEVERE, "---------- Parser error while trying to fetch: " + search.getKeyword());
+            log.log(Level.SEVERE, "Parser error while trying to fetch: " + search.getKeyword());
             return items;
         }
 
@@ -59,7 +60,7 @@ public class OlxService implements ItemService {
             Item item = new Item();
             item.setOriginId(originIds.get(i).attr("data-id"));
             item.setSearchId(search.getId());
-            item.setDateCreated(new Timestamp(System.currentTimeMillis()));
+            item.setDateCreated(now());
             item.setTitle(titles.get(i).text());
             item.setPrice(getPrice(prices.get(i).text()));
             item.setUrl(getItemUrl(urls.get(i)));

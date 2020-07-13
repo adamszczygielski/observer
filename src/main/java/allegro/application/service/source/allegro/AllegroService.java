@@ -48,7 +48,7 @@ public class AllegroService implements ItemService {
 
     private List<CategoryDto> fetchCategories(String parentId) {
         CategoriesDto categoriesDto = categoriesDtoCache.get(parentId);
-        if(categoriesDto == null) {
+        if (categoriesDto == null) {
             categoriesDto = restInvoker.get(
                     createCategoryRequestUrl(parentId), createRequestHttpEntity(), CategoriesDto.class);
 
@@ -92,10 +92,15 @@ public class AllegroService implements ItemService {
             uriComponentsBuilder.queryParam("category.id", categoryId);
         }
 
-        if(!CollectionUtils.isEmpty(parameters)) {
+        if (!CollectionUtils.isEmpty(parameters)) {
             String priceFrom = getParameterValue(parameters, ParameterType.PRICE_FROM);
-            if(priceFrom != null) {
+            if (priceFrom != null) {
                 uriComponentsBuilder.queryParam("price_from", priceFrom);
+            }
+
+            String priceTo = getParameterValue(parameters, ParameterType.PRICE_TO);
+            if (priceFrom != null) {
+                uriComponentsBuilder.queryParam("price_to", priceTo);
             }
         }
 

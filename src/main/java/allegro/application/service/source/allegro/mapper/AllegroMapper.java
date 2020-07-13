@@ -5,9 +5,10 @@ import allegro.application.domain.Item;
 import allegro.application.service.source.allegro.model.*;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static allegro.application.common.Utils.now;
 
 @Component
 public class AllegroMapper {
@@ -24,7 +25,7 @@ public class AllegroMapper {
         Item item = new Item();
         item.setOriginId(listingOffer.getId());
         item.setSearchId(searchId);
-        item.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        item.setDateCreated(now());
         item.setTitle(listingOffer.getName());
         item.setPrice(getPrice(listingOffer.getSellingMode()));
         item.setUrl(getUrl(listingOffer));

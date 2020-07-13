@@ -1,6 +1,7 @@
 package allegro.application.repository;
 
 import allegro.application.domain.Search;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,6 @@ public interface SearchRepository extends JpaRepository<Search, Long> {
     @Query("DELETE Search s WHERE s.id =:searchId")
     void deleteBySearchId(@Param("searchId") Long searchId);
 
-    @Query("FROM Search s WHERE :now > DATEADD(MINUTE, s.timeInterval, s.dateUpdated)")
-    List<Search> findAllToUpdate(@Param("now") Timestamp now);
+    @Query("FROM Search s WHERE :now > DATEADD(MINUTE, s.timeInterval, s.dateUpdated) ORDER BY s.dateUpdated")
+    List<Search> findAllToUpdate(@Param("now") Timestamp now, Pageable pageable);
 }

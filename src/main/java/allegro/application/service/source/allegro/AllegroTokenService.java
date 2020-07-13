@@ -36,7 +36,7 @@ class AllegroTokenService {
             return "Bearer " + jwtToken.getValue();
         }
 
-        log.log(Level.INFO, "---------- Private token expired. Fetching new one.");
+        log.log(Level.INFO, "Private token expired. Fetching new one.");
 
         JwtToken newJwtToken = restInvoker.post(createRequestUrl(), createRequestHttpEntity(), JwtToken.class);
         newJwtToken.setDateCreated(LocalDateTime.now());

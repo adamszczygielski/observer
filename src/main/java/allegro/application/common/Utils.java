@@ -27,4 +27,8 @@ public class Utils {
                 .replaceAll(" +", " ")
                 .toLowerCase();
     }
+
+    public static Timestamp now() {
+        return new Timestamp(System.currentTimeMillis());
+    }
 }
