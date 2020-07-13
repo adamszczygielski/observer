@@ -12,15 +12,15 @@ public class SearchViewAssembler implements BaseAssembler <SearchView, SearchVie
 
     @Override
     public SearchViewDto toDto(SearchView searchView) {
-        SearchViewDto searchViewDto = new SearchViewDto();
-        searchViewDto.setId(searchView.getId());
-        searchViewDto.setKeyword(searchView.getKeyword());
-        searchViewDto.setCategory(searchView.getCategory());
-        searchViewDto.setSource(Source.getSource(searchView.getSourceId()).getLabel());
-        searchViewDto.setDateUpdated(toString(searchView.getDateUpdated()));
-        searchViewDto.setTimeInterval(searchView.getTimeInterval());
-        searchViewDto.setCount(searchView.getCount());
-        return searchViewDto;
+        return SearchViewDto.builder()
+                .id(searchView.getId())
+                .keyword(searchView.getKeyword())
+                .category(searchView.getCategory())
+                .source(Source.getSource(searchView.getSourceId()).getLabel())
+                .dateUpdated(toString(searchView.getDateUpdated()))
+                .timeInterval(searchView.getTimeInterval())
+                .count(searchView.getCount())
+                .build();
     }
 
     private String toString(Timestamp lastUpdate) {

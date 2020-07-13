@@ -5,7 +5,7 @@ import allegro.application.domain.Item;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ItemAssembler implements BaseAssembler<Item, ItemDto>  {
+public class ItemAssembler implements BaseAssembler<Item, ItemDto> {
 
     @Override
     public ItemDto toDto(Item item) {

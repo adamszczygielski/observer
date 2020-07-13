@@ -1,12 +1,16 @@
 package allegro.application.domain;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "SEARCH")
 @Entity
 public class Search {

@@ -8,8 +8,8 @@ import allegro.application.service.source.ebay.model.SellingStatus;
 import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static allegro.application.common.Utils.now;
 
@@ -18,24 +18,21 @@ public class EbayMapper {
 
     private final DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
-    public List<Item> toItem(List<SearchItem> searchItemList, Search search) {
-        ArrayList<Item> items = new ArrayList<>();
-        searchItemList.forEach(searchItem -> {
-            items.add(toItem(searchItem, search.getId()));
-        });
-        return items;
+    public List<Item> toItems(List<SearchItem> searchItemList, Search search) {
+        return searchItemList.stream().map(searchItem -> toItem(searchItem, search.getId()))
+                .collect(Collectors.toList());
     }
 
     private Item toItem(SearchItem searchItem, Long searchId) {
-        Item item = new Item();
-        item.setOriginId(searchItem.getItemId());
-        item.setSearchId(searchId);
-        item.setDateCreated(now());
-        item.setTitle(searchItem.getTitle());
-        item.setPrice(getPrice(searchItem.getSellingStatus()));
-        item.setUrl(searchItem.getViewItemURL());
-        item.setIsActive(true);
-        return item;
+        return Item.builder()
+                .originId(searchItem.getItemId())
+                .searchId(searchId)
+                .dateCreated(now())
+                .title(searchItem.getTitle())
+                .price(getPrice(searchItem.getSellingStatus()))
+                .url(searchItem.getViewItemURL())
+                .isActive(true)
+                .build();
     }
 
     private String getPrice(SellingStatus sellingStatus) {

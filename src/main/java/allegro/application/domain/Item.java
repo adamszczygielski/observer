@@ -1,6 +1,9 @@
 package allegro.application.domain;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -8,7 +11,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "ITEM")
 @Entity
 public class Item implements Serializable {

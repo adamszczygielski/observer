@@ -5,8 +5,8 @@ import allegro.application.domain.Item;
 import allegro.application.service.source.allegro.model.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static allegro.application.common.Utils.now;
 
@@ -14,23 +14,25 @@ import static allegro.application.common.Utils.now;
 public class AllegroMapper {
 
     public List<Item> toItems(ListingResponseOffers listingResponseOffers, Long searchId) {
-        ArrayList<Item> items = new ArrayList<>();
-        listingResponseOffers.getRegular().forEach(listingOffer -> {
-            items.add(toItem(listingOffer, searchId));
-        });
-        return items;
+        return listingResponseOffers.getRegular().stream().map(listingOffer -> toItem(listingOffer, searchId))
+                .collect(Collectors.toList());
+    }
+
+    public List<AllegroCategoryDto> toAllegroCategories(List<CategoryDto> categories) {
+        return categories.stream().map(categoryDto -> AllegroCategoryDto.builder().id(categoryDto.getId())
+                .name(categoryDto.getName()).leaf(categoryDto.getLeaf()).build()).collect(Collectors.toList());
     }
 
     private Item toItem(ListingOffer listingOffer, Long searchId) {
-        Item item = new Item();
-        item.setOriginId(listingOffer.getId());
-        item.setSearchId(searchId);
-        item.setDateCreated(now());
-        item.setTitle(listingOffer.getName());
-        item.setPrice(getPrice(listingOffer.getSellingMode()));
-        item.setUrl(getUrl(listingOffer));
-        item.setIsActive(true);
-        return item;
+        return Item.builder()
+                .originId(listingOffer.getId())
+                .searchId(searchId)
+                .dateCreated(now())
+                .title(listingOffer.getName())
+                .price(getPrice(listingOffer.getSellingMode()))
+                .url(getUrl(listingOffer))
+                .isActive(true)
+                .build();
     }
 
     private String getPrice(OfferSellingMode offerSellingMode) {
@@ -39,26 +41,10 @@ public class AllegroMapper {
     }
 
     private String getUrl(ListingOffer listingOffer) {
-        if(listingOffer.getVendor() != null) {
+        if (listingOffer.getVendor() != null) {
             return listingOffer.getVendor().getUrl();
         } else {
             return "https://allegro.pl/i" + listingOffer.getId() + ".html";
         }
     }
-
-    public List<AllegroCategoryDto> toAllegroCategories(List<CategoryDto> categories) {
-        ArrayList<AllegroCategoryDto> allegroCategories = new ArrayList<>();
-
-        categories.forEach(categoryDto -> {
-            allegroCategories.add(
-                    AllegroCategoryDto.builder()
-                            .id(categoryDto.getId())
-                            .name(categoryDto.getName())
-                            .leaf(categoryDto.getLeaf())
-                            .build());
-        });
-
-        return allegroCategories;
-    }
-
 }

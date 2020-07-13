@@ -1,18 +1,20 @@
 package allegro.application.api;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.io.Serializable;
 
 
-@Data
+@Getter
+@Builder
 public class SearchViewDto implements Serializable {
 
-    private Long id;
-    private String keyword;
-    private String category;
-    private Long timeInterval;
-    private String source;
-    private Long count;
-    private String dateUpdated;
+    private final Long id;
+    private final String keyword;
+    private final String category;
+    private final Long timeInterval;
+    private final String source;
+    private final Long count;
+    private final String dateUpdated;
 }

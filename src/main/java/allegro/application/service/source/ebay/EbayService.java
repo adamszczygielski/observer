@@ -35,7 +35,7 @@ public class EbayService implements ItemService {
     @Override
     public List<Item> getItems(Search search) {
         List<SearchItem> searchItemList = fetchItems(search.getKeyword());
-        return mapper.toItem(searchItemList, search);
+        return mapper.toItems(searchItemList, search);
     }
 
     private List<SearchItem> fetchItems(String keyword) {

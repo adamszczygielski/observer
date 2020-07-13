@@ -10,13 +10,13 @@ import java.sql.Timestamp;
 public class SearchAssembler {
 
     public Search toSearch(SearchDto searchDto) {
-        Search search = new Search();
-        search.setKeyword(searchDto.getKeyword());
-        search.setCategory(searchDto.getCategory());
-        search.setDateUpdated(new Timestamp(0));
-        search.setIsActive(false);
-        search.setSourceId(searchDto.getSource().getId());
-        search.setTimeInterval(searchDto.getInterval());
-        return search;
+        return Search.builder()
+                .keyword(searchDto.getKeyword())
+                .category(searchDto.getCategory())
+                .dateUpdated(new Timestamp(0))
+                .isActive(false)
+                .sourceId(searchDto.getSource().getId())
+                .timeInterval(searchDto.getInterval())
+                .build();
     }
 }
