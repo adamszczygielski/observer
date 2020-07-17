@@ -21,7 +21,7 @@ public class ApplicationService {
     private final ItemServiceFactory itemServiceFactory;
 
     public List<Item> fetchItems(Long searchId) {
-        return itemRepository.findActiveItemsBySeachId(searchId).orElseGet(ArrayList::new);
+        return itemRepository.findActiveItemsBySearchId(searchId).orElseGet(ArrayList::new);
     }
 
     public List<Item> fetchActiveItems() {

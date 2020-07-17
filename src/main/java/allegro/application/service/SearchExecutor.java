@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import static allegro.application.common.Utils.now;
 
 @Service
-public class SearchUpdateService {
+public class SearchExecutor {
 
     private final SearchRepository searchRepository;
     private final ItemServiceFactory itemServiceFactory;
@@ -27,8 +27,8 @@ public class SearchUpdateService {
 
     private final Logger log = Logger.getLogger(getClass().getName());
 
-    public SearchUpdateService(SearchRepository searchRepository, ItemServiceFactory itemServiceFactory,
-                               @Value("${search.chunk}") Integer chunk, @Value("${item.delay}") Long delay) {
+    public SearchExecutor(SearchRepository searchRepository, ItemServiceFactory itemServiceFactory,
+                          @Value("${search.chunk}") Integer chunk, @Value("${item.delay}") Long delay) {
         this.searchRepository = searchRepository;
         this.itemServiceFactory = itemServiceFactory;
         this.chunk = chunk;
@@ -36,38 +36,52 @@ public class SearchUpdateService {
     }
 
     @Transactional
-    public void execute() {
+    public void executeAll() {
         List<Search> searchList = searchRepository.findAllToUpdate(now(), PageRequest.of(0, chunk));
         log.log(Level.INFO, "Found " + searchList.size() + " search queries to execute");
         searchList.forEach(this::updateSearch);
     }
 
+    @Transactional
+    public void executeAllImmediately() {
+        List<Search> searchList = searchRepository.findAll();
+        log.log(Level.INFO, "Found " + searchList.size() + " search queries to execute");
+        searchList.forEach(this::updateSearch);
+    }
+
     private void updateSearch(Search search) {
-        List<Item> fetchedItems;
+        //fetch items
+        List<Item> fetchedItems = fetchItems(search);
 
-        log.log(Level.INFO, "Executing search query with id: " + search.getId() + ", source: " + search.getSourceId());
-        Source source = Source.getSource(search.getSourceId());
-        ItemService itemService = itemServiceFactory.create(source);
-        fetchedItems = itemService.getItems(search);
-        log.log(Level.INFO, "Fetched " + fetchedItems.size() + " items");
-
-        List<String> fetchedItemIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
+        List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
+        List<String> searchItemsIds = search.getItemList().stream().map(Item::getOriginId).collect(Collectors.toList());
 
         //remove checked, non-existing items, older than specific amount of time
         search.getItemList().removeIf(item -> !item.getIsActive()
-                && !fetchedItemIds.contains(item.getOriginId())
+                && !fetchedItemsIds.contains(item.getOriginId())
                 && item.getDateCreated().toLocalDateTime().plusDays(delay).isBefore(LocalDateTime.now()));
 
-        List<String> searchItemIds = search.getItemList().stream().map(Item::getOriginId).collect(Collectors.toList());
-
         //filter new items, add all
-        fetchedItems.removeIf(item -> searchItemIds.contains(item.getOriginId()));
+        fetchedItems.removeIf(item -> searchItemsIds.contains(item.getOriginId()));
         log.log(Level.INFO, "There's " + fetchedItems.size() + " new items");
         search.getItemList().addAll(fetchedItems);
 
         //save to db
+        save(search);
+    }
+
+    private List<Item> fetchItems(Search search) {
+        log.log(Level.INFO, "Executing search query with id: " + search.getId() + ", source: " + search.getSourceId());
+        Source source = Source.getSource(search.getSourceId());
+        ItemService itemService = itemServiceFactory.create(source);
+        List<Item> fetchedItems = itemService.getItems(search);
+        log.log(Level.INFO, "Fetched " + fetchedItems.size() + " items");
+        return fetchedItems;
+    }
+
+    private void save(Search search) {
         search.setDateUpdated(now());
         searchRepository.save(search);
-        log.log(Level.INFO, "Result saved to Database");
+        log.log(Level.INFO, "Saved to database");
     }
 }

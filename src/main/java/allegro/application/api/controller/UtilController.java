@@ -1,6 +1,7 @@
 package allegro.application.api.controller;
 
 import allegro.application.api.allegro.AllegroCategoryDto;
+import allegro.application.service.SearchExecutor;
 import allegro.application.service.source.allegro.AllegroService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,15 @@ public class UtilController {
     public static final String API_PATH = "/util";
 
     private final AllegroService allegroService;
+    private final SearchExecutor searchExecutor;
 
     @GetMapping("/categories/allegro")
     public List<AllegroCategoryDto> categories(@RequestParam(value = "id", required = false) String parentId) {
         return allegroService.getCategories(parentId);
+    }
+
+    @GetMapping(value = "/searches/execute")
+    public void executeAllImmediately() {
+        searchExecutor.executeAllImmediately();
     }
 }
