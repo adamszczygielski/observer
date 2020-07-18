@@ -9,13 +9,13 @@ public class ItemAssembler implements BaseAssembler<Item, ItemDto> {
 
     @Override
     public ItemDto toDto(Item item) {
-        ItemDto itemDto = new ItemDto();
-        itemDto.setItemId(item.getId());
-        itemDto.setOriginId(item.getOriginId());
-        itemDto.setDateCreated(item.getDateCreated());
-        itemDto.setTitle(item.getTitle());
-        itemDto.setUrl(item.getUrl());
-        itemDto.setPrice(item.getPrice());
-        return itemDto;
+        return ItemDto.builder()
+                .itemId(item.getId())
+                .originId(item.getOriginId())
+                .dateCreated(item.getDateCreated())
+                .title(item.getTitle())
+                .url(item.getUrl())
+                .price(item.getPrice())
+                .build();
     }
 }

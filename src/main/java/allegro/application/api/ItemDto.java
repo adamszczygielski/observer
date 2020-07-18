@@ -1,10 +1,12 @@
 package allegro.application.api;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
+@Builder
 public class ItemDto {
 
     private Long itemId;
