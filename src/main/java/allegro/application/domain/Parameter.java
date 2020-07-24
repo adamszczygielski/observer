@@ -1,10 +1,14 @@
 package allegro.application.domain;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Setter
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "PARAMETER")
 @Entity
 public class Parameter {

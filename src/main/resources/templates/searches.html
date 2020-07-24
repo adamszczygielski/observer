@@ -1,28 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Search</title>
+    <title>Searches</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script type="text/javascript" src="/page-refresh.js"></script>
 </head>
 <body>
 
-<div class="container">
-    <h4>Search queries</h4>
-    <table id="items-table" class="table table-sm table-striped" xmlns:th="http://www.w3.org/1999/xhtml">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="/searches">Search<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/form">Form</a>
+            <a class="nav-item nav-link" href="/items">Items</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-4">
+    <table id="items-table" class="table table-md">
         <thead>
-        <tr>
-            <th>Keyword</th>
-            <th>Category ID</th>
-            <th>Updated</th>
-            <th>Interval [min]</th>
-            <th>Source</th>
-<!--            <th>Notification</th>-->
-            <th>New</th>
-            <th></th>
-        </tr>
+            <tr>
+                <th scope="col">Keyword</th>
+                <th scope="col">Category ID</th>
+                <th scope="col">Updated</th>
+                <th scope="col">Interval</th>
+                <th scope="col">Source</th>
+                <th>New</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
             <tr th:each="searchItem : ${searchViewDto}">
@@ -37,41 +48,9 @@
                 <td>
                     <form th:action="@{/searches/__${searchItem.id}__}" th:method="delete" onsubmit="return confirm('Do your really want to delete this entry');">
                         <input type="hidden">
-                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                        <button class="btn btn-danger btn-md" type="submit">Delete</button>
                     </form>
                 </td>
-            </tr>
-
-            <tr>
-                <form action="#" th:action="@{/searches}" th:object="${searchDto}" method="post">
-                    <td>
-                        <p><input class="form-control form-control-sm col-sm-5" type="text" th:field="*{keyword}" /></p>
-                    </td>
-                    <td>
-                        <p><input class="form-control form-control-sm col-sm-5" type="text" th:field="*{category}" /></p>
-                    </td>
-                    <td></td>
-                    <td>
-                        <select th:field="*{interval}" class="form-control form-control-sm col-sm-6">
-                            <option value="5">5</option>
-                            <option value="30">30</option>
-                            <option value="120">120</option>
-                            <option value="360">360</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select th:field="*{source}" class="form-control form-control-sm col-sm-6">
-                            <option th:each="sourceOpt : ${T(allegro.application.api.Source).values()}"
-                                    th:value="${sourceOpt}" th:text="${sourceOpt.label}">
-                            </option>
-                        </select>
-                    </td>
-<!--                    <td>false</td>-->
-                    <td>0</td>
-                    <td>
-                        <button class="btn btn-success btn-sm" type="submit">Submit</button>
-                    </td>
-                </form>
             </tr>
         </tbody>
     </table>

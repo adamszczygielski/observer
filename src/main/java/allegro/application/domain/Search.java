@@ -42,7 +42,7 @@ public class Search {
     @JoinColumn(name = "SEARCH_ID")
     private List<Item> itemList;
 
-    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(cascade =  CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "SEARCH_ID")
     private List<Parameter> parameterList;
 }

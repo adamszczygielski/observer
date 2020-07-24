@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Search query</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body onload="javascript:getCategories()">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/searches">Search</a>
+            <a class="nav-item nav-link active" href="/form">Form<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/items">Items</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-4">
+    <form action="#" th:action="@{/searches}" th:object="${searchDto}" method="post">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="inputSource">Source</label>
+                <select th:field="*{source}" class="form-control" id="inputSource" required>
+                    <option th:each="sourceOpt : ${T(allegro.application.api.Source).values()}"
+                            th:value="${sourceOpt}" th:text="${sourceOpt.label}">
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputKeyword">Keyword</label>
+                <input type="text" class="form-control" id="inputKeyword" th:field="*{keyword}">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="inputCategory">Category</label>
+                <select class="form-control" id="category"></select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputCategory">Selected</label>
+                <input class="form-control" type="text" id="inputCategory" name="inputCategory" th:field="*{category}" readonly>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="getCategories()">Select</button>
+        <button type="button" class="btn btn-primary" onclick="clearCategories()">Cancel</button>
+        <div class="form-row pt-4">
+            <div class="form-group col-md-4">
+                <label for="inputPriceFrom">Price from</label>
+                <input type="text" class="form-control" id="inputPriceFrom" th:field="*{priceFrom}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPriceTo">Price to</label>
+                <input type="text" class="form-control" id="inputPriceTo" th:field="*{priceTo}">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="inputInterval">Interval</label>
+                <select th:field="*{interval}" class="form-control" id="inputInterval">
+                    <option value="2">2</option>
+                    <option value="5">5</option>
+                    <option value="30">30</option>
+                    <option value="120">120</option>
+                    <option value="360">360</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script>
+    function clearCategories() {
+        document.getElementById("category").length = 0;
+        getCategories();
+    }
+</script>
+
+<script>
+    function getCategories() {
+        var request = new XMLHttpRequest()
+        var select = document.getElementById("category");
+
+        var selectedId = '';
+
+        if(typeof select.options[select.selectedIndex] != 'undefined') {
+            selectedId = select.options[select.selectedIndex].value;
+        }
+
+        request.open('GET', '/util/categories/allegro?id=' + selectedId, true);
+
+        request.onload = function () {
+            var data = JSON.parse(this.response);
+            document.getElementById("inputCategory").value = selectedId;
+
+            if(Object.keys(data).length == 0) return;
+            select.options.length = 0;
+
+            data.forEach((category) => {
+                var el = document.createElement("option");
+                el.textContent = category.name;
+                el.value = category.id;
+                select.appendChild(el);
+            })
+        }
+        request.send()
+    }
+</script>
+
+</body>
+</html>

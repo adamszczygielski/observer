@@ -4,20 +4,32 @@
     <title>Items</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script type="text/javascript" src="/page-refresh.js"></script>
 </head>
 <body>
 
-<div class="container">
-    <h4>New items</h4>
-    <table id="items-table" class="table table-sm table-striped" xmlns:th="http://www.w3.org/1999/xhtml">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/searches">Search</a>
+            <a class="nav-item nav-link" href="/form">Form</a>
+            <a class="nav-item nav-link active" href="/items">Items<span class="sr-only">(current)</span></a>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-4">
+    <table id="items-table" class="table table-md" xmlns:th="http://www.w3.org/1999/xhtml">
         <thead>
             <tr>
-                <th>Item ID</th>
-                <th>Title</th>
-                <th>Price</th>
-                <th></th>
+                <th scope="col">Item ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Price</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +47,7 @@
         </tbody>
     </table>
 </div>
+
 <script type="text/javascript" src="/item-counter.js"></script>
 </body>
 </html>

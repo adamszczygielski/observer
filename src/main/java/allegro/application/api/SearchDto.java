@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
-
 @Getter
 @NoArgsConstructor
 public class SearchDto {
@@ -15,7 +13,8 @@ public class SearchDto {
     private String category;
     private Long interval;
     private Source source;
-    private HashMap<ParameterType, String> params;
+    private String priceFrom;
+    private String priceTo;
 
     public void setKeyword(String keyword) {
         this.keyword = Utils.normalize(keyword);
@@ -37,11 +36,11 @@ public class SearchDto {
         this.source = source;
     }
 
-    public String getParamValue(ParameterType parameterType) {
-        return params.get(parameterType);
+    public void setPriceFrom(String priceFrom) {
+        this.priceFrom = priceFrom;
     }
 
-    public void putParamValue(ParameterType parameterType, String value) {
-        params.put(parameterType, value);
+    public void setPriceTo(String priceTo) {
+        this.priceTo = priceTo;
     }
 }

@@ -18,10 +18,10 @@ public class FormController {
 
     private final AllegroService allegroService;
 
-    @RequestMapping(value = "/allegro", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String form(Model model, @ModelAttribute("searchDto") SearchDto searchDto) {
         model.addAttribute("searchDto", new SearchDto());
         model.addAttribute("categories", allegroService.getCategories(searchDto.getCategory()));
-        return "form-allegro";
+        return "form";
     }
 }

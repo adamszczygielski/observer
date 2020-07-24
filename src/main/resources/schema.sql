@@ -31,7 +31,7 @@ create table if not exists item
 create table if not exists parameter
 (
     id bigint auto_increment not null,
-    search_id bigint not null,
+    search_id bigint,
     type_id smallint not null,
     value varchar(255) not null,
     foreign key (search_id) references search(id) on delete cascade
