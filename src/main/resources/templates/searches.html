@@ -16,44 +16,51 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="/searches">Search<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="/form">Form</a>
-            <a class="nav-item nav-link" href="/items">Items</a>
-        </div>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="/searches">Search</a>
+                    <a class="nav-item nav-link" href="/form">Form</a>
+                    <a class="nav-item nav-link" href="/items">Items</a>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="/logout">
+            <button class="btn btn-danger btn-md" type="submit">Log out</button>
+        </form>
     </div>
 </nav>
 
 <div class="container my-4">
     <table id="items-table" class="table table-md">
         <thead>
-            <tr>
-                <th scope="col">Keyword</th>
-                <th scope="col">Category ID</th>
-                <th scope="col">Updated</th>
-                <th scope="col">Interval</th>
-                <th scope="col">Source</th>
-                <th>New</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th scope="col">Keyword</th>
+            <th scope="col">Category ID</th>
+            <th scope="col">Updated</th>
+            <th scope="col">Interval</th>
+            <th scope="col">Source</th>
+            <th>New</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="searchItem : ${searchViewDto}">
-                <td><a th:href="@{/items/} + ${searchItem.id} + @{/preview}" target="_blank"><span th:text="${searchItem.keyword}"></span></a></td>
-                <td th:text="${searchItem.category}"></td>
-                <td th:text="${searchItem.dateUpdated}"></td>
-                <td th:text="${searchItem.timeInterval}"></td>
-                <td th:text="${searchItem.source}"></td>
-                <td>
-                    <a th:href="@{/items/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.count}"></span></a>
-                </td>
-                <td>
-                    <form th:action="@{/searches/__${searchItem.id}__}" th:method="delete" onsubmit="return confirm('Do your really want to delete this entry');">
-                        <input type="hidden">
-                        <button class="btn btn-danger btn-md" type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
+        <tr th:each="searchItem : ${searchViewDto}">
+            <td><a th:href="@{/items/} + ${searchItem.id} + @{/preview}" target="_blank"><span th:text="${searchItem.keyword}"></span></a></td>
+            <td th:text="${searchItem.category}"></td>
+            <td th:text="${searchItem.dateUpdated}"></td>
+            <td th:text="${searchItem.timeInterval}"></td>
+            <td th:text="${searchItem.source}"></td>
+            <td>
+                <a th:href="@{/items/} + ${searchItem.id}" target="_blank"><span th:text="${searchItem.count}"></span></a>
+            </td>
+            <td>
+                <form th:action="@{/searches/__${searchItem.id}__}" th:method="delete" onsubmit="return confirm('Do your really want to delete this entry');">
+                    <input type="hidden">
+                    <button class="btn btn-danger btn-md" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>

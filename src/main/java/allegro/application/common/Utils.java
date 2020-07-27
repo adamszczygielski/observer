@@ -9,6 +9,7 @@ public class Utils {
 
     private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Europe/Warsaw");
     private static final String DATE_PATTERN = "HH:mm:ss";
+    private static final String ELLIPSIS = "...";
 
     private Utils() {
     }
@@ -30,5 +31,12 @@ public class Utils {
 
     public static Timestamp now() {
         return new Timestamp(System.currentTimeMillis());
+    }
+
+    public static String trim(String string, int max) {
+        if (string != null && string.length() > max) {
+            return string.substring(0, max - ELLIPSIS.length()) + ELLIPSIS;
+        }
+        return string;
     }
 }

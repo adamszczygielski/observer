@@ -15,11 +15,18 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/searches">Search</a>
-            <a class="nav-item nav-link active" href="/form">Form<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="/items">Items</a>
-        </div>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="/searches">Search</a>
+                    <a class="nav-item nav-link active" href="/form">Form</a>
+                    <a class="nav-item nav-link" href="/items">Items</a>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="/logout">
+            <button class="btn btn-danger btn-md" type="submit">Log out</button>
+        </form>
     </div>
 </nav>
 
