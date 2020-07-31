@@ -1,5 +1,5 @@
 # Observer application
-Observer is an application designed to collect and display listings from different sources by specific, predefined parameters.
+Application designed to collect and display listings from different sources by specific, predefined parameters.
 
 Available parameters:
 - Source
@@ -11,7 +11,7 @@ Available parameters:
 
 Supported platforms:
 - Allegro (Rest API)
-- eBAy (Rest API)
+- eBay (Rest API)
 - OLX (Web scrapping)
 
 ## Utilized technologies
@@ -24,6 +24,7 @@ Frameworks & libraries:
 - Bootstrap
 - H2
 - Hibernate
+- Jsoup
 - Maven
 - Spring
 - Spring Boot
