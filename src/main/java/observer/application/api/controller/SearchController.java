@@ -1,8 +1,8 @@
 package observer.application.api.controller;
 
 import observer.application.api.SearchDto;
-import observer.application.common.SearchAssembler;
-import observer.application.common.SearchViewAssembler;
+import observer.application.common.SearchMapper;
+import observer.application.common.SearchViewMapper;
 import observer.application.service.SearchService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,12 +20,12 @@ public class SearchController {
     public static final String API_PATH = "/searches";
 
     private final SearchService searchService;
-    private final SearchAssembler searchAssembler;
-    private final SearchViewAssembler searchViewAssembler;
+    private final SearchMapper searchMapper;
+    private final SearchViewMapper searchViewMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String fetchSearchViewList(Model model) {
-        model.addAttribute("searchViewDto", searchViewAssembler.toDtoList(searchService.fetchSearchViewList()));
+        model.addAttribute("searchViewDto", searchViewMapper.toDtoList(searchService.fetchSearchViewList()));
         model.addAttribute("searchDto", new SearchDto());
         return "searches";
     }
@@ -33,7 +33,7 @@ public class SearchController {
     @RequestMapping(method = RequestMethod.POST)
     public String addSearch(@ModelAttribute("searchDto") SearchDto searchDto, BindingResult bindingResult, Model model,
                             HttpServletRequest request) {
-        searchService.addSearch(searchAssembler.toSearch(searchDto));
+        searchService.addSearch(searchMapper.toSearch(searchDto));
         return goBack(request);
     }
 

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SearchAssembler {
+public class SearchMapper {
 
     public Search toSearch(SearchDto searchDto) {
         return Search.builder()

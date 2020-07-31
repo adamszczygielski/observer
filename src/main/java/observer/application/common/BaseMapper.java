@@ -3,7 +3,7 @@ package observer.application.common;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public interface BaseAssembler<F, T> {
+public interface BaseMapper<F, T> {
 
     T toDto(F from);
 

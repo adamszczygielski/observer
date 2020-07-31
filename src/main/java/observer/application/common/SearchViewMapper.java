@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import static observer.application.common.Utils.trim;
 
 @Component
-public class SearchViewAssembler implements BaseAssembler <SearchView, SearchViewDto> {
+public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
 
     private static final int MAX_LENGTH = 20;
 

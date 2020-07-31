@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import static observer.application.common.Utils.trim;
 
 @Component
-public class ItemAssembler implements BaseAssembler<Item, ItemDto> {
+public class ItemMapper implements BaseMapper<Item, ItemDto> {
 
     private static final int MAX_LENGTH = 40;
 

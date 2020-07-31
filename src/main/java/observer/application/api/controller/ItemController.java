@@ -1,6 +1,6 @@
 package observer.application.api.controller;
 
-import observer.application.common.ItemAssembler;
+import observer.application.common.ItemMapper;
 import observer.application.service.ApplicationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,23 +17,23 @@ public class ItemController {
     public static final String API_PATH = "/items";
 
     private final ApplicationService applicationService;
-    private final ItemAssembler itemAssembler;
+    private final ItemMapper itemMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String fetchActiveItems(Model model) {
-        model.addAttribute("items", itemAssembler.toDtoList(applicationService.fetchActiveItems()));
+        model.addAttribute("items", itemMapper.toDtoList(applicationService.fetchActiveItems()));
         return "items";
     }
 
     @RequestMapping(value = "/{searchId}", method = RequestMethod.GET)
     public String fetchItems(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemAssembler.toDtoList(applicationService.fetchItems(searchId)));
+        model.addAttribute("items", itemMapper.toDtoList(applicationService.fetchItems(searchId)));
         return "items";
     }
 
     @RequestMapping(value = "/{searchId}/preview", method = RequestMethod.GET)
     public String fetchItemsPreview(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemAssembler.toDtoList(applicationService.fetchItemsPreview(searchId)));
+        model.addAttribute("items", itemMapper.toDtoList(applicationService.fetchItemsPreview(searchId)));
         return "items-preview";
     }
 
