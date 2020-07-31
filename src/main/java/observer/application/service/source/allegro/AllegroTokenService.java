@@ -33,7 +33,7 @@ class AllegroTokenService {
 
     protected String fetchAccessToken() {
         if (validateToken(jwtToken)) {
-            return "Bearer " + jwtToken.getValue();
+            return jwtToken.getBearer();
         }
 
         log.log(Level.INFO, "Private token expired. Fetching new one.");
@@ -42,7 +42,7 @@ class AllegroTokenService {
         newJwtToken.setDateCreated(LocalDateTime.now());
         jwtToken = newJwtToken;
 
-        return "Bearer " + jwtToken.getValue();
+        return jwtToken.getBearer();
     }
 
     private String createRequestUrl() {

@@ -20,4 +20,7 @@ public class JwtToken implements Serializable {
     private String value;
     private LocalDateTime dateCreated;
 
+    protected String getBearer() {
+        return "Bearer " + value;
+    }
 }
