@@ -16,8 +16,8 @@ public class SearchMapper {
 
     public Search toSearch(SearchDto searchDto) {
         return Search.builder()
-                .keyword(searchDto.getKeyword())
-                .category(searchDto.getCategory())
+                .keyword(Utils.normalize(searchDto.getKeyword()))
+                .category(toCategory(searchDto))
                 .dateUpdated(new Timestamp(0))
                 .isActive(false)
                 .sourceId(searchDto.getSource().getId())
@@ -29,23 +29,33 @@ public class SearchMapper {
     private List<Parameter> toParameters(SearchDto searchDto) {
         List<Parameter> parameters = new ArrayList<>();
 
-        if(!StringUtils.isEmpty(searchDto.getPriceFrom())) {
-            Parameter parameter = Parameter.builder()
-                    .typeId(ParameterType.PRICE_FROM.getId())
-                    .value(searchDto.getPriceFrom())
-                    .build();
-            parameters.add(parameter);
+        Integer priceFrom = searchDto.getPriceFrom();
+        if (priceFrom != null) {
+            parameters.add(toParameter(ParameterType.PRICE_FROM, String.valueOf(priceFrom)));
         }
 
-        if(!StringUtils.isEmpty(searchDto.getPriceTo())) {
-            Parameter parameter = Parameter.builder()
-                    .typeId(ParameterType.PRICE_TO.getId())
-                    .value(searchDto.getPriceTo())
-                    .build();
-            parameters.add(parameter);
+        Integer priceTo = searchDto.getPriceTo();
+        if (priceTo != null) {
+            parameters.add(toParameter(ParameterType.PRICE_TO, String.valueOf(priceTo)));
         }
 
         return parameters;
+    }
+
+    private Parameter toParameter(ParameterType parameterType, String value) {
+        return Parameter.builder()
+                .typeId(parameterType.getId())
+                .value(value)
+                .build();
+    }
+
+    private String toCategory(SearchDto searchDto) {
+        String category = searchDto.getCategory();
+        if (StringUtils.isEmpty(category)) {
+            return null;
+        } else {
+            return category;
+        }
     }
 
 }

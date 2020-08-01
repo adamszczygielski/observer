@@ -8,13 +8,16 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(SearchController.API_PATH)
 @AllArgsConstructor
+@Validated
 public class SearchController {
 
     public static final String API_PATH = "/searches";
@@ -31,7 +34,7 @@ public class SearchController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String addSearch(@ModelAttribute("searchDto") SearchDto searchDto, BindingResult bindingResult, Model model,
+    public String addSearch(@ModelAttribute("searchDto") @Valid SearchDto searchDto, BindingResult bindingResult, Model model,
                             HttpServletRequest request) {
         searchService.addSearch(searchMapper.toSearch(searchDto));
         return goBack(request);

@@ -30,7 +30,7 @@ public class Search {
     private Timestamp dateUpdated;
 
     @Column(name = "TIME_INTERVAL")
-    private Long timeInterval;
+    private Short timeInterval;
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
