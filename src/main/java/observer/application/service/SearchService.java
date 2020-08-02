@@ -22,7 +22,7 @@ public class SearchService {
     }
 
     public void deleteSearch(Long searchId) {
-        searchRepository.deleteBySearchId(searchId);
+        searchRepository.deleteById(searchId);
     }
 
     public void addSearch(Search search) {

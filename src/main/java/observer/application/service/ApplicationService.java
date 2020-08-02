@@ -21,11 +21,11 @@ public class ApplicationService {
     private final ItemServiceFactory itemServiceFactory;
 
     public List<Item> fetchItems(Long searchId) {
-        return itemRepository.findActiveItemsBySearchId(searchId).orElseGet(ArrayList::new);
+        return itemRepository.findActive(searchId).orElseGet(ArrayList::new);
     }
 
     public List<Item> fetchActiveItems() {
-        return itemRepository.findActiveItems().orElseGet(ArrayList::new);
+        return itemRepository.findActive().orElseGet(ArrayList::new);
     }
 
     public List<Item> fetchItemsPreview(Long searchId) {
@@ -40,6 +40,6 @@ public class ApplicationService {
     }
 
     public void deleteItem(Long itemId) {
-        itemRepository.setItemInactive(itemId);
+        itemRepository.setInactive(itemId);
     }
 }
