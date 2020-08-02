@@ -52,7 +52,9 @@
             <td th:text="${searchItem.timeInterval}"></td>
             <td th:text="${searchItem.source}"></td>
             <td>
-                <a th:href="@{/items/} + ${searchItem.id}"><span th:text="${searchItem.count}"></span></a>
+                <span th:unless="${searchItem.count} == '0'">
+                    <a th:href="@{/items/} + ${searchItem.id}"><span th:text="${searchItem.count}"></span></a>
+                </span>
             </td>
             <td>
                 <form th:action="@{/searches/__${searchItem.id}__}" th:method="delete" onsubmit="return confirm('Do your really want to delete this entry');">
