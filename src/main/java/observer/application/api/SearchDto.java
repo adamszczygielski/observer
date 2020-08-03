@@ -20,10 +20,12 @@ public class SearchDto {
     @NotNull
     private Source source;
 
-    @PositiveOrZero
+    @Min(1)
+    @Max(100000)
     private Integer priceFrom;
 
-    @PositiveOrZero
+    @Min(1)
+    @Max(100000)
     private Integer priceTo;
 
 }
