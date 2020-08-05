@@ -15,10 +15,10 @@ import java.util.Optional;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    @Query("SELECT i FROM Item i WHERE i.searchId =:searchId AND i.isActive = true")
+    @Query("SELECT i FROM Item i WHERE i.searchId =:searchId AND i.isActive = true ORDER BY i.dateCreated DESC")
     Optional<List<Item>> findActive(@Param("searchId") Long searchId);
 
-    @Query("SELECT i FROM Item i WHERE i.isActive = true")
+    @Query("SELECT i FROM Item i WHERE i.isActive = true ORDER BY i.dateCreated DESC")
     Optional<List<Item>> findActive();
 
     @Modifying

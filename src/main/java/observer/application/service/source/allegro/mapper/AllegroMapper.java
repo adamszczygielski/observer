@@ -4,6 +4,7 @@ import observer.application.api.allegro.AllegroCategoryDto;
 import observer.application.domain.Item;
 import observer.application.service.source.allegro.model.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +45,12 @@ public class AllegroMapper {
         if (listingOffer.getVendor() != null) {
             return listingOffer.getVendor().getUrl();
         } else {
-            return "https://allegro.pl/i" + listingOffer.getId() + ".html";
+            return UriComponentsBuilder.newInstance()
+                    .scheme("https")
+                    .host("allegro.pl")
+                    .path("i{id}.html")
+                    .buildAndExpand(listingOffer.getId())
+                    .toUriString();
         }
     }
 }

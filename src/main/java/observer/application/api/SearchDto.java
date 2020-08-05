@@ -9,10 +9,13 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 public class SearchDto {
 
-    @Size(min = 3, max = 40)
+    @NotNull
+    @Size(max = 40)
+    @Pattern(regexp = "(.*[a-zA-Z\\d]){3}")
     private String keyword;
     private String category;
 
+    @NotNull
     @Min(1)
     @Max(1440)
     private Short interval;
