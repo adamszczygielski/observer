@@ -1,6 +1,8 @@
 package observer.application.service.source.olx;
 
+import observer.application.api.ParameterType;
 import observer.application.domain.Item;
+import observer.application.domain.Parameter;
 import observer.application.domain.Search;
 import observer.application.service.ItemService;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +36,7 @@ public class OlxService implements ItemService {
 
     private List<Item> fetchItems(Search search) {
         ArrayList<Item> items = new ArrayList<>();
-        Connection connection = Jsoup.connect(getRequestUrl(search.getKeyword()));
+        Connection connection = Jsoup.connect(getRequestUrl(search));
         Document document = null;
         try {
             document = connection.get();
@@ -70,10 +74,32 @@ public class OlxService implements ItemService {
         return items;
     }
 
-    private String getRequestUrl(String keyword) {
-        return "https://www.olx.pl/oferty/q-"
-                + keyword.replaceAll(" ", "-")
-                + "/?search%5Border%5D=created_at%3Adesc&spellchecker=off";
+    private String getRequestUrl(Search search) {
+
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
+                .scheme("https")
+                .host("www.olx.pl")
+                .pathSegment("oferty")
+                .pathSegment("q-{keyword}")
+                .path("/")
+                .queryParam("search%5Border%5D", "created_at%3Adesc")
+                .queryParam("spellchecker", "off");
+
+        List<Parameter> parameters = search.getParameterList();
+
+        if (!CollectionUtils.isEmpty(parameters)) {
+            String priceFrom = getParameterValue(parameters, ParameterType.PRICE_FROM);
+            if (priceFrom != null) {
+                uriComponentsBuilder.queryParam("search%5Bfilter_float_price%3Afrom%5D", priceFrom);
+            }
+
+            String priceTo = getParameterValue(parameters, ParameterType.PRICE_TO);
+            if (priceFrom != null) {
+                uriComponentsBuilder.queryParam("search%5Bfilter_float_price%3Ato%5D", priceTo);
+            }
+        }
+
+        return uriComponentsBuilder.buildAndExpand(getKeyword(search)).toUriString();
     }
 
     private String getItemUrl(Element element) {
@@ -87,5 +113,14 @@ public class OlxService implements ItemService {
 
     private String getPrice(String price) {
         return price.replace(" ", "").replace("zł", ".00 PLN");
+    }
+
+    private String getKeyword(Search search) {
+        return search.getKeyword().replaceAll(" ", "-");
+    }
+
+    private String getParameterValue(List<Parameter> parameters, ParameterType parameterType) {
+        return parameters.stream().filter(p -> p.getTypeId().equals(parameterType.getId())).findFirst()
+                .map(Parameter::getValue).orElse(null);
     }
 }

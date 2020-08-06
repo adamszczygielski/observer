@@ -20,8 +20,12 @@ public class AllegroMapper {
     }
 
     public List<AllegroCategoryDto> toAllegroCategories(List<CategoryDto> categories) {
-        return categories.stream().map(categoryDto -> AllegroCategoryDto.builder().id(categoryDto.getId())
-                .name(categoryDto.getName()).leaf(categoryDto.getLeaf()).build()).collect(Collectors.toList());
+        return categories.stream().map(categoryDto ->
+                AllegroCategoryDto.builder()
+                        .id(categoryDto.getId())
+                        .name(categoryDto.getName())
+                        .leaf(categoryDto.getLeaf())
+                        .build()).collect(Collectors.toList());
     }
 
     private Item toItem(ListingOffer listingOffer, Long searchId) {
