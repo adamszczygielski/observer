@@ -1,5 +1,6 @@
 package observer.application.service.source.allegro;
 
+import lombok.AllArgsConstructor;
 import observer.application.api.ParameterType;
 import observer.application.api.allegro.AllegroCategoryDto;
 import observer.application.domain.Item;
@@ -12,7 +13,6 @@ import observer.application.service.source.allegro.model.CategoriesDto;
 import observer.application.service.source.allegro.model.CategoryDto;
 import observer.application.service.source.allegro.model.ListingResponse;
 import observer.application.service.source.allegro.model.ListingResponseOffers;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class AllegroService implements ItemService {
+public class AllegroService extends ItemService {
 
     private final AllegroMapper mapper;
     private final AllegroTokenService tokenService;
@@ -118,10 +118,5 @@ public class AllegroService implements ItemService {
         }
 
         return uriComponentsBuilder.build().toUriString();
-    }
-
-    private String getParameterValue(List<Parameter> parameters, ParameterType parameterType) {
-        return parameters.stream().filter(p -> p.getTypeId().equals(parameterType.getId())).findFirst()
-                .map(Parameter::getValue).orElse(null);
     }
 }

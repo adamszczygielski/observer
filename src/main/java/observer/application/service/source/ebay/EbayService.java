@@ -1,6 +1,8 @@
 package observer.application.service.source.ebay;
 
+import observer.application.api.ParameterType;
 import observer.application.domain.Item;
+import observer.application.domain.Parameter;
 import observer.application.domain.Search;
 import observer.application.rest.RestInvoker;
 import observer.application.service.ItemService;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EbayService implements ItemService {
+public class EbayService extends ItemService {
 
     private final EbayMapper mapper;
     private final RestInvoker restInvoker;
@@ -34,14 +37,14 @@ public class EbayService implements ItemService {
 
     @Override
     public List<Item> getItems(Search search) {
-        List<SearchItem> searchItemList = fetchItems(search.getKeyword());
+        List<SearchItem> searchItemList = fetchItems(search.getKeyword(), search.getParameterList());
         return mapper.toItems(searchItemList, search);
     }
 
-    private List<SearchItem> fetchItems(String keyword) {
+    private List<SearchItem> fetchItems(String keyword, List<Parameter> parameters) {
 
         FindItemsByKeywordsResponse findItemsByKeywordsResponse = restInvoker.get(
-                createRequestUrl(keyword), createRequestHttpEntity(), FindItemsByKeywordsResponse.class);
+                createListingRequestUrl(keyword, parameters), createRequestHttpEntity(), FindItemsByKeywordsResponse.class);
 
         return Optional.of(findItemsByKeywordsResponse)
                 .map(BaseFindingServiceResponse::getSearchResult)
@@ -53,7 +56,7 @@ public class EbayService implements ItemService {
         return new HttpEntity<>(new HttpHeaders());
     }
 
-    private String createRequestUrl(String keyword) {
+    private String createListingRequestUrl(String keyword, List<Parameter> parameters) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("svcs.ebay.com")
@@ -68,6 +71,24 @@ public class EbayService implements ItemService {
                 .queryParam("keywords", keyword.replaceAll(" ", "+"))
                 .queryParam("sortOrder", "StartTimeNewest")
                 .queryParam("paginationInput.entriesPerPage", "30");
+
+        if (!CollectionUtils.isEmpty(parameters)) {
+            String priceFrom = getParameterValue(parameters, ParameterType.PRICE_FROM);
+            if (priceFrom != null) {
+                uriComponentsBuilder.queryParam("itemFilter(0).name", "MinPrice");
+                uriComponentsBuilder.queryParam("itemFilter(0).value", priceFrom);
+                uriComponentsBuilder.queryParam("itemFilter(0).paramName", "Currency");
+                uriComponentsBuilder.queryParam("itemFilter(0).paramValue", "PLN");
+            }
+
+            String priceTo = getParameterValue(parameters, ParameterType.PRICE_TO);
+            if (priceFrom != null) {
+                uriComponentsBuilder.queryParam("itemFilter(1).name", "MaxPrice");
+                uriComponentsBuilder.queryParam("itemFilter(1).value", priceTo);
+                uriComponentsBuilder.queryParam("itemFilter(1).paramName", "Currency");
+                uriComponentsBuilder.queryParam("itemFilter(1).paramValue", "PLN");
+            }
+        }
 
         return uriComponentsBuilder.build().toUriString();
     }

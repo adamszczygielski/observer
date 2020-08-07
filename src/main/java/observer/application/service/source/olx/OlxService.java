@@ -1,11 +1,11 @@
 package observer.application.service.source.olx;
 
+import lombok.AllArgsConstructor;
 import observer.application.api.ParameterType;
 import observer.application.domain.Item;
 import observer.application.domain.Parameter;
 import observer.application.domain.Search;
 import observer.application.service.ItemService;
-import lombok.AllArgsConstructor;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,7 +25,7 @@ import static observer.application.common.Utils.now;
 
 @Service
 @AllArgsConstructor
-public class OlxService implements ItemService {
+public class OlxService extends ItemService {
 
     private final Logger log = Logger.getLogger(getClass().getName());
 
@@ -117,10 +117,5 @@ public class OlxService implements ItemService {
 
     private String getKeyword(Search search) {
         return search.getKeyword().replaceAll(" ", "-");
-    }
-
-    private String getParameterValue(List<Parameter> parameters, ParameterType parameterType) {
-        return parameters.stream().filter(p -> p.getTypeId().equals(parameterType.getId())).findFirst()
-                .map(Parameter::getValue).orElse(null);
     }
 }
