@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="/resources/bootstrap.min.css">
     <link rel="shortcut icon" href="/resources/favicon.ico">
 </head>
-<body onload="javascript:getCategories()">
+<body onload="javascript:getCategories();javascript:disableElements()">
+<script src="/resources/form.js"></script>
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
 
@@ -36,7 +37,7 @@
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputSource">Source</label>
-                <select th:field="*{source}" class="form-control" id="inputSource" required>
+                <select th:field="*{source}" class="form-control" id="inputSource"  onclick="disableElements()" required>
                     <option th:each="sourceOpt : ${T(observer.application.api.Source).values()}"
                             th:value="${sourceOpt}" th:text="${sourceOpt.label}">
                     </option>
@@ -57,7 +58,7 @@
                 <input class="form-control" type="text" id="inputCategory" name="inputCategory" th:field="*{category}" readonly>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" onclick="getCategories()">Select</button>
+        <button type="button" class="btn btn-primary" id="selectCategoryButton" onclick="getCategories()">Select</button>
         <button type="button" class="btn btn-primary" onclick="clearCategories()">Cancel</button>
         <div class="form-row pt-4">
             <div class="form-group col-md-4">
@@ -84,44 +85,5 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-
-<script>
-    function clearCategories() {
-        document.getElementById("category").length = 0;
-        getCategories();
-    }
-</script>
-
-<script>
-    function getCategories() {
-        var request = new XMLHttpRequest()
-        var select = document.getElementById("category");
-
-        var selectedId = '';
-
-        if(typeof select.options[select.selectedIndex] != 'undefined') {
-            selectedId = select.options[select.selectedIndex].value;
-        }
-
-        request.open('GET', '/util/categories/allegro?id=' + selectedId, true);
-
-        request.onload = function () {
-            var data = JSON.parse(this.response);
-            document.getElementById("inputCategory").value = selectedId;
-
-            if(Object.keys(data).length == 0) return;
-            select.options.length = 0;
-
-            data.forEach((category) => {
-                var el = document.createElement("option");
-                el.textContent = category.name;
-                el.value = category.id;
-                select.appendChild(el);
-            })
-        }
-        request.send()
-    }
-</script>
-
 </body>
 </html>
