@@ -1,4 +1,4 @@
-package observer.application;
+package observer.application.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

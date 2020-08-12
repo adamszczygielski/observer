@@ -1,14 +1,13 @@
 package observer.application.service;
 
+import lombok.AllArgsConstructor;
 import observer.application.domain.Search;
 import observer.application.domain.SearchView;
 import observer.application.repository.SearchRepository;
 import observer.application.repository.SearchViewRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +25,6 @@ public class SearchService {
     }
 
     public void addSearch(Search search) {
-        Optional.ofNullable(search).ifPresent(s -> searchRepository.save(search));
+        searchRepository.save(search);
     }
 }

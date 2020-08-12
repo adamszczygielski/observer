@@ -37,7 +37,7 @@
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputSource">Source</label>
-                <select th:field="*{source}" class="form-control" id="inputSource"  onclick="disableElements()" required>
+                <select th:field="*{source}" class="form-control" id="inputSource"  onchange="disableElements()" required>
                     <option th:each="sourceOpt : ${T(observer.application.api.Source).values()}"
                             th:value="${sourceOpt}" th:text="${sourceOpt.label}">
                     </option>

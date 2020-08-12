@@ -1,4 +1,4 @@
-package observer.application;
+package observer.application.config;
 
 import observer.application.rest.RestInvoker;
 import observer.application.rest.RestInvokerImpl;

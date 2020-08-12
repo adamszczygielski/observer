@@ -1,6 +1,6 @@
-package observer.application;
+package observer.application.config;
 
-import observer.application.api.controller.SearchController;
+import observer.application.api.controller.ItemController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl(SearchController.API_PATH, true)
+                .defaultSuccessUrl(ItemController.API_PATH, true)
                 .and()
                 .logout().permitAll();
 
