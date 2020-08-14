@@ -87,7 +87,7 @@ public class OlxService extends ItemService {
 
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
-                .host("www.olxoooo.pl")
+                .host("www.olx.pl")
                 .pathSegment("oferty")
                 .pathSegment("q-{keyword}")
                 .path("/")
