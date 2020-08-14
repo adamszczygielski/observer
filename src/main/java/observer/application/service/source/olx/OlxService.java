@@ -16,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,16 +37,14 @@ public class OlxService extends ItemService {
 
     private List<Item> fetchItems(Search search) {
         ArrayList<Item> items = new ArrayList<>();
-        Connection connection = Jsoup.connect(getRequestUrl(search));
-        Document document = null;
-        try {
-            document = connection.get();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        Document document = getDocument(search);
+        if(document == null) {
+            return items;
         }
 
-        Elements noItemsInfo = document.select("p > span");
-        if (noItemsInfo.get(0).text().equals("Sprawdź poprawność albo spróbuj bardziej ogólnego zapytania")) {
+        Elements noItemsInfo = document.select("h1");
+        if (noItemsInfo.get(0).text().equals("Brak wyników")) {
             return items;
         }
 
@@ -74,15 +73,25 @@ public class OlxService extends ItemService {
         return items;
     }
 
+    private Document getDocument(Search search) {
+        Connection connection = Jsoup.connect(getRequestUrl(search));
+        try {
+            return connection.get();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private String getRequestUrl(Search search) {
 
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
-                .host("www.olx.pl")
+                .host("www.olxoooo.pl")
                 .pathSegment("oferty")
                 .pathSegment("q-{keyword}")
                 .path("/")
-                .queryParam("search%5Border%5D", "created_at%3Adesc")
+                .queryParam("search[order]", "created_at:desc")
                 .queryParam("spellchecker", "off");
 
         List<Parameter> parameters = search.getParameterList();
@@ -90,16 +99,19 @@ public class OlxService extends ItemService {
         if (!CollectionUtils.isEmpty(parameters)) {
             String priceFrom = getParameterValue(parameters, ParameterType.PRICE_FROM);
             if (priceFrom != null) {
-                uriComponentsBuilder.queryParam("search%5Bfilter_float_price%3Afrom%5D", priceFrom);
+                uriComponentsBuilder.queryParam("search[filter_float_price:from]", priceFrom);
             }
 
             String priceTo = getParameterValue(parameters, ParameterType.PRICE_TO);
             if (priceFrom != null) {
-                uriComponentsBuilder.queryParam("search%5Bfilter_float_price%3Ato%5D", priceTo);
+                uriComponentsBuilder.queryParam("search[filter_float_price:to]", priceTo);
             }
         }
 
-        return uriComponentsBuilder.buildAndExpand(getKeyword(search)).toUriString();
+        return uriComponentsBuilder
+                .buildAndExpand(getKeyword(search))
+                .encode(StandardCharsets.UTF_8)
+                .toUriString();
     }
 
     private String getItemUrl(Element element) {
