@@ -24,15 +24,18 @@ public class SearchExecutor {
     private final ItemServiceFactory itemServiceFactory;
     private final Integer chunk;
     private final Long delay;
+    private final Long uncheckedLimit;
 
     private final Logger log = Logger.getLogger(getClass().getName());
 
     public SearchExecutor(SearchRepository searchRepository, ItemServiceFactory itemServiceFactory,
-                          @Value("${search.chunk}") Integer chunk, @Value("${item.delay}") Long delay) {
+                          @Value("${search.chunk}") Integer chunk, @Value("${item.delay}") Long delay,
+                          @Value("${search.unchecked-limit}") Long uncheckedLimit) {
         this.searchRepository = searchRepository;
         this.itemServiceFactory = itemServiceFactory;
         this.chunk = chunk;
         this.delay = delay;
+        this.uncheckedLimit = uncheckedLimit;
     }
 
     @Transactional
@@ -50,9 +53,13 @@ public class SearchExecutor {
     }
 
     private void updateSearch(Search search) {
+        //check limit
+        if (isAboveLimit(search)) {
+            return;
+        }
+
         //fetch items
         List<Item> fetchedItems = fetchItems(search);
-
         List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
         List<String> searchItemsIds = search.getItemList().stream().map(Item::getOriginId).collect(Collectors.toList());
 
@@ -68,6 +75,10 @@ public class SearchExecutor {
 
         //save to db
         save(search);
+    }
+
+    private boolean isAboveLimit(Search search) {
+        return search.getItemList().stream().filter(Item::getIsActive).count() > uncheckedLimit;
     }
 
     private List<Item> fetchItems(Search search) {
