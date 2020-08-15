@@ -35,12 +35,7 @@ public class OlxService extends ItemService {
         ArrayList<Item> items = new ArrayList<>();
 
         Document document = getDocument(search);
-        if(document == null) {
-            return items;
-        }
-
-        Elements noItemsInfo = document.select("h1");
-        if (noItemsInfo.get(0).text().equals("Brak wyników")) {
+        if (document == null || !containsItems(document)) {
             return items;
         }
 
@@ -61,6 +56,11 @@ public class OlxService extends ItemService {
         }
 
         return items;
+    }
+
+    private boolean containsItems(Document document) {
+        Elements noItemsResponse = document.select("#body-container > div > div > div > p");
+        return noItemsResponse.size() != 1;
     }
 
     private Document getDocument(Search search) {
