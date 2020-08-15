@@ -1,7 +1,6 @@
 package observer.application.service.source.ebay.mapper;
 
 import observer.application.domain.Item;
-import observer.application.domain.Search;
 import observer.application.service.source.ebay.model.Amount;
 import observer.application.service.source.ebay.model.SearchItem;
 import observer.application.service.source.ebay.model.SellingStatus;
@@ -18,8 +17,8 @@ public class EbayMapper {
 
     private final DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
-    public List<Item> toItems(List<SearchItem> searchItemList, Search search) {
-        return searchItemList.stream().map(searchItem -> toItem(searchItem, search.getId()))
+    public List<Item> toItems(List<SearchItem> searchItemList, Long searchId) {
+        return searchItemList.stream().map(searchItem -> toItem(searchItem, searchId))
                 .collect(Collectors.toList());
     }
 
@@ -29,13 +28,13 @@ public class EbayMapper {
                 .searchId(searchId)
                 .dateCreated(now())
                 .title(searchItem.getTitle())
-                .price(getPrice(searchItem.getSellingStatus()))
+                .price(toPrice(searchItem.getSellingStatus()))
                 .url(searchItem.getViewItemURL())
                 .isActive(true)
                 .build();
     }
 
-    private String getPrice(SellingStatus sellingStatus) {
+    private String toPrice(SellingStatus sellingStatus) {
         Amount amount = sellingStatus.getCurrentPrice();
         return  decimalFormat.format(amount.getValue()) + " " + amount.getCurrencyId();
     }

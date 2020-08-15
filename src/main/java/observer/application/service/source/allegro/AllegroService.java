@@ -9,10 +9,7 @@ import observer.application.domain.Search;
 import observer.application.rest.RestInvoker;
 import observer.application.service.ItemService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
-import observer.application.service.source.allegro.model.CategoriesDto;
-import observer.application.service.source.allegro.model.CategoryDto;
-import observer.application.service.source.allegro.model.ListingResponse;
-import observer.application.service.source.allegro.model.ListingResponseOffers;
+import observer.application.service.source.allegro.model.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -37,8 +34,8 @@ public class AllegroService extends ItemService {
 
     @Override
     public List<Item> getItems(Search search) {
-        ListingResponseOffers listingResponseOffers = fetchItems(search.getKeyword(), search.getCategory(), search.getParameterList());
-        return mapper.toItems(listingResponseOffers, search.getId());
+        List<ListingOffer> listingOffers = fetchListingOffers(search.getKeyword(), search.getCategory(), search.getParameterList());
+        return mapper.toItems(listingOffers, search.getId());
     }
 
     public List<AllegroCategoryDto> getCategories(String parentId) {
@@ -50,7 +47,7 @@ public class AllegroService extends ItemService {
         CategoriesDto categoriesDto = categoriesDtoCache.get(parentId);
         if (categoriesDto == null) {
             categoriesDto = restInvoker.get(
-                    createCategoryRequestUrl(parentId), createRequestHttpEntity(), CategoriesDto.class);
+                    createCategoryRequestUrl(parentId), createHttpEntity(), CategoriesDto.class);
 
             categoriesDtoCache.putIfAbsent(parentId, categoriesDto);
         }
@@ -60,16 +57,17 @@ public class AllegroService extends ItemService {
                 .orElseGet(ArrayList::new);
     }
 
-    private ListingResponseOffers fetchItems(String keyword, String categoryId, List<Parameter> parameters) {
+    private List<ListingOffer> fetchListingOffers(String keyword, String categoryId, List<Parameter> parameters) {
         ListingResponse listingResponse = restInvoker.get(
-                createListingRequestUrl(keyword, categoryId, parameters), createRequestHttpEntity(), ListingResponse.class);
+                createListingRequestUrl(keyword, categoryId, parameters), createHttpEntity(), ListingResponse.class);
 
         return Optional.of(listingResponse)
                 .map(ListingResponse::getItems)
-                .orElse(new ListingResponseOffers());
+                .map(ListingResponseOffers::getRegular)
+                .orElse(new ArrayList<>());
     }
 
-    private HttpEntity<String> createRequestHttpEntity() {
+    private HttpEntity<String> createHttpEntity() {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.set("Accept", "application/vnd.allegro.public.v1+json");

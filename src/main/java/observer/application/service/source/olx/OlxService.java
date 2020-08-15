@@ -19,16 +19,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static observer.application.common.Utils.now;
 
 @Service
 @AllArgsConstructor
 public class OlxService extends ItemService {
-
-    private final Logger log = Logger.getLogger(getClass().getName());
 
     @Override
     public List<Item> getItems(Search search) {
@@ -53,19 +49,13 @@ public class OlxService extends ItemService {
         Elements urls = document.select("h3 > a[href]");
         Elements originIds = document.select("td > div > table");
 
-        int quantity = titles.size();
-        if (prices.size() != quantity || urls.size() != quantity || originIds.size() != quantity) {
-            log.log(Level.SEVERE, "Parser error while trying to fetch: " + search.getKeyword());
-            return items;
-        }
-
         for (int i = 0; i < titles.size(); i++) {
             items.add(Item.builder().originId(originIds.get(i).attr("data-id"))
                     .searchId(search.getId())
                     .dateCreated(now())
                     .title(titles.get(i).text())
-                    .price(getPrice(prices.get(i).text()))
-                    .url(getItemUrl(urls.get(i)))
+                    .price(toPrice(prices.get(i)))
+                    .url(toItemUrl(urls.get(i)))
                     .isActive(true)
                     .build());
         }
@@ -109,12 +99,12 @@ public class OlxService extends ItemService {
         }
 
         return uriComponentsBuilder
-                .buildAndExpand(getKeyword(search))
+                .buildAndExpand(toKeyword(search))
                 .encode(StandardCharsets.UTF_8)
                 .toUriString();
     }
 
-    private String getItemUrl(Element element) {
+    private String toItemUrl(Element element) {
         String url = element.attr("href");
         int endIndex = url.indexOf("#");
         if (endIndex > 0) {
@@ -123,11 +113,11 @@ public class OlxService extends ItemService {
         return url;
     }
 
-    private String getPrice(String price) {
-        return price.replace(" ", "").replace("zł", ".00 PLN");
+    private String toPrice(Element element) {
+        return element.text().replace(" ", "").replace("zł", ".00 PLN");
     }
 
-    private String getKeyword(Search search) {
+    private String toKeyword(Search search) {
         return search.getKeyword().replaceAll(" ", "-");
     }
 }

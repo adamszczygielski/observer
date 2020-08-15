@@ -37,14 +37,14 @@ public class EbayService extends ItemService {
 
     @Override
     public List<Item> getItems(Search search) {
-        List<SearchItem> searchItemList = fetchItems(search.getKeyword(), search.getParameterList());
-        return mapper.toItems(searchItemList, search);
+        List<SearchItem> searchItemList = fetchSearchItems(search.getKeyword(), search.getParameterList());
+        return mapper.toItems(searchItemList, search.getId());
     }
 
-    private List<SearchItem> fetchItems(String keyword, List<Parameter> parameters) {
+    private List<SearchItem> fetchSearchItems(String keyword, List<Parameter> parameters) {
 
         FindItemsByKeywordsResponse findItemsByKeywordsResponse = restInvoker.get(
-                createListingRequestUrl(keyword, parameters), createRequestHttpEntity(), FindItemsByKeywordsResponse.class);
+                createListingRequestUrl(keyword, parameters), createHttpEntity(), FindItemsByKeywordsResponse.class);
 
         return Optional.of(findItemsByKeywordsResponse)
                 .map(BaseFindingServiceResponse::getSearchResult)
@@ -52,7 +52,7 @@ public class EbayService extends ItemService {
                 .orElse(new ArrayList<>());
     }
 
-    private HttpEntity<String> createRequestHttpEntity() {
+    private HttpEntity<String> createHttpEntity() {
         return new HttpEntity<>(new HttpHeaders());
     }
 
