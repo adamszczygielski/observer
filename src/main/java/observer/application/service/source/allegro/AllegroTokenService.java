@@ -10,8 +10,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Service
 class AllegroTokenService {
@@ -19,8 +17,6 @@ class AllegroTokenService {
     private final int jwtTokenHours;
     private final String privateToken;
     private final RestInvoker restInvoker;
-
-    private final Logger log = Logger.getLogger(getClass().getName());
 
     private JwtToken jwtToken;
 
@@ -35,9 +31,6 @@ class AllegroTokenService {
         if (validateToken(jwtToken)) {
             return jwtToken.getBearer();
         }
-
-        log.log(Level.INFO, "Private token expired. Fetching new one.");
-
         JwtToken newJwtToken = restInvoker.post(createRequestUrl(), createRequestHttpEntity(), JwtToken.class);
         newJwtToken.setDateCreated(LocalDateTime.now());
         jwtToken = newJwtToken;

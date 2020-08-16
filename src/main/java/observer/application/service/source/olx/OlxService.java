@@ -74,7 +74,6 @@ public class OlxService extends ItemService {
     }
 
     private String getRequestUrl(Search search) {
-
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("www.olx.pl")

@@ -1,5 +1,6 @@
 package observer.application.config;
 
+import observer.application.logger.AspectLogger;
 import observer.application.rest.RestInvoker;
 import observer.application.rest.RestInvokerImpl;
 import org.springframework.context.annotation.Bean;
@@ -12,5 +13,10 @@ public class ApplicationConfig {
     @Bean("restInvoker")
     public RestInvoker getRestInvoker() {
         return new RestInvokerImpl(new RestTemplate());
+    }
+
+    @Bean("aspectLogger")
+    public AspectLogger getAspectLogger() {
+        return new AspectLogger();
     }
 }

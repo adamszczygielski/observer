@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static observer.application.common.Utils.now;
@@ -25,8 +23,6 @@ public class SearchExecutor {
     private final Integer chunk;
     private final Long delay;
     private final Long uncheckedLimit;
-
-    private final Logger log = Logger.getLogger(getClass().getName());
 
     public SearchExecutor(SearchRepository searchRepository, ItemServiceFactory itemServiceFactory,
                           @Value("${search.chunk}") Integer chunk, @Value("${item.delay}") Long delay,
@@ -41,14 +37,12 @@ public class SearchExecutor {
     @Transactional
     public void executeAll() {
         List<Search> searchList = searchRepository.findAllToUpdate(now(), PageRequest.of(0, chunk));
-        log.log(Level.INFO, "Found " + searchList.size() + " search queries to execute");
         searchList.forEach(this::updateSearch);
     }
 
     @Transactional
     public void executeAllImmediately() {
         List<Search> searchList = searchRepository.findAll();
-        log.log(Level.INFO, "Found " + searchList.size() + " search queries to execute");
         searchList.forEach(this::updateSearch);
     }
 
@@ -70,7 +64,6 @@ public class SearchExecutor {
 
         //filter new items, add all
         fetchedItems.removeIf(item -> searchItemsIds.contains(item.getOriginId()));
-        log.log(Level.INFO, "There's " + fetchedItems.size() + " new items");
         search.getItemList().addAll(fetchedItems);
 
         //save to db
@@ -82,17 +75,13 @@ public class SearchExecutor {
     }
 
     private List<Item> fetchItems(Search search) {
-        log.log(Level.INFO, "Executing search query with id: " + search.getId() + ", source: " + search.getSourceId());
         Source source = Source.getSource(search.getSourceId());
         ItemService itemService = itemServiceFactory.create(source);
-        List<Item> fetchedItems = itemService.getItems(search);
-        log.log(Level.INFO, "Fetched " + fetchedItems.size() + " items");
-        return fetchedItems;
+        return itemService.getItems(search);
     }
 
     private void save(Search search) {
         search.setDateUpdated(now());
         searchRepository.save(search);
-        log.log(Level.INFO, "Saved to database");
     }
 }

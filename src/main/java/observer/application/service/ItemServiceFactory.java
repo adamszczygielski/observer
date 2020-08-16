@@ -23,7 +23,7 @@ class ItemServiceFactory implements AbstractFactory<ItemService> {
             case EBAY:
                 return ebayService;
             default:
-                throw new IllegalArgumentException("No service implementation for : " + source.getLabel());
+                throw new IllegalArgumentException("No service implementation for: " + source.getLabel());
         }
     }
 }
