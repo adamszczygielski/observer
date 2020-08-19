@@ -12,17 +12,18 @@ import java.time.Instant;
 @Aspect
 @Slf4j
 public class AspectLogger {
-    
+
     private static final String ITEM_SERVICES_POINTCUT =
             "execution(* observer.application.service.source.*.*.getItems(observer.application.domain.Search))";
+
     private static final String SEARCH_SERVICE_POINTCUT =
             "execution(* observer.application.service.SearchExecutor.executeAll())";
 
     @Around(ITEM_SERVICES_POINTCUT)
     public Object logItemServices(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.info("Invoking method: {}", joinPoint.getSignature().toShortString());
         Search search = (Search) joinPoint.getArgs()[0];
-        log.info("Arguments: {}", search.getKeyword());
+        log.info("Invoking method: {}, searchId: {}, sourceId: {}", joinPoint.getSignature().toShortString(),
+                search.getId(), search.getSourceId());
 
         return joinPoint.proceed();
     }
@@ -32,10 +33,10 @@ public class AspectLogger {
         Instant startTime = Instant.now();
         Object obj = joinPoint.proceed();
         Instant endTime = Instant.now();
-
         log.info("{}, execution time: {} {} ", joinPoint.getSignature().toShortString(),
                 Duration.between(startTime, endTime).getSeconds(), "sec.");
 
         return obj;
     }
+
 }

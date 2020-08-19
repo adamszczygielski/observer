@@ -21,6 +21,7 @@ Languages:
 - SQL
 
 Frameworks & libraries:
+- AspectJ
 - Bootstrap
 - H2
 - Hibernate
