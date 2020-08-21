@@ -20,14 +20,14 @@ function clearCategories() {
 function getCategories() {
     var request = new XMLHttpRequest()
     var select = document.getElementById("category");
-
+    var url = '/util/categories/allegro';
     var selectedId = '';
 
     if (typeof select.options[select.selectedIndex] != 'undefined') {
         selectedId = select.options[select.selectedIndex].value;
+        url += '?id=' + selectedId;
     }
-
-    request.open('GET', '/util/categories/allegro?id=' + selectedId, true);
+    request.open('GET', url, true);
 
     request.onload = function() {
         var data = JSON.parse(this.response);

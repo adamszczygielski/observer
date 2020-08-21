@@ -20,7 +20,7 @@ public class UtilController {
     private final SearchExecutor searchExecutor;
 
     @GetMapping("/categories/allegro")
-    public List<AllegroCategoryDto> categories(@RequestParam(value = "id", required = false) String parentId) {
+    public List<AllegroCategoryDto> categories(@RequestParam(value = "id", required = false, defaultValue = "0") String parentId) {
         return allegroService.getCategories(parentId);
     }
 

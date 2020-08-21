@@ -111,7 +111,7 @@ public class AllegroService extends ItemService {
                 .host("api.allegro.pl")
                 .pathSegment("sale", "categories");
 
-        if (!StringUtils.isEmpty(parentId)) {
+        if (!parentId.equals("0")) {
             uriComponentsBuilder.queryParam("parent.id", parentId);
         }
 
