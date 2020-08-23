@@ -11,6 +11,7 @@
 <body>
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
+<script src="/resources/toggle.js"></script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +33,7 @@
     </div>
 </nav>
 
+<form th:action="@{/searches}" th:method="delete">
 <div class="container my-4">
     <table id="items-table" class="table table-md">
         <thead>
@@ -42,7 +44,7 @@
             <th scope="col">Interval</th>
             <th scope="col">Source</th>
             <th>New</th>
-            <th></th>
+            <th scope="col"><input type="checkbox" onclick="toggle(this)"></th>
         </tr>
         </thead>
         <tbody>
@@ -58,16 +60,28 @@
                 </span>
             </td>
             <td>
-                <form th:action="@{/searches/__${searchItem.id}__}" th:method="delete" onsubmit="return confirm('Do your really want to delete this entry');">
-                    <input type="hidden">
-                    <button class="btn btn-danger btn-md" type="submit">Delete</button>
-                </form>
+                <div class="form-check">
+                    <input class="form-check-input" name="id" type="checkbox" th:value="${searchItem.id}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <input type="hidden" name="id" value="0">
+                <button class="btn btn-danger btn-md" type="submit">Delete</button>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<script src="/resources/search-counter.js"></script>
+</form>
 
+<script src="/resources/search-counter.js"></script>
 </body>
 </html>

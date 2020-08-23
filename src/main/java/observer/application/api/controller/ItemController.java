@@ -1,13 +1,17 @@
 package observer.application.api.controller;
 
+import lombok.AllArgsConstructor;
 import observer.application.common.ItemMapper;
 import observer.application.service.ApplicationService;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping(ItemController.API_PATH)
@@ -37,9 +41,9 @@ public class ItemController {
         return "items-preview";
     }
 
-    @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE)
-    public String deleteItem(@PathVariable Long itemId, HttpServletRequest request) {
-        applicationService.deleteItem(itemId);
+    @RequestMapping(method = RequestMethod.DELETE)
+    public String deleteItems(@RequestParam("id") List<Long> itemIds, HttpServletRequest request) {
+        applicationService.deleteItems(itemIds);
         return "redirect:" + request.getHeader("Referer");
     }
 }

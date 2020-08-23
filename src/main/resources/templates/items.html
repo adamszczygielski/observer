@@ -11,6 +11,7 @@
 <body>
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
+<script src="/resources/toggle.js"></script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,19 +28,20 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" action="/logout">
-            <button class="btn btn-danger btn-md" type="submit">Log out</button>
+            <button class="btn btn-danger btn-md ml-2" type="submit">Log out</button>
         </form>
     </div>
 </nav>
 
+<form th:action="@{/items}" th:method="delete">
 <div class="container my-4">
     <table id="items-table" class="table table-md">
         <thead>
             <tr>
-                <th scope="col">Item ID</th>
+                <th scope="col">ID</th>
                 <th scope="col">Title</th>
                 <th scope="col">Price</th>
-                <th scope="col"></th>
+                <th scope="col"><input type="checkbox" onclick="toggle(this)"></th>
             </tr>
         </thead>
         <tbody>
@@ -48,15 +50,24 @@
                 <td class="align-middle" th:text="${item.title}"></td>
                 <td th:text="${item.price}"></td>
                 <td>
-                    <form th:action="@{/items/__${item.itemId}__}" th:method="delete">
-                        <input type="hidden">
-                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                    </form>
+                    <div class="form-check">
+                        <input class="form-check-input" name="id" type="checkbox" th:value="${item.itemId}">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="hidden" name="id" value="0">
+                    <button class="btn btn-danger btn-md" type="submit">Delete</button>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+</form>
 
 <script src="/resources/item-counter.js"></script>
 </body>

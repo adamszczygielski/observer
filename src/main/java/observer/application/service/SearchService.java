@@ -20,8 +20,8 @@ public class SearchService {
         return searchViewRepository.findAll();
     }
 
-    public void deleteSearch(Long searchId) {
-        searchRepository.deleteById(searchId);
+    public void deleteSearches(List<Long> searchIds) {
+        searchRepository.deleteAllByIds(searchIds);
     }
 
     public void addSearch(Search search) {

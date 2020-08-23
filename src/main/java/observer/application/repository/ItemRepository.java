@@ -24,4 +24,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Modifying
     @Query("UPDATE Item i SET i.isActive = false WHERE i.id =:itemId")
     void setInactive(@Param("itemId") Long itemId);
+
+    @Modifying
+    @Query("UPDATE Item i SET i.isActive = false WHERE i.id IN :itemIds")
+    void setInactive(@Param("itemIds") List<Long> itemIds);
 }

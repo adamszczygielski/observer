@@ -1,10 +1,10 @@
 package observer.application.api.controller;
 
+import lombok.AllArgsConstructor;
 import observer.application.api.SearchDto;
 import observer.application.common.SearchMapper;
 import observer.application.common.SearchViewMapper;
 import observer.application.service.SearchService;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(SearchController.API_PATH)
@@ -40,9 +41,9 @@ public class SearchController {
         return goBack(request);
     }
 
-    @RequestMapping(value = "/{searchId}", method = RequestMethod.DELETE)
-    public String deleteSearch(@PathVariable Long searchId, HttpServletRequest request) {
-        searchService.deleteSearch(searchId);
+    @RequestMapping(method = RequestMethod.DELETE)
+    public String deleteSearches(@RequestParam("id") List<Long> searchIds, HttpServletRequest request) {
+        searchService.deleteSearches(searchIds);
         return goBack(request);
     }
 
