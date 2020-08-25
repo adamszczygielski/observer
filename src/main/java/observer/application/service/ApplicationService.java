@@ -39,10 +39,6 @@ public class ApplicationService {
         return itemService.getItems(search);
     }
 
-    public void deleteItem(Long itemId) {
-        itemRepository.setInactive(itemId);
-    }
-
     public void deleteItems(List<Long> itemIds) {
         itemRepository.setInactive(itemIds);
     }

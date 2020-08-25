@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 @Service
-class AllegroTokenService {
+class TokenService {
 
     private final int jwtTokenHours;
     private final String privateToken;
@@ -20,8 +20,8 @@ class AllegroTokenService {
 
     private JwtToken jwtToken;
 
-    public AllegroTokenService(@Value("${allegro.token.private}") String privateToken, RestInvoker restInvoker,
-                               @Value("${allegro.token.jwt.hours}") String jwtTokenHours) {
+    public TokenService(@Value("${allegro.token.private}") String privateToken, RestInvoker restInvoker,
+                        @Value("${allegro.token.jwt.hours}") String jwtTokenHours) {
         this.privateToken = privateToken;
         this.jwtTokenHours = Integer.parseInt(jwtTokenHours);
         this.restInvoker = restInvoker;

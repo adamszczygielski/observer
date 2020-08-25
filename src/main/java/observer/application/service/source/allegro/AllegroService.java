@@ -1,5 +1,6 @@
 package observer.application.service.source.allegro;
 
+import com.google.common.cache.LoadingCache;
 import lombok.AllArgsConstructor;
 import observer.application.api.ParameterType;
 import observer.application.api.allegro.AllegroCategoryDto;
@@ -9,7 +10,10 @@ import observer.application.domain.Search;
 import observer.application.rest.RestInvoker;
 import observer.application.service.ItemService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
-import observer.application.service.source.allegro.model.*;
+import observer.application.service.source.allegro.model.CategoryDto;
+import observer.application.service.source.allegro.model.ListingOffer;
+import observer.application.service.source.allegro.model.ListingResponse;
+import observer.application.service.source.allegro.model.ListingResponseOffers;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,7 +23,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +31,9 @@ import java.util.Optional;
 public class AllegroService extends ItemService {
 
     private final AllegroMapper mapper;
-    private final AllegroTokenService tokenService;
+    private final TokenService tokenService;
     private final RestInvoker restInvoker;
-    private final HashMap<String, CategoriesDto> categoriesDtoCache = new HashMap<>();
+    private final LoadingCache<String, List<CategoryDto>> categoryDtoCache;
 
     @Override
     public List<Item> getItems(Search search) {
@@ -39,22 +42,8 @@ public class AllegroService extends ItemService {
     }
 
     public List<AllegroCategoryDto> getCategories(String parentId) {
-        List<CategoryDto> categories = fetchCategories(parentId);
+        List<CategoryDto> categories = categoryDtoCache.getUnchecked(parentId);
         return mapper.toAllegroCategories(categories);
-    }
-
-    private List<CategoryDto> fetchCategories(String parentId) {
-        CategoriesDto categoriesDto = categoriesDtoCache.get(parentId);
-        if (categoriesDto == null) {
-            categoriesDto = restInvoker.get(
-                    createCategoryRequestUrl(parentId), createHttpEntity(), CategoriesDto.class);
-
-            categoriesDtoCache.putIfAbsent(parentId, categoriesDto);
-        }
-
-        return Optional.of(categoriesDto)
-                .map(CategoriesDto::getCategories)
-                .orElseGet(ArrayList::new);
     }
 
     private List<ListingOffer> fetchListingOffers(String keyword, String categoryId, List<Parameter> parameters) {
@@ -105,16 +94,4 @@ public class AllegroService extends ItemService {
         return uriComponentsBuilder.build().toUriString();
     }
 
-    private String createCategoryRequestUrl(String parentId) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("api.allegro.pl")
-                .pathSegment("sale", "categories");
-
-        if (!parentId.equals("0")) {
-            uriComponentsBuilder.queryParam("parent.id", parentId);
-        }
-
-        return uriComponentsBuilder.build().toUriString();
-    }
 }
