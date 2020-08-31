@@ -3,7 +3,7 @@ var text;
 var table = document.getElementById("items-table");
 
 for (var i = 1; i < table.rows.length; i++) {
-    text = table.rows[i].cells[5].innerText;
+    text = table.rows[i].cells[6].innerText;
     if (text) {
         sum += parseInt(text);
     }

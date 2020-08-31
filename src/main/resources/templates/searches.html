@@ -38,49 +38,41 @@
     <table id="items-table" class="table table-md">
         <thead>
             <tr>
+                <th scope="col">
+                    <input type="checkbox" id="checkAll" onclick="toggle(this)">
+                </th>
                 <th scope="col">Keyword</th>
-                <th scope="col">Category ID</th>
-                <th scope="col">Updated</th>
-                <th scope="col">Interval</th>
                 <th scope="col">Source</th>
+                <th scope="col">Category ID</th>
+                <th scope="col">Interval</th>
+                <th scope="col">Updated</th>
                 <th>New</th>
-                <th scope="col"><input type="checkbox" onclick="toggle(this)"></th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="searchItem : ${searchViewDto}">
+                <td>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="id"  th:value="${searchItem.id}">
+                    </div>
+                </td>
                 <td><a th:href="@{/items/} + ${searchItem.id} + @{/preview}"><span th:text="${searchItem.keyword}"></span></a></td>
-                <td th:text="${searchItem.category}"></td>
-                <td th:text="${searchItem.dateUpdated}"></td>
-                <td th:text="${searchItem.timeInterval}"></td>
                 <td th:text="${searchItem.source}"></td>
+                <td th:text="${searchItem.category}"></td>
+                <td th:text="${searchItem.timeInterval}"></td>
+                <td th:text="${searchItem.dateUpdated}"></td>
                 <td>
                     <span th:unless="${searchItem.count} == '0'">
                         <a th:href="@{/items/} + ${searchItem.id}"><span th:text="${searchItem.count}"></span></a>
                     </span>
                 </td>
-                <td>
-                    <div class="form-check">
-                        <input class="form-check-input" name="id" type="checkbox" th:value="${searchItem.id}">
-                    </div>
-                </td>
             </tr>
         </tbody>
-        <tfoot>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <input type="hidden" name="id" value="0">
-                    <button class="btn btn-danger btn-md" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-                </td>
-            </tr>
-        </tfoot>
     </table>
+</div>
+<div class="container my-4">
+    <input type="hidden" name="id" value="0">
+    <button class="btn btn-danger btn-md" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
 </div>
 </form>
 
