@@ -46,6 +46,7 @@
             <div class="form-group col-md-4">
                 <label for="inputKeyword">Keyword</label>
                 <input minlength="3" maxlength="40" type="text" class="form-control" id="inputKeyword" th:field="*{keyword}" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('keyword')}" th:errors="*{keyword}">Keyword error</div>
             </div>
         </div>
         <div class="form-row">
@@ -83,6 +84,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="text-danger" th:if="${#fields.hasErrors()}">Correct the errors and resubmit</div>
     </form>
 </div>
 </body>

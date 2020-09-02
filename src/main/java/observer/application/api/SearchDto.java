@@ -11,7 +11,7 @@ public class SearchDto {
 
     @NotNull
     @Size(max = 40)
-    @Pattern(regexp = "(.*[a-zA-Z\\d]){3}")
+    @Pattern(regexp = "(.*[a-zA-Z\\d]){3}", message = "Must contain at least 3 characters")
     private String keyword;
     private String category;
 

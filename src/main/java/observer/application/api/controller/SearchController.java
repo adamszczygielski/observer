@@ -7,11 +7,8 @@ import observer.application.common.SearchViewMapper;
 import observer.application.service.SearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -20,7 +17,6 @@ import java.util.List;
 @Controller
 @RequestMapping(SearchController.API_PATH)
 @AllArgsConstructor
-@Validated
 public class SearchController {
 
     public static final String API_PATH = "/searches";
@@ -29,19 +25,22 @@ public class SearchController {
     private final SearchMapper searchMapper;
     private final SearchViewMapper searchViewMapper;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String fetchSearchViewList(Model model) {
         model.addAttribute("searchViewDto", searchViewMapper.toDtoList(searchService.fetchSearchViewList()));
         return "searches";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String addSearch(@ModelAttribute("searchDto") @Valid SearchDto searchDto, HttpServletRequest request) {
+    @PostMapping
+    public String addSearch(@ModelAttribute("searchDto") @Valid SearchDto searchDto, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "form";
+        }
         searchService.addSearch(searchMapper.toSearch(searchDto));
         return goBack(request);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @DeleteMapping
     public String deleteSearches(@RequestParam("id") List<Long> searchIds, HttpServletRequest request) {
         searchService.deleteSearches(searchIds);
         return goBack(request);
