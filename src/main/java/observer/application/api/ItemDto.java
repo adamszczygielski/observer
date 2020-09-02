@@ -1,19 +1,16 @@
 package observer.application.api;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-import java.sql.Timestamp;
-
-@Data
+@Getter
 @Builder
 public class ItemDto {
 
-    private Long itemId;
-    private String originId;
-    private String title;
-    private Timestamp dateCreated;
-    private String price;
-    private String url;
-    private String source;
+    private final Long itemId;
+    private final String originId;
+    private final String title;
+    private final String dateCreated;
+    private final String price;
+    private final String url;
 }

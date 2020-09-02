@@ -7,9 +7,11 @@ import observer.application.common.SearchViewMapper;
 import observer.application.service.SearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -30,13 +32,11 @@ public class SearchController {
     @RequestMapping(method = RequestMethod.GET)
     public String fetchSearchViewList(Model model) {
         model.addAttribute("searchViewDto", searchViewMapper.toDtoList(searchService.fetchSearchViewList()));
-        model.addAttribute("searchDto", new SearchDto());
         return "searches";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String addSearch(@ModelAttribute("searchDto") @Valid SearchDto searchDto, BindingResult bindingResult, Model model,
-                            HttpServletRequest request) {
+    public String addSearch(@ModelAttribute("searchDto") @Valid SearchDto searchDto, HttpServletRequest request) {
         searchService.addSearch(searchMapper.toSearch(searchDto));
         return goBack(request);
     }

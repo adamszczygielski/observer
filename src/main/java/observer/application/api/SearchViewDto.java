@@ -3,12 +3,10 @@ package observer.application.api;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.io.Serializable;
-
 
 @Getter
 @Builder
-public class SearchViewDto implements Serializable {
+public class SearchViewDto {
 
     private final Long id;
     private final String keyword;
