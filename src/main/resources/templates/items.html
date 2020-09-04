@@ -11,7 +11,7 @@
 <body onload="countItems()">
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
-<script src="/resources/toggle.js"></script>
+<script src="/resources/table-utils.js"></script>
 <script src="/resources/items.js"></script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -29,12 +29,12 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" action="/logout">
-            <button class="btn btn-danger btn-md ml-2" type="submit">Log out</button>
+            <button class="btn btn-danger btn-md" type="submit">Log out</button>
         </form>
     </div>
 </nav>
 
-<form th:action="@{/items}" th:method="delete">
+<form th:action="@{/items}" th:method="delete" onsubmit="return remove(this)">
 <div class="container my-4">
     <table id="items-table" class="table table-md">
         <thead>

@@ -15,7 +15,7 @@ import static observer.application.common.Utils.now;
 @Component
 public class EbayMapper {
 
-    private final DecimalFormat decimalFormat = new DecimalFormat("#.00");
+    private static final DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     public List<Item> toItems(List<SearchItem> searchItemList, Long searchId) {
         return searchItemList.stream().map(searchItem -> toItem(searchItem, searchId))
@@ -36,6 +36,6 @@ public class EbayMapper {
 
     private String toPrice(SellingStatus sellingStatus) {
         Amount amount = sellingStatus.getCurrentPrice();
-        return  decimalFormat.format(amount.getValue()) + " " + amount.getCurrencyId();
+        return decimalFormat.format(amount.getValue()) + " " + amount.getCurrencyId();
     }
 }

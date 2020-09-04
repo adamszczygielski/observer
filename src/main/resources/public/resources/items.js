@@ -9,3 +9,11 @@ function countItems() {
         document.title = "(" + rows + ")" + " " + document.title;
     }
 }
+
+function remove(source) {
+    if (typeof getSelectedId() == 'undefined') {
+        alert("No items selected!");
+        return false;
+    }
+    return true;
+}

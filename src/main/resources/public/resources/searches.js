@@ -22,22 +22,13 @@ function edit(source) {
         window.location.href = "/form/search/" + id;
         return;
     }
-    alert("No item selected!");
+    alert("No items selected!");
 }
 
 function remove(source) {
     if (typeof getSelectedId() == 'undefined') {
-        alert("No item selected!");
+        alert("No items selected!");
         return false;
     }
     return confirm('Are you sure?');
-}
-
-function getSelectedId() {
-    checkboxes = document.getElementsByName('id');
-    for (var i = 0, n = checkboxes.length; i < n; i++) {
-        if (checkboxes[i].checked) {
-            return checkboxes[i].value;
-        }
-    }
 }
