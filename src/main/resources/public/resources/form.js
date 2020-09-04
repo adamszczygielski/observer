@@ -17,7 +17,7 @@ function clearCategories() {
     getCategories();
 }
 
-function getCategories() {
+function getCategories(isFirstCall) {
     var request = new XMLHttpRequest()
     var select = document.getElementById("category");
     var url = '/util/categories/allegro';
@@ -31,9 +31,15 @@ function getCategories() {
 
     request.onload = function() {
         var data = JSON.parse(this.response);
-        document.getElementById("inputCategory").value = selectedId;
 
-        if (Object.keys(data).length == 0) return;
+        if (!isFirstCall) {
+            document.getElementById("inputCategory").value = selectedId;
+        }
+
+        if (Object.keys(data).length == 0) {
+            return;
+        }
+
         select.options.length = 0;
 
         data.forEach((category) => {

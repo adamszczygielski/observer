@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/resources/bootstrap.min.css">
     <link rel="shortcut icon" href="/resources/favicon.ico">
 </head>
-<body onload="javascript:getCategories();javascript:disableElements()">
+<body onload="javascript:getCategories(true);javascript:disableElements()">
 <script src="/resources/form.js"></script>
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
@@ -20,8 +20,8 @@
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item">
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="/searches">Search</a>
-                    <a class="nav-item nav-link active" href="/form">Form</a>
+                    <a class="nav-item nav-link" href="/searches">Searches</a>
+                    <a class="nav-item nav-link active" href="/form/search">Form</a>
                     <a class="nav-item nav-link" href="/items">Items</a>
                 </div>
             </li>
@@ -34,6 +34,14 @@
 
 <div class="container my-4">
     <form action="#" th:action="@{/searches}" th:object="${searchDto}" method="post">
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="inputSearchId">Search ID</label>
+                <input type="number" class="form-control" id="inputSearchId" th:field="*{searchId}" readonly>
+            </div>
+        </div>
+
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputSource">Source</label>
@@ -59,7 +67,7 @@
                 <input class="form-control" type="text" id="inputCategory" name="inputCategory" th:field="*{category}" readonly>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="selectCategoryButton" onclick="getCategories()">Select</button>
+        <button type="button" class="btn btn-primary" id="selectCategoryButton" onclick="getCategories(false)">Select</button>
         <button type="button" class="btn btn-primary" onclick="clearCategories()">Cancel</button>
         <div class="form-row pt-4">
             <div class="form-group col-md-4">

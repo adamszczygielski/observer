@@ -27,4 +27,8 @@ public class SearchService {
     public void addSearch(Search search) {
         searchRepository.save(search);
     }
+
+    public Search getSearch(Long searchId) {
+        return searchRepository.findById(searchId).orElseThrow(() -> new IllegalArgumentException("Search doesn't exist"));
+    }
 }

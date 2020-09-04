@@ -1,13 +1,16 @@
 package observer.application.api;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.*;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class SearchDto {
+
+    private Long searchId;
 
     @NotNull
     @Size(max = 40)
