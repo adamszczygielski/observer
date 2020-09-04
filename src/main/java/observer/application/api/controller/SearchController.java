@@ -37,7 +37,7 @@ public class SearchController {
             return "form";
         }
         searchService.addSearch(searchMapper.toSearch(searchDto));
-        return goBack(request);
+        return "redirect:/searches";
     }
 
     @DeleteMapping

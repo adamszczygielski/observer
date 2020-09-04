@@ -20,13 +20,15 @@ public class FormController {
     private final SearchService searchService;
     private final SearchMapper searchMapper;
 
-    @GetMapping(value = {"/search", "/search/{id}"})
-    public String form(Model model, @PathVariable(name = "id", required = false) Long searchId) {
-        if (searchId == null) {
-            model.addAttribute("searchDto", new SearchDto());
-        } else {
-            model.addAttribute("searchDto", searchMapper.toSearchDto(searchService.getSearch(searchId)));
-        }
+    @GetMapping(value = "/search")
+    public String newForm(Model model) {
+        model.addAttribute("searchDto", new SearchDto());
+        return "form";
+    }
+
+    @GetMapping(value = "/search/{id}")
+    public String editForm(Model model, @PathVariable(name = "id") Long searchId) {
+        model.addAttribute("searchDto", searchMapper.toSearchDto(searchService.getSearch(searchId)));
         return "form";
     }
 }

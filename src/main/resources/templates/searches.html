@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="/resources/bootstrap.min.css">
     <link rel="shortcut icon" href="/resources/favicon.ico">
 </head>
-<body>
+<body onload="countItems()">
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
 <script src="/resources/toggle.js"></script>
+<script src="/resources/searches.js"></script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +34,7 @@
     </div>
 </nav>
 
-<form th:action="@{/searches}" th:method="delete">
+<form th:action="@{/searches}" th:method="delete" onsubmit="return remove(this)">
 <div class="container my-4">
     <table id="items-table" class="table table-md">
         <thead>
@@ -73,20 +74,9 @@
 <div class="container my-4">
     <button class="btn btn-primary btn-md" type="button" onclick="edit(this)">Edit</button>
     <input type="hidden">
-    <button class="btn btn-danger btn-md" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+    <button class="btn btn-danger btn-md" type="submit">Delete</button>
 </div>
 </form>
 
-<script>
-function edit(source) {
-    checkboxes = document.getElementsByName('id');
-    for (var i = 0, n = checkboxes.length; i < n; i++) {
-        if (checkboxes[i].checked) {
-            window.location.href = "/form/search/" + checkboxes[i].value;
-        }
-    }
-}
-</script>
-<script src="/resources/search-counter.js"></script>
 </body>
 </html>
