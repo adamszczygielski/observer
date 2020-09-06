@@ -3,6 +3,7 @@ package observer.application.api;
 import lombok.*;
 
 import javax.validation.constraints.*;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -17,6 +18,7 @@ public class SearchDto {
     @Pattern(regexp = "(.*[a-zA-Z\\d]){3}", message = "Must contain at least 3 characters")
     private String keyword;
     private String category;
+    private Timestamp dateUpdated;
 
     @NotNull
     @Min(1)

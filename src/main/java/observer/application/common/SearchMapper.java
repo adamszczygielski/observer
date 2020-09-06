@@ -34,6 +34,7 @@ public class SearchMapper {
                 .searchId(search.getId())
                 .keyword(search.getKeyword())
                 .category(search.getCategory())
+                .dateUpdated(search.getDateUpdated())
                 .interval(search.getTimeInterval())
                 .source(Source.getSource(search.getSourceId()));
 
