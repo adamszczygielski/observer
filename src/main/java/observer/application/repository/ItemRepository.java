@@ -1,6 +1,7 @@
 package observer.application.repository;
 
 import observer.application.domain.Item;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +21,13 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT i FROM Item i WHERE i.isActive = true ORDER BY i.dateCreated DESC")
     Optional<List<Item>> findActive();
+
+    @Query("SELECT i FROM Item i WHERE i.isActive = true AND i.isNotified = false ORDER BY i.dateCreated DESC")
+    Optional<List<Item>> findUnnotified(Pageable pageable);
+
+    @Modifying
+    @Query("UPDATE Item i SET i.isNotified = true WHERE i.id IN :itemIds")
+    void setNotified(@Param("itemIds") List<Long> itemIds);
 
     @Modifying
     @Query("UPDATE Item i SET i.isActive = false WHERE i.id IN :itemIds")

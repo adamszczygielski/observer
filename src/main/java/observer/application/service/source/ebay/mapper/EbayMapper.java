@@ -31,6 +31,7 @@ public class EbayMapper {
                 .price(toPrice(searchItem.getSellingStatus()))
                 .url(searchItem.getViewItemURL())
                 .isActive(true)
+                .isNotified(false)
                 .build();
     }
 

@@ -37,6 +37,7 @@ public class AllegroMapper {
                 .price(toPrice(listingOffer.getSellingMode()))
                 .url(toUrl(listingOffer))
                 .isActive(true)
+                .isNotified(false)
                 .build();
     }
 

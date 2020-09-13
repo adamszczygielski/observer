@@ -35,13 +35,13 @@ public class SearchExecutor {
     }
 
     @Transactional
-    public void executeAll() {
+    public void execute() {
         List<Search> searchList = searchRepository.findAllToUpdate(now(), PageRequest.of(0, chunk));
         searchList.forEach(this::updateSearch);
     }
 
     @Transactional
-    public void executeAllImmediately() {
+    public void executeImmediately() {
         List<Search> searchList = searchRepository.findAll();
         searchList.forEach(this::updateSearch);
     }

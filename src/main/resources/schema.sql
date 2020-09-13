@@ -25,6 +25,7 @@ create table if not exists item
    price varchar(255) not null,
    url varchar(255) not null,
    is_active boolean not null,
+   is_notified boolean not null,
    primary key(id),
    foreign key (search_id) references search(id) on delete cascade
 );

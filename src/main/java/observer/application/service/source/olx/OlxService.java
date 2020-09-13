@@ -52,6 +52,7 @@ public class OlxService extends ItemService {
                     .price(toPrice(prices.get(i)))
                     .url(toItemUrl(urls.get(i)))
                     .isActive(true)
+                    .isNotified(false)
                     .build());
         }
 

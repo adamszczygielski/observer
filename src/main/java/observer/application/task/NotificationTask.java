@@ -1,18 +1,18 @@
 package observer.application.task;
 
 import lombok.AllArgsConstructor;
-import observer.application.service.SearchExecutor;
+import observer.application.notification.NotificationService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class SearchTask {
+public class NotificationTask {
 
-    private final SearchExecutor searchExecutor;
+    private final NotificationService notificationService;
 
     @Scheduled(fixedDelayString = "${scheduled.delay}")
-    public void updateSearch() {
-        searchExecutor.execute();
+    public void sendNotifications() {
+        notificationService.execute();
     }
 }

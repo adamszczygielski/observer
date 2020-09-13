@@ -26,6 +26,6 @@ public class UtilController {
 
     @GetMapping(value = "/searches/execute")
     public void executeAllImmediately() {
-        searchExecutor.executeAllImmediately();
+        searchExecutor.executeImmediately();
     }
 }
