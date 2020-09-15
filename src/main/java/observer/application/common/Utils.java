@@ -7,17 +7,14 @@ import java.util.TimeZone;
 
 public class Utils {
 
-    private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Europe/Warsaw");
-    private static final String DATE_PATTERN = "HH:mm:ss";
-    private static final String ELLIPSIS = "...";
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
+    private static final char ELLIPSIS = '\u2026';
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = createSimpleDateFormat();
 
     private Utils() {
     }
 
     public static String toString(Timestamp timestamp) {
-        simpleDateFormat.setTimeZone(TIME_ZONE);
-        return simpleDateFormat.format(timestamp);
+        return SIMPLE_DATE_FORMAT.format(timestamp);
     }
 
     public static String normalize(String input) {
@@ -35,8 +32,14 @@ public class Utils {
 
     public static String trim(String string, int max) {
         if (string != null && string.length() > max) {
-            return string.substring(0, max - ELLIPSIS.length()) + ELLIPSIS;
+            return string.substring(0, max - 1) + ELLIPSIS;
         }
         return string;
+    }
+
+    private static SimpleDateFormat createSimpleDateFormat() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Warsaw"));
+        return simpleDateFormat;
     }
 }

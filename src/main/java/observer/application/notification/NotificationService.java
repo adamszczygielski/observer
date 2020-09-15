@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class NotificationService {
 
+    private static final String MESSAGE = "Found %s new item%s!";
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final String apiKey;
     private final String appId;
@@ -73,7 +75,7 @@ public class NotificationService {
         NotificationRequest notificationRequest = NotificationRequest.builder()
                 .appId(appId)
                 .includedSegments(Collections.singletonList("All"))
-                .contents(Collections.singletonMap("en", "Found " + itemsCount + " new items!"))
+                .contents(Collections.singletonMap("en", createMessage(itemsCount)))
                 .build();
 
         try {
@@ -82,6 +84,13 @@ public class NotificationService {
             log.error("Object serialization error", e);
             return "{}";
         }
+    }
+
+    private String createMessage(int itemsCount) {
+        if (itemsCount == 1) {
+            return String.format(MESSAGE, itemsCount, "");
+        }
+        return String.format(MESSAGE, itemsCount, "s");
     }
 
 }

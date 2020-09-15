@@ -22,7 +22,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("SELECT i FROM Item i WHERE i.isActive = true ORDER BY i.dateCreated DESC")
     Optional<List<Item>> findActive();
 
-    @Query("SELECT i FROM Item i WHERE i.isActive = true AND i.isNotified = false ORDER BY i.dateCreated DESC")
+    @Query("SELECT i FROM Item i WHERE i.isActive = true AND i.isNotified = false ORDER BY i.dateCreated")
     Optional<List<Item>> findUnnotified(Pageable pageable);
 
     @Modifying
