@@ -19,6 +19,9 @@ public class AspectLogger {
     private static final String SEARCH_SERVICE_POINTCUT =
             "execution(* observer.application.service.SearchExecutor.executeAll())";
 
+    private static final String NOTIFICATION_SERVICE_POINTCUT =
+            "execution(* observer.application.notification.NotificationService.execute())";
+
     @Around(ITEM_SERVICES_POINTCUT)
     public Object logItemServices(ProceedingJoinPoint joinPoint) throws Throwable {
         Search search = (Search) joinPoint.getArgs()[0];
@@ -37,6 +40,13 @@ public class AspectLogger {
                 Duration.between(startTime, endTime).getSeconds(), "sec.");
 
         return obj;
+    }
+
+    @Around(NOTIFICATION_SERVICE_POINTCUT)
+    public Object logNotificationService(ProceedingJoinPoint joinPoint) throws Throwable {
+        log.info("Invoking method: {}", joinPoint.getSignature().toShortString());
+
+        return joinPoint.proceed();
     }
 
 }
