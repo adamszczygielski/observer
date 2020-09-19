@@ -47,27 +47,24 @@ public class SearchExecutor {
     }
 
     private void updateSearch(Search search) {
-        //check limit
         if (isAboveLimit(search)) {
             return;
         }
+        addNewItems(search);
+        removeOldItems(search);
+        save(search);
+    }
 
-        //fetch items
+    private void addNewItems(Search search) {
         List<Item> fetchedItems = fetchItems(search);
-        List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
         List<String> searchItemsIds = search.getItemList().stream().map(Item::getOriginId).collect(Collectors.toList());
-
-        //remove checked, non-existing items, older than specific amount of time
-        search.getItemList().removeIf(item -> !item.getIsActive()
-                && !fetchedItemsIds.contains(item.getOriginId())
-                && item.getDateCreated().toLocalDateTime().plusDays(delay).isBefore(LocalDateTime.now()));
-
-        //filter new items, add all
         fetchedItems.removeIf(item -> searchItemsIds.contains(item.getOriginId()));
         search.getItemList().addAll(fetchedItems);
+    }
 
-        //save to db
-        save(search);
+    private void removeOldItems(Search search) {
+        search.getItemList().removeIf(item -> !item.getIsActive()
+                && item.getDateCreated().toLocalDateTime().plusDays(delay).isBefore(LocalDateTime.now()));
     }
 
     private boolean isAboveLimit(Search search) {
