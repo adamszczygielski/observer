@@ -36,34 +36,34 @@ public class SearchExecutor {
 
     @Transactional
     public void execute() {
-        List<Search> searchList = searchRepository.findAllToUpdate(now(), PageRequest.of(0, chunk));
-        searchList.forEach(this::updateSearch);
+        searchRepository.findAllToUpdate(now(), PageRequest.of(0, chunk)).forEach(this::updateSearch);
     }
 
     @Transactional
     public void executeImmediately() {
-        List<Search> searchList = searchRepository.findAll();
-        searchList.forEach(this::updateSearch);
+        searchRepository.findAll().forEach(this::updateSearch);
     }
 
     private void updateSearch(Search search) {
         if (isAboveLimit(search)) {
             return;
         }
-        addNewItems(search);
-        removeOldItems(search);
+        List<Item> fetchedItems = fetchItems(search);
+        addNewItems(search, fetchedItems);
+        removeOldItems(search, fetchedItems);
         save(search);
     }
 
-    private void addNewItems(Search search) {
-        List<Item> fetchedItems = fetchItems(search);
+    private void addNewItems(Search search, List<Item> fetchedItems) {
         List<String> searchItemsIds = search.getItemList().stream().map(Item::getOriginId).collect(Collectors.toList());
         fetchedItems.removeIf(item -> searchItemsIds.contains(item.getOriginId()));
         search.getItemList().addAll(fetchedItems);
     }
 
-    private void removeOldItems(Search search) {
+    private void removeOldItems(Search search, List<Item> fetchedItems) {
+        List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
         search.getItemList().removeIf(item -> !item.getIsActive()
+                && !fetchedItemsIds.contains(item.getOriginId())
                 && item.getDateCreated().toLocalDateTime().plusDays(delay).isBefore(LocalDateTime.now()));
     }
 
