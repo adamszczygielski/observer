@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static observer.application.common.Utils.now;
 
 @Service
@@ -55,13 +55,14 @@ public class SearchExecutor {
     }
 
     private void addNewItems(Search search, List<Item> fetchedItems) {
-        List<String> searchItemsIds = search.getItemList().stream().map(Item::getOriginId).collect(Collectors.toList());
-        fetchedItems.removeIf(item -> searchItemsIds.contains(item.getOriginId()));
-        search.getItemList().addAll(fetchedItems);
+        List<String> searchItemsIds = search.getItemList().stream().map(Item::getOriginId).collect(toList());
+        List<Item> newItemsList = fetchedItems.stream()
+                .filter(fetchedItem -> !searchItemsIds.contains(fetchedItem.getOriginId())).collect(toList());
+        search.getItemList().addAll(newItemsList);
     }
 
     private void removeOldItems(Search search, List<Item> fetchedItems) {
-        List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(Collectors.toList());
+        List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(toList());
         search.getItemList().removeIf(item -> !item.getIsActive()
                 && !fetchedItemsIds.contains(item.getOriginId())
                 && item.getDateCreated().toLocalDateTime().plusDays(delay).isBefore(LocalDateTime.now()));
