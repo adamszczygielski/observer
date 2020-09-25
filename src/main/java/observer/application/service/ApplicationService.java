@@ -20,7 +20,7 @@ public class ApplicationService {
     private final SearchRepository searchRepository;
     private final ItemServiceFactory itemServiceFactory;
 
-    public List<Item> fetchItems(Long searchId) {
+    public List<Item> fetchActiveItems(Long searchId) {
         return itemRepository.findActive(searchId).orElseGet(ArrayList::new);
     }
 

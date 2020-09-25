@@ -27,8 +27,8 @@ public class ItemController {
     }
 
     @GetMapping(value = "/{searchId}")
-    public String fetchItems(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemMapper.toDtoList(applicationService.fetchItems(searchId)));
+    public String fetchActiveItems(Model model, @PathVariable Long searchId) {
+        model.addAttribute("items", itemMapper.toDtoList(applicationService.fetchActiveItems(searchId)));
         return "items";
     }
 
