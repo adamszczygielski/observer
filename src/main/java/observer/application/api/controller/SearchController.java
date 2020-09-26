@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import observer.application.api.SearchDto;
 import observer.application.common.SearchMapper;
 import observer.application.common.SearchViewMapper;
+import observer.application.service.SearchExecutor;
 import observer.application.service.SearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ public class SearchController {
 
     public static final String API_PATH = "/searches";
 
+    private final SearchExecutor searchExecutor;
     private final SearchService searchService;
     private final SearchMapper searchMapper;
     private final SearchViewMapper searchViewMapper;
@@ -32,7 +34,7 @@ public class SearchController {
     }
 
     @PostMapping
-    public String addSearch(@ModelAttribute("searchDto") @Valid SearchDto searchDto, BindingResult bindingResult, HttpServletRequest request) {
+    public String addSearch(@ModelAttribute("searchDto") @Valid SearchDto searchDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "form";
         }
@@ -44,6 +46,11 @@ public class SearchController {
     public String deleteSearches(@RequestParam("id") List<Long> searchIds, HttpServletRequest request) {
         searchService.deleteSearches(searchIds);
         return goBack(request);
+    }
+
+    @PatchMapping
+    public void updateSearches(@RequestParam("id") List<Long> searchIds) {
+        searchExecutor.executeImmediately(searchIds);
     }
 
     private String goBack(HttpServletRequest request) {

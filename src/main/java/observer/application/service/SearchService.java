@@ -21,7 +21,7 @@ public class SearchService {
     }
 
     public void deleteSearches(List<Long> searchIds) {
-        searchRepository.deleteAllByIds(searchIds);
+        searchRepository.deleteByIds(searchIds);
     }
 
     public void addSearch(Search search) {

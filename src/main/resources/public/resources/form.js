@@ -18,7 +18,7 @@ function clearCategories() {
 }
 
 function getCategories(isFirstCall) {
-    var request = new XMLHttpRequest()
+    var xhr = new XMLHttpRequest();
     var select = document.getElementById("category");
     var url = '/util/categories/allegro';
     var selectedId = '';
@@ -27,9 +27,9 @@ function getCategories(isFirstCall) {
         selectedId = select.options[select.selectedIndex].value;
         url += '?id=' + selectedId;
     }
-    request.open('GET', url, true);
+    xhr.open('GET', url, true);
 
-    request.onload = function() {
+    xhr.onload = function() {
         var data = JSON.parse(this.response);
 
         if (!isFirstCall) {
@@ -49,5 +49,5 @@ function getCategories(isFirstCall) {
             select.appendChild(el);
         })
     }
-    request.send()
+    xhr.send();
 }

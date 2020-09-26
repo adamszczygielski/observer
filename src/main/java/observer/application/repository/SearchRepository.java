@@ -21,5 +21,5 @@ public interface SearchRepository extends JpaRepository<Search, Long> {
 
     @Modifying
     @Query("DELETE FROM Search s WHERE s.id IN :searchIds")
-    void deleteAllByIds(@Param("searchIds") List<Long> searchIds);
+    void deleteByIds(@Param("searchIds") List<Long> searchIds);
 }

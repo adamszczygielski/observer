@@ -10,25 +10,54 @@ function countItems() {
         }
     }
 
-    if (sum > 0) {
-        document.title = "(" + sum + ")" + " " + document.title;
-    }
+    displayCounter(sum);
 }
 
-function edit(source) {
+function edit() {
     var id = getSelectedId();
 
     if (typeof id != 'undefined') {
         window.location.href = "/form/search/" + id;
         return;
     }
-    alert("No items selected!");
+    alert("No searches selected!");
 }
 
-function remove(source) {
+function remove() {
     if (typeof getSelectedId() == 'undefined') {
-        alert("No items selected!");
+        alert("No searches selected!");
         return false;
     }
     return confirm('Are you sure?');
+}
+
+function update() {
+    var url = createUpdateUrl();
+
+    if (typeof url == 'undefined') {
+        return;
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.open('PATCH', url, true);
+    xhr.onload = function () {
+        if (xhr.status == "200") {
+            location.reload();
+        }
+    }
+    xhr.send();
+}
+
+function createUpdateUrl() {
+    var ids = getSelectedIds();
+    var url;
+
+    if (ids.length > 0) {
+        url = "/searches?id=" + ids[0];
+        for (var i = 1; i < ids.length; i++) {
+            url += "," + ids[i];
+        }
+    } else {
+        alert("No searches selected!");
+    }
+    return url;
 }

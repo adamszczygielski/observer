@@ -5,9 +5,7 @@ function countItems() {
         .getElementsByTagName("tr")
         .length;
 
-    if (rows > 0) {
-        document.title = "(" + rows + ")" + " " + document.title;
-    }
+    displayCounter(rows);
 }
 
 function remove(source) {

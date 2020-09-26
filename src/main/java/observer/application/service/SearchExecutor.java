@@ -40,8 +40,8 @@ public class SearchExecutor {
     }
 
     @Transactional
-    public void executeImmediately() {
-        searchRepository.findAll().forEach(this::updateSearch);
+    public void executeImmediately(List<Long> searchIds) {
+        searchRepository.findAllById(searchIds).forEach(this::updateSearch);
     }
 
     private void updateSearch(Search search) {
