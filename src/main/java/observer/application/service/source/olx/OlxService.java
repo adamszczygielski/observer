@@ -93,7 +93,7 @@ public class OlxService extends ItemService {
             }
 
             String priceTo = getParameterValue(parameters, ParameterType.PRICE_TO);
-            if (priceFrom != null) {
+            if (priceTo != null) {
                 uriComponentsBuilder.queryParam("search[filter_float_price:to]", priceTo);
             }
         }

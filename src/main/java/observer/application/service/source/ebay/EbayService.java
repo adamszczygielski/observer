@@ -82,7 +82,7 @@ public class EbayService extends ItemService {
             }
 
             String priceTo = getParameterValue(parameters, ParameterType.PRICE_TO);
-            if (priceFrom != null) {
+            if (priceTo != null) {
                 uriComponentsBuilder.queryParam("itemFilter(1).name", "MaxPrice");
                 uriComponentsBuilder.queryParam("itemFilter(1).value", priceTo);
                 uriComponentsBuilder.queryParam("itemFilter(1).paramName", "Currency");
