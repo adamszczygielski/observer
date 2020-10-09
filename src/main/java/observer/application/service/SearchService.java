@@ -1,34 +1,75 @@
 package observer.application.service;
 
-import lombok.AllArgsConstructor;
+import observer.application.api.Source;
+import observer.application.domain.Item;
 import observer.application.domain.Search;
-import observer.application.domain.SearchView;
 import observer.application.repository.SearchRepository;
-import observer.application.repository.SearchViewRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+import static observer.application.common.Utils.now;
+
 @Service
-@AllArgsConstructor
-public class SearchService {
+public class SearchService extends UpdateTemplate<Search, List<Item>> {
 
-    private final SearchViewRepository searchViewRepository;
     private final SearchRepository searchRepository;
+    private final ItemServiceFactory itemServiceFactory;
+    private final Integer chunk;
+    private final Long delay;
+    private final Long uncheckedLimit;
 
-    public List<SearchView> fetchSearchViewList() {
-        return searchViewRepository.findAll();
+    public SearchService(SearchRepository searchRepository, ItemServiceFactory itemServiceFactory,
+                         @Value("${search.chunk}") Integer chunk, @Value("${item.delay}") Long delay,
+                         @Value("${search.unchecked-limit}") Long uncheckedLimit) {
+        this.searchRepository = searchRepository;
+        this.itemServiceFactory = itemServiceFactory;
+        this.chunk = chunk;
+        this.delay = delay;
+        this.uncheckedLimit = uncheckedLimit;
     }
 
-    public void deleteSearches(List<Long> searchIds) {
-        searchRepository.deleteByIds(searchIds);
+    @Transactional
+    public void execute() {
+        searchRepository.findAllToUpdate(now(), PageRequest.of(0, chunk)).forEach(this::updateSearch);
     }
 
-    public void addSearch(Search search) {
-        searchRepository.save(search);
+    @Transactional
+    public void executeImmediately(List<Long> searchIds) {
+        searchRepository.findAllById(searchIds).forEach(this::updateSearch);
     }
 
-    public Search getSearch(Long searchId) {
-        return searchRepository.findById(searchId).orElseThrow(() -> new IllegalArgumentException("Search doesn't exist"));
+    void addNewItems(Search search, List<Item> fetchedItems) {
+        List<String> searchItemsIds = search.getItemList().stream().map(Item::getOriginId).collect(toList());
+        List<Item> newItemsList = fetchedItems.stream()
+                .filter(fetchedItem -> !searchItemsIds.contains(fetchedItem.getOriginId())).collect(toList());
+        search.getItemList().addAll(newItemsList);
     }
+
+    void removeOldItems(Search search, List<Item> fetchedItems) {
+        List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(toList());
+        search.getItemList().removeIf(item -> !item.getIsActive()
+                && !fetchedItemsIds.contains(item.getOriginId())
+                && item.getDateCreated().toLocalDateTime().plusDays(delay).isBefore(LocalDateTime.now()));
+    }
+
+    boolean isAboveLimit(Search search) {
+        return search.getItemList().stream().filter(Item::getIsActive).count() > uncheckedLimit;
+    }
+
+    List<Item> fetchItems(Search search) {
+        Source source = Source.getSource(search.getSourceId());
+        ItemService itemService = itemServiceFactory.create(source);
+        return itemService.getItems(search);
+    }
+
+    void updateDate(Search search) {
+        search.setDateUpdated(now());
+    }
+
 }
