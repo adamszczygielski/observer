@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import observer.application.api.SearchDto;
 import observer.application.common.SearchMapper;
 import observer.application.common.SearchViewMapper;
-import observer.application.service.SearchExecutor;
+import observer.application.service.SearchApiService;
 import observer.application.service.SearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,14 +22,14 @@ public class SearchController {
 
     public static final String API_PATH = "/searches";
 
-    private final SearchExecutor searchExecutor;
+    private final SearchApiService searchApiService;
     private final SearchService searchService;
     private final SearchMapper searchMapper;
     private final SearchViewMapper searchViewMapper;
 
     @GetMapping
     public String fetchSearchViewList(Model model) {
-        model.addAttribute("searchViewDto", searchViewMapper.toDtoList(searchService.fetchSearchViewList()));
+        model.addAttribute("searchViewDto", searchViewMapper.toDtoList(searchApiService.fetchSearchViewList()));
         return "searches";
     }
 
@@ -38,19 +38,19 @@ public class SearchController {
         if (bindingResult.hasErrors()) {
             return "form";
         }
-        searchService.addSearch(searchMapper.toSearch(searchDto));
+        searchApiService.addSearch(searchMapper.toSearch(searchDto));
         return "redirect:" + API_PATH;
     }
 
     @DeleteMapping
     public String deleteSearches(@RequestParam("id") List<Long> searchIds, HttpServletRequest request) {
-        searchService.deleteSearches(searchIds);
+        searchApiService.deleteSearches(searchIds);
         return goBack(request);
     }
 
     @PatchMapping
     public void updateSearches(@RequestParam("id") List<Long> searchIds) {
-        searchExecutor.executeImmediately(searchIds);
+        searchService.executeImmediately(searchIds);
     }
 
     private String goBack(HttpServletRequest request) {

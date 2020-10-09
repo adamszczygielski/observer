@@ -1,7 +1,7 @@
 package observer.application.task;
 
 import lombok.AllArgsConstructor;
-import observer.application.service.SearchExecutor;
+import observer.application.service.SearchService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class SearchTask {
 
-    private final SearchExecutor searchExecutor;
+    private final SearchService searchService;
 
     @Scheduled(fixedDelayString = "${scheduled.delay}")
     public void updateSearch() {
-        searchExecutor.execute();
+        searchService.execute();
     }
 }

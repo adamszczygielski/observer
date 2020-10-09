@@ -3,7 +3,7 @@ package observer.application.api.controller;
 import lombok.AllArgsConstructor;
 import observer.application.api.SearchDto;
 import observer.application.common.SearchMapper;
-import observer.application.service.SearchService;
+import observer.application.service.SearchApiService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class FormController {
 
     public static final String API_PATH = "/form";
 
-    private final SearchService searchService;
+    private final SearchApiService searchApiService;
     private final SearchMapper searchMapper;
 
     @GetMapping(value = "/search")
@@ -28,7 +28,7 @@ public class FormController {
 
     @GetMapping(value = "/search/{id}")
     public String editForm(Model model, @PathVariable(name = "id") Long searchId) {
-        model.addAttribute("searchDto", searchMapper.toSearchDto(searchService.getSearch(searchId)));
+        model.addAttribute("searchDto", searchMapper.toSearchDto(searchApiService.getSearch(searchId)));
         return "form";
     }
 }

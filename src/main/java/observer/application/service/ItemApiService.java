@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ApplicationService {
+public class ItemApiService {
 
     private final ItemRepository itemRepository;
     private final SearchRepository searchRepository;
