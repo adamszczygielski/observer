@@ -86,7 +86,7 @@ public class AllegroService extends ItemService {
             }
 
             String priceTo = getParameterValue(parameters, ParameterType.PRICE_TO);
-            if (priceFrom != null) {
+            if (priceTo != null) {
                 uriComponentsBuilder.queryParam("price_to", priceTo);
             }
         }
