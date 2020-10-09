@@ -1,0 +1,2 @@
+insert into public.item(id, origin_id, search_id, date_created, title, price, url, is_active, is_notified) values
+(1, '1000', 1, timestamp '2020-10-01 12:00:00.000', 'Title test 1', '100.00 pln', 'https://test.pl/i1000.html', true, true);
