@@ -1,6 +1,7 @@
 package observer.application.common;
 
 import observer.application.api.ItemDto;
+import observer.application.api.Source;
 import observer.application.domain.Item;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,8 @@ public class ItemMapper implements BaseMapper<Item, ItemDto> {
                 .title(trim(item.getTitle(), MAX_LENGTH))
                 .url(item.getUrl())
                 .price(item.getPrice())
+                .source(Source.getSource(item.getSourceId()).getLabel())
                 .build();
     }
+
 }

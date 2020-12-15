@@ -1,5 +1,6 @@
 package observer.application.service.source.allegro.mapper;
 
+import observer.application.api.Source;
 import observer.application.api.allegro.AllegroCategoryDto;
 import observer.application.domain.Item;
 import observer.application.service.source.allegro.model.*;
@@ -38,6 +39,7 @@ public class AllegroMapper {
                 .url(toUrl(listingOffer))
                 .isActive(true)
                 .isNotified(false)
+                .sourceId(Source.ALLEGRO.getId())
                 .build();
     }
 

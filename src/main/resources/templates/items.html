@@ -44,6 +44,7 @@
                 </th>
                 <th scope="col">ID</th>
                 <th scope="col">Title</th>
+                <th scope="col">Source</th>
                 <th scope="col">Created</th>
                 <th scope="col">Price</th>
             </tr>
@@ -56,8 +57,9 @@
                     </div>
                 </td>
                 <td><a th:href="${item.url}" target="_blank"><span th:text="${item.originId}"></span></a></td>
-                <td class="align-middle" th:text="${item.title}"></td>
-                <td class="align-middle" th:text="${item.dateCreated}"></td>
+                <td th:text="${item.title}"></td>
+                <td th:text="${item.source}"></td>
+                <td th:text="${item.dateCreated}"></td>
                 <td th:text="${item.price}"></td>
             </tr>
         </tbody>

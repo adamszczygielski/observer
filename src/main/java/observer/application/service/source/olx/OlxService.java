@@ -2,6 +2,7 @@ package observer.application.service.source.olx;
 
 import lombok.AllArgsConstructor;
 import observer.application.api.ParameterType;
+import observer.application.api.Source;
 import observer.application.domain.Item;
 import observer.application.domain.Parameter;
 import observer.application.domain.Search;
@@ -53,6 +54,7 @@ public class OlxService extends ItemService {
                     .url(toItemUrl(urls.get(i)))
                     .isActive(true)
                     .isNotified(false)
+                    .sourceId(Source.OLX.getId())
                     .build());
         }
 

@@ -44,6 +44,16 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
         searchRepository.findAllById(searchIds).forEach(this::updateSearch);
     }
 
+    boolean isAboveLimit(Search search) {
+        return search.getItemList().stream().filter(Item::getIsActive).count() > uncheckedLimit;
+    }
+
+    List<Item> fetchItems(Search search) {
+        Source source = Source.getSource(search.getSourceId());
+        ItemService itemService = itemServiceFactory.create(source);
+        return itemService.getItems(search);
+    }
+
     void addNewItems(Search search, List<Item> fetchedItems) {
         List<String> searchItemsIds = search.getItemList().stream().map(Item::getOriginId).collect(toList());
         List<Item> newItemsList = fetchedItems.stream()
@@ -56,16 +66,6 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
         search.getItemList().removeIf(item -> !item.getIsActive()
                 && !fetchedItemsIds.contains(item.getOriginId())
                 && item.getDateCreated().toLocalDateTime().plusDays(delay).isBefore(LocalDateTime.now()));
-    }
-
-    boolean isAboveLimit(Search search) {
-        return search.getItemList().stream().filter(Item::getIsActive).count() > uncheckedLimit;
-    }
-
-    List<Item> fetchItems(Search search) {
-        Source source = Source.getSource(search.getSourceId());
-        ItemService itemService = itemServiceFactory.create(source);
-        return itemService.getItems(search);
     }
 
     void updateDate(Search search) {

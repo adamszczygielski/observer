@@ -13,4 +13,6 @@ public class ItemDto {
     private final String dateCreated;
     private final String price;
     private final String url;
+    private final String source;
+
 }

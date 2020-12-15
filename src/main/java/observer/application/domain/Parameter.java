@@ -27,7 +27,4 @@ public class Parameter {
     @Column(name = "VALUE")
     String value;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "SEARCH_ID", insertable = false, updatable = false)
-//    private Search search;
 }

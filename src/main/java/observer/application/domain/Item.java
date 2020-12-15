@@ -49,7 +49,7 @@ public class Item implements Serializable {
     @Column(name = "IS_NOTIFIED")
     private Boolean isNotified;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "SEARCH_ID", insertable = false, updatable = false)
-//    private Search search;
+    @Column(name = "SOURCE_ID")
+    private Long sourceId;
+
 }
