@@ -3,6 +3,7 @@ package observer.application.service.source.olx;
 import lombok.AllArgsConstructor;
 import observer.application.api.ParameterType;
 import observer.application.api.Source;
+import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Parameter;
 import observer.application.domain.Search;
@@ -19,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static observer.application.common.Utils.now;
@@ -30,6 +32,16 @@ public class OlxService extends ItemService {
     @Override
     public List<Item> getItems(Search search) {
         return fetchItems(search);
+    }
+
+    @Override
+    public List<Category> getCategories(String parentId) {
+        return Arrays.asList(
+                Category.builder().name("Elektronika").id("elektronika").leaf(true).build(),
+                Category.builder().name("Dom i Ogród").id("dom-ogrod").leaf(true).build(),
+                Category.builder().name("Muzyka i Edukacja").id("muzyka-edukacja").leaf(true).build(),
+                Category.builder().name("Motoryzacja").id("motoryzacja").leaf(true).build()
+        );
     }
 
     private List<Item> fetchItems(Search search) {
@@ -77,16 +89,22 @@ public class OlxService extends ItemService {
     }
 
     private String getRequestUrl(Search search) {
+        List<Parameter> parameters = search.getParameterList();
+
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
-                .host("www.olx.pl")
-                .pathSegment("oferty")
-                .pathSegment("q-{keyword}")
+                .host("www.olx.pl");
+
+        if (search.getCategory() != null) {
+            uriComponentsBuilder.pathSegment(search.getCategory());
+        } else {
+            uriComponentsBuilder.pathSegment("oferty");
+        }
+
+        uriComponentsBuilder.pathSegment("q-{keyword}")
                 .path("/")
                 .queryParam("search[order]", "created_at:desc")
                 .queryParam("spellchecker", "off");
-
-        List<Parameter> parameters = search.getParameterList();
 
         if (!CollectionUtils.isEmpty(parameters)) {
             String priceFrom = getParameterValue(parameters, ParameterType.PRICE_FROM);

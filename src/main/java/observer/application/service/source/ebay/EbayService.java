@@ -1,6 +1,7 @@
 package observer.application.service.source.ebay;
 
 import observer.application.api.ParameterType;
+import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Parameter;
 import observer.application.domain.Search;
@@ -39,6 +40,11 @@ public class EbayService extends ItemService {
     public List<Item> getItems(Search search) {
         List<SearchItem> searchItemList = fetchSearchItems(search.getKeyword(), search.getParameterList());
         return mapper.toItems(searchItemList, search.getId());
+    }
+
+    @Override
+    public List<Category> getCategories(String parentId) {
+        return new ArrayList<>();
     }
 
     private List<SearchItem> fetchSearchItems(String keyword, List<Parameter> parameters) {

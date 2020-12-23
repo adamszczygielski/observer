@@ -3,7 +3,7 @@ package observer.application.service.source.allegro;
 import com.google.common.cache.LoadingCache;
 import lombok.AllArgsConstructor;
 import observer.application.api.ParameterType;
-import observer.application.api.allegro.AllegroCategoryDto;
+import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Parameter;
 import observer.application.domain.Search;
@@ -41,9 +41,10 @@ public class AllegroService extends ItemService {
         return mapper.toItems(listingOffers, search.getId());
     }
 
-    public List<AllegroCategoryDto> getCategories(String parentId) {
+    @Override
+    public List<Category> getCategories(String parentId) {
         List<CategoryDto> categories = categoryDtoCache.getUnchecked(parentId);
-        return mapper.toAllegroCategories(categories);
+        return mapper.toCategories(categories);
     }
 
     private List<ListingOffer> fetchListingOffers(String keyword, String categoryId, List<Parameter> parameters) {

@@ -1,6 +1,7 @@
 package observer.application.service;
 
 import observer.application.api.Source;
+import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
 import observer.application.repository.ItemRepository;
@@ -41,5 +42,11 @@ public class ItemApiService {
 
     public void deleteItems(List<Long> itemIds) {
         itemRepository.setInactive(itemIds);
+    }
+
+    public List<Category> getCategories(Long sourceId, String parentId) {
+        Source source = Source.getSource(sourceId);
+        ItemService itemService = itemServiceFactory.create(source);
+        return itemService.getCategories(parentId);
     }
 }

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/resources/bootstrap.min.css">
     <link rel="shortcut icon" href="/resources/favicon.ico">
 </head>
-<body onload="javascript:getCategories(true);javascript:disableElements()">
+<body onload="javascript:getCategories(true);javascript:onSourceChange()">
 <script src="/resources/form.js"></script>
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
@@ -49,9 +49,9 @@
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputSource">Source</label>
-                <select th:field="*{source}" class="form-control" id="inputSource"  onchange="disableElements()" required>
+                <select th:field="*{source}" class="form-control" id="inputSource"  onchange="onSourceChange()" required>
                     <option th:each="sourceOpt : ${T(observer.application.api.Source).values()}"
-                            th:value="${sourceOpt}" th:text="${sourceOpt.label}">
+                            th:value="${sourceOpt}" th:text="${sourceOpt.label}" th:id="${sourceOpt.id}">
                     </option>
                 </select>
             </div>

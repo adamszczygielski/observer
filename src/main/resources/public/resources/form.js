@@ -1,14 +1,15 @@
-function disableElements() {
+function onSourceChange() {
     var source = document.getElementById("inputSource");
     var button = document.getElementById("selectCategoryButton");
     var category = document.getElementById("category");
-    if (source.value != "ALLEGRO") {
+
+    clearCategories();
+    if (source.value == "EBAY") {
         button.disabled = true;
         category.disabled = true;
-        clearCategories();
     } else {
-        category.disabled = false;
         button.disabled = false;
+        category.disabled = false;
     }
 }
 
@@ -19,13 +20,15 @@ function clearCategories() {
 
 function getCategories(isFirstCall) {
     var xhr = new XMLHttpRequest();
-    var select = document.getElementById("category");
-    var url = '/util/categories/allegro';
-    var selectedId = '';
+    var categorySelector = document.getElementById("category");
+    var sourceSelector = document.getElementById("inputSource");
+    var selectedParentId = '';
+    var selectedSourceId = sourceSelector.options[sourceSelector.selectedIndex].id
+    var url = '/categories?sourceId=' + selectedSourceId;
 
-    if (typeof select.options[select.selectedIndex] != 'undefined') {
-        selectedId = select.options[select.selectedIndex].value;
-        url += '?id=' + selectedId;
+    if (typeof categorySelector.options[categorySelector.selectedIndex] != 'undefined') {
+        selectedParentId = categorySelector.options[categorySelector.selectedIndex].value;
+        url += '&parentId=' + selectedParentId;
     }
     xhr.open('GET', url, true);
 
@@ -33,20 +36,20 @@ function getCategories(isFirstCall) {
         var data = JSON.parse(this.response);
 
         if (!isFirstCall) {
-            document.getElementById("inputCategory").value = selectedId;
+            document.getElementById("inputCategory").value = selectedParentId;
         }
 
         if (Object.keys(data).length == 0) {
             return;
         }
 
-        select.options.length = 0;
+        categorySelector.options.length = 0;
 
         data.forEach((category) => {
             var el = document.createElement("option");
             el.textContent = category.name;
             el.value = category.id;
-            select.appendChild(el);
+            categorySelector.appendChild(el);
         })
     }
     xhr.send();

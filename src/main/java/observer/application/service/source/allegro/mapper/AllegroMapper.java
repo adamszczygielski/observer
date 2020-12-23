@@ -1,9 +1,12 @@
 package observer.application.service.source.allegro.mapper;
 
 import observer.application.api.Source;
-import observer.application.api.allegro.AllegroCategoryDto;
+import observer.application.domain.Category;
 import observer.application.domain.Item;
-import observer.application.service.source.allegro.model.*;
+import observer.application.service.source.allegro.model.CategoryDto;
+import observer.application.service.source.allegro.model.ListingOffer;
+import observer.application.service.source.allegro.model.OfferPrice;
+import observer.application.service.source.allegro.model.OfferSellingMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -20,9 +23,9 @@ public class AllegroMapper {
                 .collect(Collectors.toList());
     }
 
-    public List<AllegroCategoryDto> toAllegroCategories(List<CategoryDto> categories) {
-        return categories.stream().map(categoryDto ->
-                AllegroCategoryDto.builder()
+    public List<Category> toCategories(List<CategoryDto> dtoList) {
+        return dtoList.stream().map(categoryDto ->
+                Category.builder()
                         .id(categoryDto.getId())
                         .name(categoryDto.getName())
                         .leaf(categoryDto.getLeaf())

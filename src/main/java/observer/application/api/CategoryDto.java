@@ -1,11 +1,11 @@
-package observer.application.api.allegro;
+package observer.application.api;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class AllegroCategoryDto {
+public class CategoryDto {
 
     private final String id;
     private final String name;
