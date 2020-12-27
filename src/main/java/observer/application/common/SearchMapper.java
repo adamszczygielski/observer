@@ -1,12 +1,12 @@
 package observer.application.common;
 
+import com.google.common.base.Strings;
 import observer.application.api.ParameterType;
 import observer.application.api.SearchDto;
 import observer.application.api.Source;
 import observer.application.domain.Parameter;
 import observer.application.domain.Search;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -19,7 +19,8 @@ public class SearchMapper {
         return Search.builder()
                 .id(searchDto.getSearchId())
                 .keyword(Utils.normalize(searchDto.getKeyword()))
-                .category(toCategory(searchDto))
+                .categoryId(toNullable(searchDto.getCategoryId()))
+                .categoryName(toNullable(searchDto.getCategoryName()))
                 .dateUpdated(new Timestamp(0))
                 .isActive(false)
                 .sourceId(searchDto.getSource().getId())
@@ -33,7 +34,8 @@ public class SearchMapper {
         SearchDto.SearchDtoBuilder searchDtoBuilder = SearchDto.builder()
                 .searchId(search.getId())
                 .keyword(search.getKeyword())
-                .category(search.getCategory())
+                .categoryId(search.getCategoryId())
+                .categoryName(search.getCategoryName())
                 .dateUpdated(search.getDateUpdated())
                 .interval(search.getTimeInterval())
                 .source(Source.getSource(search.getSourceId()));
@@ -81,13 +83,11 @@ public class SearchMapper {
                 .build();
     }
 
-    private String toCategory(SearchDto searchDto) {
-        String category = searchDto.getCategory();
-        if (StringUtils.isEmpty(category)) {
+    private String toNullable(String s) {
+        if (Strings.isNullOrEmpty(s)) {
             return null;
-        } else {
-            return category;
         }
+        return s;
     }
 
 }

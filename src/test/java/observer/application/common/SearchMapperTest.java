@@ -38,7 +38,7 @@ public class SearchMapperTest {
         return SearchDto.builder()
                 .searchId(1L)
                 .keyword("keyword")
-                .category("category")
+                //.category("category")
                 .dateUpdated(new Timestamp(0))
                 .interval(new Short("5"))
                 .source(Source.ALLEGRO)

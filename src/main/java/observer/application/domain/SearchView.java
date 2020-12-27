@@ -22,8 +22,11 @@ public class SearchView {
     @Column(name = "KEYWORD")
     private String keyword;
 
-    @Column(name = "CATEGORY")
-    private String category;
+    @Column(name = "CATEGORY_ID")
+    private String categoryId;
+
+    @Column(name = "CATEGORY_NAME")
+    private String categoryName;
 
     @Column(name = "DATE_UPDATED")
     private Timestamp dateUpdated;

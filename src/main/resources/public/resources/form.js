@@ -23,11 +23,13 @@ function getCategories(isFirstCall) {
     var categorySelector = document.getElementById("category");
     var sourceSelector = document.getElementById("inputSource");
     var selectedParentId = '';
+    var selectedCategoryName = '';
     var selectedSourceId = sourceSelector.options[sourceSelector.selectedIndex].id
     var url = '/categories?sourceId=' + selectedSourceId;
 
     if (typeof categorySelector.options[categorySelector.selectedIndex] != 'undefined') {
         selectedParentId = categorySelector.options[categorySelector.selectedIndex].value;
+        selectedCategoryName = categorySelector.options[categorySelector.selectedIndex].text;
         url += '&parentId=' + selectedParentId;
     }
     xhr.open('GET', url, true);
@@ -37,6 +39,7 @@ function getCategories(isFirstCall) {
 
         if (!isFirstCall) {
             document.getElementById("inputCategory").value = selectedParentId;
+            document.getElementById("inputCategoryName").value = selectedCategoryName;
         }
 
         if (Object.keys(data).length == 0) {

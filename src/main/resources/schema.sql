@@ -7,7 +7,8 @@ create table if not exists search
 (
     id bigint auto_increment not null,
     keyword varchar(255) not null,
-    category varchar(255),
+    category_id varchar(255),
+    category_name varchar(255),
     date_updated timestamp not null,
     time_interval smallint not null,
     is_active boolean not null,
@@ -43,7 +44,7 @@ create table if not exists parameter
 
 create or replace view search_v as
 (
-    select s.id, s.keyword, s.category, s.date_updated, s.time_interval, s.is_active, s.source_id, count(i.id) as count
+    select s.id, s.keyword, s.category_id, s.category_name, s.date_updated, s.time_interval, s.is_active, s.source_id, count(i.id) as count
     from search s
     left join item i on s.id = i.search_id and i.is_active = true
     group by s.id

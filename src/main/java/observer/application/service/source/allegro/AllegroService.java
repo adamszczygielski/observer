@@ -37,7 +37,7 @@ public class AllegroService extends ItemService {
 
     @Override
     public List<Item> getItems(Search search) {
-        List<ListingOffer> listingOffers = fetchListingOffers(search.getKeyword(), search.getCategory(), search.getParameterList());
+        List<ListingOffer> listingOffers = fetchListingOffers(search.getKeyword(), search.getCategoryId(), search.getParameterList());
         return mapper.toItems(listingOffers, search.getId());
     }
 

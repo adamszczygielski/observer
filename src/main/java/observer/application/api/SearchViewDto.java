@@ -10,7 +10,8 @@ public class SearchViewDto {
 
     private final Long id;
     private final String keyword;
-    private final String category;
+    private final String categoryId;
+    private final String categoryName;
     private final Long timeInterval;
     private final String source;
     private final Long count;

@@ -44,7 +44,7 @@
                 </th>
                 <th scope="col">Keyword</th>
                 <th scope="col">Source</th>
-                <th scope="col">Category ID</th>
+                <th scope="col">Category</th>
                 <th scope="col">Interval</th>
                 <th scope="col">Updated</th>
                 <th>New</th>
@@ -59,7 +59,7 @@
                 </td>
                 <td><a th:href="@{/items/} + ${searchItem.id} + @{/preview}"><span th:text="${searchItem.keyword}"></span></a></td>
                 <td th:text="${searchItem.source}"></td>
-                <td th:text="${searchItem.category}"></td>
+                <td th:text="${searchItem.categoryName}"></td>
                 <td th:text="${searchItem.timeInterval}"></td>
                 <td th:text="${searchItem.dateUpdated}"></td>
                 <td>

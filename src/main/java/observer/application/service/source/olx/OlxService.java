@@ -1,5 +1,6 @@
 package observer.application.service.source.olx;
 
+import com.google.common.cache.LoadingCache;
 import lombok.AllArgsConstructor;
 import observer.application.api.ParameterType;
 import observer.application.api.Source;
@@ -20,7 +21,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static observer.application.common.Utils.now;
@@ -29,6 +29,8 @@ import static observer.application.common.Utils.now;
 @AllArgsConstructor
 public class OlxService extends ItemService {
 
+    private final LoadingCache<String, List<Category>> categoryCache;
+
     @Override
     public List<Item> getItems(Search search) {
         return fetchItems(search);
@@ -36,18 +38,14 @@ public class OlxService extends ItemService {
 
     @Override
     public List<Category> getCategories(String parentId) {
-        return Arrays.asList(
-                Category.builder().name("Elektronika").id("elektronika").leaf(true).build(),
-                Category.builder().name("Dom i Ogród").id("dom-ogrod").leaf(true).build(),
-                Category.builder().name("Muzyka i Edukacja").id("muzyka-edukacja").leaf(true).build(),
-                Category.builder().name("Motoryzacja").id("motoryzacja").leaf(true).build()
-        );
+        return categoryCache.getUnchecked(parentId);
     }
 
     private List<Item> fetchItems(Search search) {
         ArrayList<Item> items = new ArrayList<>();
+        String url = getRequestUrl(search);
 
-        Document document = getDocument(search);
+        Document document = getDocument(url);
         if (document == null || !containsItems(document)) {
             return items;
         }
@@ -78,8 +76,8 @@ public class OlxService extends ItemService {
         return noItemsResponse.size() != 1;
     }
 
-    private Document getDocument(Search search) {
-        Connection connection = Jsoup.connect(getRequestUrl(search));
+    private Document getDocument(String url) {
+        Connection connection = Jsoup.connect(url);
         try {
             return connection.get();
         } catch (IOException e) {
@@ -95,8 +93,8 @@ public class OlxService extends ItemService {
                 .scheme("https")
                 .host("www.olx.pl");
 
-        if (search.getCategory() != null) {
-            uriComponentsBuilder.pathSegment(search.getCategory());
+        if (search.getCategoryId() != null) {
+            uriComponentsBuilder.pathSegment(search.getCategoryId());
         } else {
             uriComponentsBuilder.pathSegment("oferty");
         }

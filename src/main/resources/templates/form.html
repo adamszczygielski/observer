@@ -68,7 +68,8 @@
             </div>
             <div class="form-group col-md-4">
                 <label for="inputCategory">Selected</label>
-                <input class="form-control" type="text" id="inputCategory" name="inputCategory" th:field="*{category}" readonly>
+                <input class="form-control" type="text" id="inputCategoryName" name="inputCategoryName" th:field="*{categoryName}" readonly>
+                <input type="hidden" class="form-control" id="inputCategory" name="inputCategory" th:field="*{categoryId}" readonly>
             </div>
         </div>
         <button type="button" class="btn btn-primary" id="selectCategoryButton" onclick="getCategories(false)">Select</button>
