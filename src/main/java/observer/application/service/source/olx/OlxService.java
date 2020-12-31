@@ -2,11 +2,9 @@ package observer.application.service.source.olx;
 
 import com.google.common.cache.LoadingCache;
 import lombok.AllArgsConstructor;
-import observer.application.api.ParameterType;
 import observer.application.api.Source;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
-import observer.application.domain.Parameter;
 import observer.application.domain.Search;
 import observer.application.service.ItemService;
 import org.jsoup.Connection;
@@ -15,7 +13,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -87,8 +84,6 @@ public class OlxService extends ItemService {
     }
 
     private String getRequestUrl(Search search) {
-        List<Parameter> parameters = search.getParameterList();
-
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("www.olx.pl");
@@ -104,16 +99,14 @@ public class OlxService extends ItemService {
                 .queryParam("search[order]", "created_at:desc")
                 .queryParam("spellchecker", "off");
 
-        if (!CollectionUtils.isEmpty(parameters)) {
-            String priceFrom = getParameterValue(parameters, ParameterType.PRICE_FROM);
-            if (priceFrom != null) {
-                uriComponentsBuilder.queryParam("search[filter_float_price:from]", priceFrom);
-            }
+        Integer priceFrom = search.getPriceFrom();
+        if (priceFrom != null) {
+            uriComponentsBuilder.queryParam("search[filter_float_price:from]", priceFrom);
+        }
 
-            String priceTo = getParameterValue(parameters, ParameterType.PRICE_TO);
-            if (priceTo != null) {
-                uriComponentsBuilder.queryParam("search[filter_float_price:to]", priceTo);
-            }
+        Integer priceTo = search.getPriceTo();
+        if (priceTo != null) {
+            uriComponentsBuilder.queryParam("search[filter_float_price:to]", priceTo);
         }
 
         return uriComponentsBuilder

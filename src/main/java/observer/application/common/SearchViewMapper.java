@@ -21,6 +21,8 @@ public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
                 .keyword(trim(searchView.getKeyword(), MAX_LENGTH))
                 .categoryId(trim(searchView.getCategoryId(), MAX_LENGTH))
                 .categoryName(trim(searchView.getCategoryName(), MAX_LENGTH))
+                .priceFrom(searchView.getPriceFrom())
+                .priceTo(searchView.getPriceTo())
                 .source(Source.getSource(searchView.getSourceId()).getLabel())
                 .dateUpdated(toString(searchView.getDateUpdated()))
                 .timeInterval(searchView.getTimeInterval())

@@ -1,16 +1,13 @@
 package observer.application.common;
 
 import com.google.common.base.Strings;
-import observer.application.api.ParameterType;
 import observer.application.api.SearchDto;
 import observer.application.api.Source;
-import observer.application.domain.Parameter;
 import observer.application.domain.Search;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class SearchMapper {
@@ -26,60 +23,22 @@ public class SearchMapper {
                 .sourceId(searchDto.getSource().getId())
                 .timeInterval(searchDto.getInterval())
                 .itemList(new ArrayList<>())
-                .parameterList(toParameters(searchDto))
+                .priceFrom(searchDto.getPriceFrom())
+                .priceTo(searchDto.getPriceTo())
                 .build();
     }
 
     public SearchDto toSearchDto(Search search) {
-        SearchDto.SearchDtoBuilder searchDtoBuilder = SearchDto.builder()
+        return SearchDto.builder()
                 .searchId(search.getId())
                 .keyword(search.getKeyword())
                 .categoryId(search.getCategoryId())
                 .categoryName(search.getCategoryName())
                 .dateUpdated(search.getDateUpdated())
                 .interval(search.getTimeInterval())
-                .source(Source.getSource(search.getSourceId()));
-
-        if (!search.getParameterList().isEmpty()) {
-            Parameter priceFrom = getParameter(ParameterType.PRICE_FROM, search.getParameterList());
-            if (priceFrom != null) {
-                searchDtoBuilder.priceFrom(Integer.valueOf(priceFrom.getValue()));
-            }
-
-            Parameter priceTo = getParameter(ParameterType.PRICE_TO, search.getParameterList());
-            if (priceTo != null) {
-                searchDtoBuilder.priceTo(Integer.valueOf(priceTo.getValue()));
-            }
-        }
-
-        return searchDtoBuilder.build();
-    }
-
-    private Parameter getParameter(ParameterType parameterType, List<Parameter> parameters) {
-        return parameters.stream().filter(p -> p.getTypeId().equals(parameterType.getId())).findFirst()
-                .orElse(null);
-    }
-
-    private List<Parameter> toParameters(SearchDto searchDto) {
-        List<Parameter> parameters = new ArrayList<>();
-
-        Integer priceFrom = searchDto.getPriceFrom();
-        if (priceFrom != null) {
-            parameters.add(createParameter(ParameterType.PRICE_FROM, String.valueOf(priceFrom)));
-        }
-
-        Integer priceTo = searchDto.getPriceTo();
-        if (priceTo != null) {
-            parameters.add(createParameter(ParameterType.PRICE_TO, String.valueOf(priceTo)));
-        }
-
-        return parameters;
-    }
-
-    private Parameter createParameter(ParameterType parameterType, String value) {
-        return Parameter.builder()
-                .typeId(parameterType.getId())
-                .value(value)
+                .priceFrom(search.getPriceFrom())
+                .priceTo(search.getPriceTo())
+                .source(Source.getSource(search.getSourceId()))
                 .build();
     }
 

@@ -29,7 +29,7 @@ public class SearchController {
 
     @GetMapping
     public String fetchSearchViewList(Model model) {
-        model.addAttribute("searchViewDto", searchViewMapper.toDtoList(searchApiService.fetchSearchViewList()));
+        model.addAttribute("searchViewDtoList", searchViewMapper.toDtoList(searchApiService.fetchSearchViewList()));
         return "searches";
     }
 

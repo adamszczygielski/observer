@@ -29,6 +29,12 @@ public class Search {
     @Column(name = "CATEGORY_NAME")
     private String categoryName;
 
+    @Column(name = "PRICE_FROM")
+    private Integer priceFrom;
+
+    @Column(name = "PRICE_TO")
+    private Integer priceTo;
+
     @Column(name = "DATE_UPDATED")
     private Timestamp dateUpdated;
 
@@ -45,7 +51,4 @@ public class Search {
     @JoinColumn(name = "SEARCH_ID")
     private List<Item> itemList;
 
-    @OneToMany(cascade =  CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "SEARCH_ID")
-    private List<Parameter> parameterList;
 }

@@ -28,6 +28,12 @@ public class SearchView {
     @Column(name = "CATEGORY_NAME")
     private String categoryName;
 
+    @Column(name = "PRICE_FROM")
+    private Integer priceFrom;
+
+    @Column(name = "PRICE_TO")
+    private Integer priceTo;
+
     @Column(name = "DATE_UPDATED")
     private Timestamp dateUpdated;
 

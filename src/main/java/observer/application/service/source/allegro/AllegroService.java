@@ -2,10 +2,8 @@ package observer.application.service.source.allegro;
 
 import com.google.common.cache.LoadingCache;
 import lombok.AllArgsConstructor;
-import observer.application.api.ParameterType;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
-import observer.application.domain.Parameter;
 import observer.application.domain.Search;
 import observer.application.rest.RestInvoker;
 import observer.application.service.ItemService;
@@ -18,7 +16,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -37,7 +34,7 @@ public class AllegroService extends ItemService {
 
     @Override
     public List<Item> getItems(Search search) {
-        List<ListingOffer> listingOffers = fetchListingOffers(search.getKeyword(), search.getCategoryId(), search.getParameterList());
+        List<ListingOffer> listingOffers = fetchListingOffers(search);
         return mapper.toItems(listingOffers, search.getId());
     }
 
@@ -47,9 +44,9 @@ public class AllegroService extends ItemService {
         return mapper.toCategories(categories);
     }
 
-    private List<ListingOffer> fetchListingOffers(String keyword, String categoryId, List<Parameter> parameters) {
+    private List<ListingOffer> fetchListingOffers(Search search) {
         ListingResponse listingResponse = restInvoker.get(
-                createListingRequestUrl(keyword, categoryId, parameters), createHttpEntity(), ListingResponse.class);
+                createListingRequestUrl(search), createHttpEntity(), ListingResponse.class);
 
         return Optional.of(listingResponse)
                 .map(ListingResponse::getItems)
@@ -66,30 +63,28 @@ public class AllegroService extends ItemService {
         return new HttpEntity<>(requestHeaders);
     }
 
-    private String createListingRequestUrl(String keyword, String categoryId, List<Parameter> parameters) {
+    private String createListingRequestUrl(Search search) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("api.allegro.pl")
                 .pathSegment("offers", "listing")
-                .queryParam("phrase", keyword.replaceAll(" ", "+"))
+                .queryParam("phrase", search.getKeyword().replaceAll(" ", "+"))
                 .queryParam("fallback", "false")
                 .queryParam("sort", "-startTime")
                 .queryParam("limit", "20");
 
-        if (!StringUtils.isEmpty(categoryId)) {
-            uriComponentsBuilder.queryParam("category.id", categoryId);
+        if (!StringUtils.isEmpty(search.getCategoryId())) {
+            uriComponentsBuilder.queryParam("category.id", search.getCategoryId());
         }
 
-        if (!CollectionUtils.isEmpty(parameters)) {
-            String priceFrom = getParameterValue(parameters, ParameterType.PRICE_FROM);
-            if (priceFrom != null) {
-                uriComponentsBuilder.queryParam("price_from", priceFrom);
-            }
+        Integer priceFrom = search.getPriceFrom();
+        if (priceFrom != null) {
+            uriComponentsBuilder.queryParam("price_from", priceFrom);
+        }
 
-            String priceTo = getParameterValue(parameters, ParameterType.PRICE_TO);
-            if (priceTo != null) {
-                uriComponentsBuilder.queryParam("price_to", priceTo);
-            }
+        Integer priceTo = search.getPriceTo();
+        if (priceTo != null) {
+            uriComponentsBuilder.queryParam("price_to", priceTo);
         }
 
         return uriComponentsBuilder.build().toUriString();

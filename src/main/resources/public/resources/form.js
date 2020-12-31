@@ -1,15 +1,15 @@
 function onSourceChange() {
-    var source = document.getElementById("inputSource");
+    var sourceSelector = document.getElementById("inputSource");
+    var categorySelector = document.getElementById("category");
     var button = document.getElementById("selectCategoryButton");
-    var category = document.getElementById("category");
 
     clearCategories();
-    if (source.value == "EBAY") {
+    if (sourceSelector.value == "EBAY") {
         button.disabled = true;
-        category.disabled = true;
+        categorySelector.disabled = true;
     } else {
         button.disabled = false;
-        category.disabled = false;
+        categorySelector.disabled = false;
     }
 }
 
@@ -22,15 +22,15 @@ function getCategories(isFirstCall) {
     var xhr = new XMLHttpRequest();
     var categorySelector = document.getElementById("category");
     var sourceSelector = document.getElementById("inputSource");
-    var selectedParentId = '';
+    var selectedCategoryId = '';
     var selectedCategoryName = '';
     var selectedSourceId = sourceSelector.options[sourceSelector.selectedIndex].id
     var url = '/categories?sourceId=' + selectedSourceId;
 
     if (typeof categorySelector.options[categorySelector.selectedIndex] != 'undefined') {
-        selectedParentId = categorySelector.options[categorySelector.selectedIndex].value;
+        selectedCategoryId = categorySelector.options[categorySelector.selectedIndex].value;
         selectedCategoryName = categorySelector.options[categorySelector.selectedIndex].text;
-        url += '&parentId=' + selectedParentId;
+        url += '&parentId=' + selectedCategoryId;
     }
     xhr.open('GET', url, true);
 
@@ -38,7 +38,7 @@ function getCategories(isFirstCall) {
         var data = JSON.parse(this.response);
 
         if (!isFirstCall) {
-            document.getElementById("inputCategory").value = selectedParentId;
+            document.getElementById("inputCategoryId").value = selectedCategoryId;
             document.getElementById("inputCategoryName").value = selectedCategoryName;
         }
 

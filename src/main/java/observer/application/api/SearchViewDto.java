@@ -12,6 +12,8 @@ public class SearchViewDto {
     private final String keyword;
     private final String categoryId;
     private final String categoryName;
+    private final Integer priceFrom;
+    private final Integer priceTo;
     private final Long timeInterval;
     private final String source;
     private final Long count;
