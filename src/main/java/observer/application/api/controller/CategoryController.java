@@ -1,6 +1,6 @@
 package observer.application.api.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import observer.application.api.CategoryDto;
 import observer.application.common.CategoryMapper;
 import observer.application.domain.Category;
@@ -12,7 +12,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping(value = CategoryController.API_PATH)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CategoryController {
 
     public static final String API_PATH = "/categories";

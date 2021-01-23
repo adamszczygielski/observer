@@ -1,25 +1,25 @@
 package observer.application.service.source.olx;
 
+import lombok.RequiredArgsConstructor;
 import observer.application.domain.Category;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service(value = "olxCategoryService")
+@RequiredArgsConstructor
 public class CategoryService {
 
     private static final String URL = "https://www.olx.pl/sitemap/";
+    private final DocumentService documentService;
 
     public List<Category> fetchCategories(String parentId) {
         List<Category> categories = new ArrayList<>();
-        Document document = getDocument();
+        Document document = documentService.getDocument(URL);
 
         if (document == null) {
             return categories;
@@ -38,16 +38,6 @@ public class CategoryService {
             );
         }
         return categories;
-    }
-
-    private Document getDocument() {
-        Connection connection = Jsoup.connect(URL);
-        try {
-            return connection.get();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private String toId(String categoryUrl) {

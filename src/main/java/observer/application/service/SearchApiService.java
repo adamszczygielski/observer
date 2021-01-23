@@ -1,6 +1,6 @@
 package observer.application.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import observer.application.domain.Search;
 import observer.application.domain.SearchView;
 import observer.application.repository.SearchRepository;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SearchApiService {
 
     private final SearchViewRepository searchViewRepository;

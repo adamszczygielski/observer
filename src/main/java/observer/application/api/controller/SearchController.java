@@ -1,6 +1,6 @@
 package observer.application.api.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import observer.application.api.SearchDto;
 import observer.application.common.SearchMapper;
 import observer.application.common.SearchViewMapper;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(SearchController.API_PATH)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SearchController {
 
     public static final String API_PATH = "/searches";
