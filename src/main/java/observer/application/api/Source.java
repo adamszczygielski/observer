@@ -1,12 +1,14 @@
 package observer.application.api;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
+@RequiredArgsConstructor
 public enum Source {
 
     ALLEGRO(1L, "Allegro"),
@@ -15,20 +17,15 @@ public enum Source {
 
     private static final Map<Long, Source> ENUM_MAP;
 
+    private final Long id;
+    private final String label;
+
     static {
         Map<Long, Source> map = new ConcurrentHashMap<>();
         for (Source source : Source.values()) {
             map.put(source.id, source);
         }
         ENUM_MAP = Collections.unmodifiableMap(map);
-    }
-
-    private final Long id;
-    private final String label;
-
-    Source(Long id, String label) {
-        this.id = id;
-        this.label = label;
     }
 
     public static Source getSource(Long sourceId) {

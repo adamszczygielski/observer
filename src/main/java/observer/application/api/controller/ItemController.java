@@ -1,6 +1,6 @@
 package observer.application.api.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import observer.application.common.ItemMapper;
 import observer.application.service.ItemApiService;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(ItemController.API_PATH)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ItemController {
 
     public static final String API_PATH = "/items";

@@ -25,7 +25,7 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
     private final Long uncheckedLimit;
 
     public SearchService(SearchRepository searchRepository, ItemServiceFactory itemServiceFactory,
-                         @Value("${search.chunk}") Integer chunk, @Value("${item.delay}") Long delay,
+                         @Value("${search.chunk}") Integer chunk, @Value("${item.removal.delay}") Long delay,
                          @Value("${search.unchecked-limit}") Long uncheckedLimit) {
         this.searchRepository = searchRepository;
         this.itemServiceFactory = itemServiceFactory;

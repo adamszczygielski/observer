@@ -7,15 +7,12 @@ import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
 import observer.application.service.ItemService;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +24,7 @@ import static observer.application.common.Utils.now;
 public class OlxService extends ItemService {
 
     private final LoadingCache<String, List<Category>> categoryCache;
+    private final DocumentService documentService;
 
     @Override
     public List<Item> getItems(Search search) {
@@ -42,7 +40,7 @@ public class OlxService extends ItemService {
         ArrayList<Item> items = new ArrayList<>();
         String url = getRequestUrl(search);
 
-        Document document = getDocument(url);
+        Document document = documentService.getDocument(url);
         if (document == null || !containsItems(document)) {
             return items;
         }
@@ -71,16 +69,6 @@ public class OlxService extends ItemService {
     private boolean containsItems(Document document) {
         Elements noItemsResponse = document.select("#body-container > div > div > div > p");
         return noItemsResponse.size() != 1;
-    }
-
-    private Document getDocument(String url) {
-        Connection connection = Jsoup.connect(url);
-        try {
-            return connection.get();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private String getRequestUrl(Search search) {

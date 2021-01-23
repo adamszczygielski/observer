@@ -1,17 +1,18 @@
 package observer.application.common;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Utils {
 
     private static final char ELLIPSIS = '\u2026';
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = createSimpleDateFormat();
-
-    private Utils() {
-    }
 
     public static String toString(Timestamp timestamp) {
         return SIMPLE_DATE_FORMAT.format(timestamp);

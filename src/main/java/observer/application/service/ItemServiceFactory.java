@@ -1,11 +1,11 @@
 package observer.application.service;
 
+import lombok.RequiredArgsConstructor;
 import observer.application.api.Source;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
 @Component
+@RequiredArgsConstructor
 class ItemServiceFactory implements AbstractFactory<ItemService> {
 
     private final ItemService allegroService;

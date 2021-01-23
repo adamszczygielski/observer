@@ -1,12 +1,12 @@
 package observer.application.service;
 
+import lombok.RequiredArgsConstructor;
 import observer.application.api.Source;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
 import observer.application.repository.ItemRepository;
 import observer.application.repository.SearchRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ItemApiService {
 
     private final ItemRepository itemRepository;
