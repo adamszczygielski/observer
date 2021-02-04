@@ -41,7 +41,7 @@ public class OlxService extends ItemService {
         String url = getRequestUrl(search);
 
         Document document = documentService.getDocument(url);
-        if (document == null || !containsItems(document)) {
+        if (!containsItems(document)) {
             return items;
         }
 

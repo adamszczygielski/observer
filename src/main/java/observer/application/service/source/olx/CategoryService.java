@@ -19,14 +19,13 @@ class CategoryService {
 
     public List<Category> fetchCategories(String parentId) {
         List<Category> categories = new ArrayList<>();
-        Document document = documentService.getDocument(URL);
 
+        Document document = documentService.getDocument(URL);
         if (document == null) {
             return categories;
         }
 
         Elements elements = document.select("h3 > a");
-
         for (Element e : elements) {
             String categoryUrl = e.attr("href");
             categories.add(
@@ -37,6 +36,7 @@ class CategoryService {
                             .build()
             );
         }
+
         return categories;
     }
 

@@ -11,8 +11,6 @@ import observer.application.service.source.ebay.model.FindItemsByKeywordsRespons
 import observer.application.service.source.ebay.model.SearchItem;
 import observer.application.service.source.ebay.model.SearchResult;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -47,16 +45,12 @@ public class EbayService extends ItemService {
     private List<SearchItem> fetchSearchItems(Search search) {
 
         FindItemsByKeywordsResponse findItemsByKeywordsResponse = restInvoker.get(
-                createListingRequestUrl(search), createHttpEntity(), FindItemsByKeywordsResponse.class);
+                createListingRequestUrl(search), null, FindItemsByKeywordsResponse.class);
 
         return Optional.of(findItemsByKeywordsResponse)
                 .map(BaseFindingServiceResponse::getSearchResult)
                 .map(SearchResult::getItem)
                 .orElse(new ArrayList<>());
-    }
-
-    private HttpEntity<String> createHttpEntity() {
-        return new HttpEntity<>(new HttpHeaders());
     }
 
     private String createListingRequestUrl(Search search) {

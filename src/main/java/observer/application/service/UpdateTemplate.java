@@ -1,24 +1,32 @@
 package observer.application.service;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 abstract class UpdateTemplate<S, I> {
 
-    void updateSearch(S s) {
-        if (isAboveLimit(s)) {
+    void updateSearch(S search) {
+        if (isAboveLimit(search)) {
             return;
         }
-        I i = fetchItems(s);
-        addNewItems(s, i);
-        removeOldItems(s, i);
-        updateDate(s);
+
+        try {
+            I items = fetchItems(search);
+            addNewItems(search, items);
+            removeOldItems(search, items);
+            updateDate(search);
+        } catch (RuntimeException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
-    abstract boolean isAboveLimit(S s);
+    abstract boolean isAboveLimit(S search);
 
-    abstract I fetchItems(S s);
+    abstract I fetchItems(S search);
 
-    abstract void addNewItems(S s, I i);
+    abstract void addNewItems(S search, I items);
 
-    abstract void removeOldItems(S s, I i);
+    abstract void removeOldItems(S search, I items);
 
-    abstract void updateDate(S s);
+    abstract void updateDate(S search);
 }
