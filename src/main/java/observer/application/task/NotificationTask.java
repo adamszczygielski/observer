@@ -11,7 +11,7 @@ public class NotificationTask {
 
     private final NotificationService notificationService;
 
-    @Scheduled(fixedDelayString = "${scheduled.delay}")
+    @Scheduled(fixedDelayString = "${observer.scheduled.delay}")
     public void sendNotifications() {
         notificationService.execute();
     }

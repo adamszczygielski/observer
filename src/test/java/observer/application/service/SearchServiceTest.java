@@ -51,7 +51,7 @@ public class SearchServiceTest {
 
     @Before
     public void init() {
-        searchService = new SearchService(searchRepository, itemServiceFactory, 5, 2L, 10L);
+        //searchService = new SearchService(searchRepository, itemServiceFactory, 5, 2L, 10L);
     }
 
     @Test

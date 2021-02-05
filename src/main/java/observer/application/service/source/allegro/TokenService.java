@@ -1,7 +1,8 @@
 package observer.application.service.source.allegro;
 
+import lombok.RequiredArgsConstructor;
+import observer.application.config.ConfigProperties;
 import observer.application.rest.RestInvoker;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,20 +13,13 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 @Service
+@RequiredArgsConstructor
 class TokenService {
 
-    private final int jwtTokenHours;
-    private final String privateToken;
     private final RestInvoker restInvoker;
+    private final ConfigProperties properties;
 
     private JwtToken jwtToken;
-
-    public TokenService(@Value("${allegro.token.private}") String privateToken, RestInvoker restInvoker,
-                        @Value("${allegro.token.jwt.hours}") String jwtTokenHours) {
-        this.privateToken = privateToken;
-        this.jwtTokenHours = Integer.parseInt(jwtTokenHours);
-        this.restInvoker = restInvoker;
-    }
 
     protected String fetchAccessToken() {
         if (validateToken(jwtToken)) {
@@ -51,13 +45,13 @@ class TokenService {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        requestHeaders.add("Authorization", privateToken);
+        requestHeaders.add("Authorization", properties.getAllegroTokenPrivate());
         return new HttpEntity<>(requestHeaders);
     }
 
     private boolean validateToken(JwtToken jwtToken) {
         if (jwtToken != null) {
-            return jwtToken.getDateCreated().plusHours(jwtTokenHours).isAfter(LocalDateTime.now());
+            return jwtToken.getDateCreated().plusHours(properties.getAllegroTokenJwtHours()).isAfter(LocalDateTime.now());
         }
         return false;
     }

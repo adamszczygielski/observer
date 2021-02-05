@@ -1,5 +1,7 @@
 package observer.application.service.source.ebay;
 
+import lombok.RequiredArgsConstructor;
+import observer.application.config.ConfigProperties;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
@@ -10,7 +12,6 @@ import observer.application.service.source.ebay.model.BaseFindingServiceResponse
 import observer.application.service.source.ebay.model.FindItemsByKeywordsResponse;
 import observer.application.service.source.ebay.model.SearchItem;
 import observer.application.service.source.ebay.model.SearchResult;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,17 +20,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class EbayService extends ItemService {
 
     private final EbayMapper mapper;
     private final RestInvoker restInvoker;
-    private final String securityAppName;
-
-    public EbayService(EbayMapper mapper, RestInvoker restInvoker, @Value("${ebay.security.appname}") String securityAppName) {
-        this.mapper = mapper;
-        this.restInvoker = restInvoker;
-        this.securityAppName = securityAppName;
-    }
+    private final ConfigProperties properties;
 
     @Override
     public List<Item> getItems(Search search) {
@@ -63,7 +59,7 @@ public class EbayService extends ItemService {
                 .pathSegment("v1")
                 .queryParam("OPERATION-NAME", "findItemsByKeywords")
                 .queryParam("SERVICE-VERSION", "1.13.0")
-                .queryParam("SECURITY-APPNAME", securityAppName)
+                .queryParam("SECURITY-APPNAME", properties.getEbaySecurityAppname())
                 .queryParam("RESPONSE-DATA-FORMAT", "XML")
                 .queryParam("keywords", search.getKeyword().replaceAll(" ", "+"))
                 .queryParam("sortOrder", "StartTimeNewest")

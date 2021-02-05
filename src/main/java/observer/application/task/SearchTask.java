@@ -11,7 +11,7 @@ public class SearchTask {
 
     private final SearchService searchService;
 
-    @Scheduled(fixedDelayString = "${scheduled.delay}")
+    @Scheduled(fixedDelayString = "${observer.scheduled.delay}")
     public void updateSearch() {
         searchService.execute();
     }

@@ -1,10 +1,11 @@
 package observer.application.service;
 
+import lombok.RequiredArgsConstructor;
 import observer.application.api.Source;
+import observer.application.config.ConfigProperties;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
 import observer.application.repository.SearchRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,27 +17,16 @@ import static java.util.stream.Collectors.toList;
 import static observer.application.common.Utils.now;
 
 @Service
+@RequiredArgsConstructor
 public class SearchService extends UpdateTemplate<Search, List<Item>> {
 
     private final SearchRepository searchRepository;
     private final ItemServiceFactory itemServiceFactory;
-    private final Integer chunk;
-    private final Long delay;
-    private final Long uncheckedLimit;
-
-    public SearchService(SearchRepository searchRepository, ItemServiceFactory itemServiceFactory,
-                         @Value("${search.chunk}") Integer chunk, @Value("${item.removal.delay}") Long delay,
-                         @Value("${search.unchecked-limit}") Long uncheckedLimit) {
-        this.searchRepository = searchRepository;
-        this.itemServiceFactory = itemServiceFactory;
-        this.chunk = chunk;
-        this.delay = delay;
-        this.uncheckedLimit = uncheckedLimit;
-    }
+    private final ConfigProperties properties;
 
     @Transactional
     public void execute() {
-        searchRepository.findAllToUpdate(now(), PageRequest.of(0, chunk)).forEach(this::updateSearch);
+        searchRepository.findAllToUpdate(now(), PageRequest.of(0, properties.getSearchChunkSize())).forEach(this::updateSearch);
     }
 
     @Transactional
@@ -45,7 +35,7 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
     }
 
     boolean isAboveLimit(Search search) {
-        return search.getItemList().stream().filter(Item::getIsActive).count() > uncheckedLimit;
+        return search.getItemList().stream().filter(Item::getIsActive).count() > properties.getSearchUncheckedLimit();
     }
 
     List<Item> fetchItems(Search search) {
@@ -65,7 +55,7 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
         List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(toList());
         search.getItemList().removeIf(item -> !item.getIsActive()
                 && !fetchedItemsIds.contains(item.getOriginId())
-                && item.getDateCreated().toLocalDateTime().plusDays(delay).isBefore(LocalDateTime.now()));
+                && item.getDateCreated().toLocalDateTime().plusDays(properties.getItemRemovalDelay()).isBefore(LocalDateTime.now()));
     }
 
     void updateDate(Search search) {

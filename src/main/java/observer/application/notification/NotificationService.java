@@ -2,11 +2,12 @@ package observer.application.notification;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import observer.application.config.ConfigProperties;
 import observer.application.domain.Item;
 import observer.application.repository.ItemRepository;
 import observer.application.rest.RestInvoker;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,23 +22,15 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class NotificationService {
 
     private static final String MESSAGE = "Found %s new item%s!";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final String apiKey;
-    private final String appId;
     private final ItemRepository itemRepository;
     private final RestInvoker restInvoker;
-
-    public NotificationService(@Value("${onesignal.api.key}") String apiKey, @Value("${onesignal.app.id}") String appId,
-                               ItemRepository itemRepository, RestInvoker restInvoker) {
-        this.apiKey = apiKey;
-        this.appId = appId;
-        this.itemRepository = itemRepository;
-        this.restInvoker = restInvoker;
-    }
+    private final ConfigProperties properties;
 
     public void execute() {
         Optional<List<Item>> optionalItems = itemRepository.findUnnotified(PageRequest.of(0, 100));
@@ -58,7 +51,7 @@ public class NotificationService {
     private HttpEntity<String> createHttpEntity(String requestBody) {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.add("Authorization", apiKey);
+        requestHeaders.add("Authorization", properties.getOnesignalApiKey());
 
         return new HttpEntity<>(requestBody, requestHeaders);
     }
@@ -73,7 +66,7 @@ public class NotificationService {
 
     private String createRequestBody(int itemsCount) {
         NotificationRequest notificationRequest = NotificationRequest.builder()
-                .appId(appId)
+                .appId(properties.getOnesignalAppId())
                 .includedSegments(Collections.singletonList("All"))
                 .contents(Collections.singletonMap("en", createMessage(itemsCount)))
                 .build();
