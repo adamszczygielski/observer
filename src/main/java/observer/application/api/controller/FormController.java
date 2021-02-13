@@ -2,7 +2,7 @@ package observer.application.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.api.SearchDto;
-import observer.application.common.SearchMapper;
+import observer.application.mapper.SearchMapper;
 import observer.application.service.SearchApiService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

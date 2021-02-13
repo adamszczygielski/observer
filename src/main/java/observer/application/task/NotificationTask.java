@@ -1,12 +1,12 @@
 package observer.application.task;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import observer.application.notification.NotificationService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class NotificationTask {
 
     private final NotificationService notificationService;

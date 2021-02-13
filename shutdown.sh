@@ -1,1 +1,1 @@
-kill $(cat ./shutdown.pid)
+kill $(cat ./application.pid)

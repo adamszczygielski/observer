@@ -11,6 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +23,10 @@ class TokenService {
     private JwtToken jwtToken;
 
     protected String fetchAccessToken() {
-        if (validateToken(jwtToken)) {
+        if (isValid(jwtToken)) {
             return jwtToken.getBearer();
         }
-        JwtToken newJwtToken = restInvoker.post(createRequestUrl(), createRequestHttpEntity(), JwtToken.class);
-        newJwtToken.setDateCreated(LocalDateTime.now());
-        jwtToken = newJwtToken;
-
+        jwtToken = restInvoker.post(createRequestUrl(), createRequestHttpEntity(), JwtToken.class);
         return jwtToken.getBearer();
     }
 
@@ -49,10 +47,11 @@ class TokenService {
         return new HttpEntity<>(requestHeaders);
     }
 
-    private boolean validateToken(JwtToken jwtToken) {
-        if (jwtToken != null) {
-            return jwtToken.getDateCreated().plusHours(properties.getAllegroTokenJwtHours()).isAfter(LocalDateTime.now());
-        }
-        return false;
+    private boolean isValid(JwtToken jwtToken) {
+        return Optional.ofNullable(jwtToken)
+                .map(JwtToken::getDateCreated)
+                .map(dc -> dc.plusHours(properties.getAllegroTokenJwtHours()).isAfter(LocalDateTime.now()))
+                .orElse(false);
     }
+
 }

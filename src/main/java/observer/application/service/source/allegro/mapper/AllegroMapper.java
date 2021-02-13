@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static observer.application.common.Utils.now;
+import static observer.application.mapper.MapperUtils.now;
 
 @Component
 public class AllegroMapper {

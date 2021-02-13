@@ -3,7 +3,6 @@ package observer.application.api;
 import lombok.Builder;
 import lombok.Getter;
 
-
 @Getter
 @Builder
 public class SearchViewDto {
@@ -18,4 +17,5 @@ public class SearchViewDto {
     private final String source;
     private final Long count;
     private final String dateUpdated;
+
 }

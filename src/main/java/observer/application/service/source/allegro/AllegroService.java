@@ -1,7 +1,7 @@
 package observer.application.service.source.allegro;
 
 import com.google.common.cache.LoadingCache;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
@@ -16,7 +16,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AllegroService extends ItemService {
 
     private final AllegroMapper mapper;
@@ -73,8 +72,9 @@ public class AllegroService extends ItemService {
                 .queryParam("sort", "-startTime")
                 .queryParam("limit", "20");
 
-        if (!StringUtils.isEmpty(search.getCategoryId())) {
-            uriComponentsBuilder.queryParam("category.id", search.getCategoryId());
+        String categoryId = search.getCategoryId();
+        if (categoryId != null) {
+            uriComponentsBuilder.queryParam("category.id", categoryId);
         }
 
         Integer priceFrom = search.getPriceFrom();

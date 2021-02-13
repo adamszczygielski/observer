@@ -40,9 +40,6 @@ public class SearchView {
     @Column(name = "TIME_INTERVAL")
     private Long timeInterval;
 
-    @Column(name = "IS_ACTIVE")
-    private Boolean isActive;
-
     @Column(name = "SOURCE_ID")
     private Long sourceId;
 

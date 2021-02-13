@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-class CategoryService {
+class AllegroCategoryService {
 
     private final TokenService tokenService;
     private final RestInvoker restInvoker;

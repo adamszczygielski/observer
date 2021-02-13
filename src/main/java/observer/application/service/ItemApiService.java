@@ -19,7 +19,7 @@ public class ItemApiService {
 
     private final ItemRepository itemRepository;
     private final SearchRepository searchRepository;
-    private final ItemServiceFactory itemServiceFactory;
+    private final SourceService sourceService;
 
     public List<Item> fetchActiveItems(Long searchId) {
         return itemRepository.findActive(searchId).orElseGet(ArrayList::new);
@@ -36,7 +36,7 @@ public class ItemApiService {
         }
         Search search = searchOptional.get();
         Source source = Source.getSource(search.getSourceId());
-        ItemService itemService = itemServiceFactory.create(source);
+        ItemService itemService = sourceService.get(source);
         return itemService.getItems(search);
     }
 
@@ -46,7 +46,7 @@ public class ItemApiService {
 
     public List<Category> getCategories(Long sourceId, String parentId) {
         Source source = Source.getSource(sourceId);
-        ItemService itemService = itemServiceFactory.create(source);
+        ItemService itemService = sourceService.get(source);
         return itemService.getCategories(parentId);
     }
 }

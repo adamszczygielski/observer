@@ -1,4 +1,4 @@
-package observer.application.common;
+package observer.application.mapper;
 
 import observer.application.api.SearchViewDto;
 import observer.application.api.Source;
@@ -6,8 +6,9 @@ import observer.application.domain.SearchView;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
-import static observer.application.common.Utils.trim;
+import static observer.application.mapper.MapperUtils.trim;
 
 @Component
 public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
@@ -31,9 +32,9 @@ public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
     }
 
     private String toString(Timestamp lastUpdate) {
-        if(lastUpdate.getTime() == 0) {
-            return "";
-        }
-        return Utils.toString(lastUpdate);
+        return Optional.ofNullable(lastUpdate)
+                .map(MapperUtils::toString)
+                .orElse("");
     }
+
 }

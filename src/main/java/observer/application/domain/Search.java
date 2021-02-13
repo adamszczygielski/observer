@@ -41,9 +41,6 @@ public class Search {
     @Column(name = "TIME_INTERVAL")
     private Short timeInterval;
 
-    @Column(name = "IS_ACTIVE")
-    private Boolean isActive;
-
     @Column(name = "SOURCE_ID")
     private Long sourceId;
 

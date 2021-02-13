@@ -1,12 +1,12 @@
 package observer.application.rest;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RestInvokerImpl implements RestInvoker {
 
     private final RestTemplate restTemplate;
@@ -22,4 +22,5 @@ public class RestInvokerImpl implements RestInvoker {
         ResponseEntity<P> responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, responseClass);
         return responseEntity.getBody();
     }
+
 }

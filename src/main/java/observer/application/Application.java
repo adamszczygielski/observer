@@ -13,7 +13,7 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplicationBuilder app = new SpringApplicationBuilder(Application.class);
-        app.build().addListeners(new ApplicationPidFileWriter("./shutdown.pid"));
+        app.build().addListeners(new ApplicationPidFileWriter("./application.pid"));
         app.run(args);
     }
 }

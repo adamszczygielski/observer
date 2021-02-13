@@ -1,7 +1,7 @@
 package observer.application.service.source.olx;
 
 import com.google.common.cache.LoadingCache;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import observer.application.api.Source;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
@@ -12,15 +12,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.thymeleaf.util.StringUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static observer.application.common.Utils.now;
+import static observer.application.mapper.MapperUtils.now;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OlxService extends ItemService {
 
     private final LoadingCache<String, List<Category>> categoryCache;
@@ -38,9 +39,8 @@ public class OlxService extends ItemService {
 
     private List<Item> fetchItems(Search search) {
         ArrayList<Item> items = new ArrayList<>();
-        String url = getRequestUrl(search);
 
-        Document document = documentService.getDocument(url);
+        Document document = documentService.getDocument(getRequestUrl(search));
         if (!containsItems(document)) {
             return items;
         }
@@ -51,7 +51,8 @@ public class OlxService extends ItemService {
         Elements originIds = document.select("td > div > table");
 
         for (int i = 0; i < titles.size(); i++) {
-            items.add(Item.builder().originId(originIds.get(i).attr("data-id"))
+            Item item = Item.builder()
+                    .originId(originIds.get(i).attr("data-id"))
                     .searchId(search.getId())
                     .dateCreated(now())
                     .title(titles.get(i).text())
@@ -60,7 +61,9 @@ public class OlxService extends ItemService {
                     .isActive(true)
                     .isNotified(false)
                     .sourceId(Source.OLX.getId())
-                    .build());
+                    .build();
+
+            items.add(item);
         }
 
         return items;
@@ -74,15 +77,9 @@ public class OlxService extends ItemService {
     private String getRequestUrl(Search search) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
-                .host("www.olx.pl");
-
-        if (search.getCategoryId() != null) {
-            uriComponentsBuilder.pathSegment(search.getCategoryId());
-        } else {
-            uriComponentsBuilder.pathSegment("oferty");
-        }
-
-        uriComponentsBuilder.pathSegment("q-{keyword}")
+                .host("www.olx.pl")
+                .pathSegment(toCategory(search))
+                .pathSegment(toKeyword(search))
                 .path("/")
                 .queryParam("search[order]", "created_at:desc")
                 .queryParam("spellchecker", "off");
@@ -97,19 +94,12 @@ public class OlxService extends ItemService {
             uriComponentsBuilder.queryParam("search[filter_float_price:to]", priceTo);
         }
 
-        return uriComponentsBuilder
-                .buildAndExpand(toKeyword(search))
-                .encode(StandardCharsets.UTF_8)
-                .toUriString();
+        return uriComponentsBuilder.toUriString();
     }
 
     private String toItemUrl(Element element) {
         String url = element.attr("href");
-        int endIndex = url.indexOf("#");
-        if (endIndex > 0) {
-            return url.substring(0, endIndex);
-        }
-        return url;
+        return StringUtils.substringBefore(url, "#");
     }
 
     private String toPrice(Element element) {
@@ -117,6 +107,13 @@ public class OlxService extends ItemService {
     }
 
     private String toKeyword(Search search) {
-        return search.getKeyword().replaceAll(" ", "-");
+        return "q-" + search.getKeyword().replaceAll(" ", "-");
     }
+
+    private String toCategory(Search search) {
+        return Optional.ofNullable(search)
+                .map(Search::getCategoryId)
+                .orElse("oferty");
+    }
+
 }

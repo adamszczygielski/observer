@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class OlxConfig {
 
     @Bean("categoryCache")
-    public LoadingCache<String, List<Category>> getCategoryCache(CategoryService categoryService) {
+    public LoadingCache<String, List<Category>> getCategoryCache(OlxCategoryService categoryService) {
         return CacheBuilder.newBuilder()
                 .maximumSize(100)
                 .expireAfterWrite(2, TimeUnit.DAYS)

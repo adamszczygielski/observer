@@ -1,7 +1,7 @@
 package observer.application.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.common.ItemMapper;
+import observer.application.mapper.ItemMapper;
 import observer.application.service.ItemApiService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

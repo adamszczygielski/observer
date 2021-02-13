@@ -1,4 +1,4 @@
-package observer.application.common;
+package observer.application.mapper;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Utils {
+public class MapperUtils {
 
     private static final char ELLIPSIS = '\u2026';
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = createSimpleDateFormat();

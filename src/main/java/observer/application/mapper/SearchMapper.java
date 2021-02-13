@@ -1,4 +1,4 @@
-package observer.application.common;
+package observer.application.mapper;
 
 import com.google.common.base.Strings;
 import observer.application.api.SearchDto;
@@ -6,7 +6,6 @@ import observer.application.api.Source;
 import observer.application.domain.Search;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @Component
@@ -15,11 +14,9 @@ public class SearchMapper {
     public Search toSearch(SearchDto searchDto) {
         return Search.builder()
                 .id(searchDto.getSearchId())
-                .keyword(Utils.normalize(searchDto.getKeyword()))
+                .keyword(MapperUtils.normalize(searchDto.getKeyword()))
                 .categoryId(toNullable(searchDto.getCategoryId()))
                 .categoryName(toNullable(searchDto.getCategoryName()))
-                .dateUpdated(new Timestamp(0))
-                .isActive(false)
                 .sourceId(searchDto.getSource().getId())
                 .timeInterval(searchDto.getInterval())
                 .itemList(new ArrayList<>())

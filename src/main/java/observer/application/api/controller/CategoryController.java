@@ -2,7 +2,7 @@ package observer.application.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.api.CategoryDto;
-import observer.application.common.CategoryMapper;
+import observer.application.mapper.CategoryMapper;
 import observer.application.domain.Category;
 import observer.application.service.ItemApiService;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,6 @@ public class CategoryController {
     public List<CategoryDto> getCategories(
             @RequestParam(value = "sourceId") Long sourceId,
             @RequestParam(value = "parentId", required = false, defaultValue = "0") String parentId) {
-
         List<Category> categories = itemApiService.getCategories(sourceId, parentId);
         return categoryMapper.toDtoList(categories);
     }

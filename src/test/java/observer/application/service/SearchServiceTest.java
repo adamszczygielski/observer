@@ -47,17 +47,17 @@ public class SearchServiceTest {
     private AllegroService allegroService;
 
     @Mock
-    private ItemServiceFactory itemServiceFactory;
+    private SourceService sourceService;
 
     @Before
     public void init() {
-        //searchService = new SearchService(searchRepository, itemServiceFactory, 5, 2L, 10L);
+        //searchService = new SearchService(searchRepository, sourceService, 5, 2L, 10L);
     }
 
     @Test
     @SneakyThrows
     public void shouldUpdateSearch() {
-        Mockito.when(itemServiceFactory.create(Source.ALLEGRO)).thenReturn(allegroService);
+        Mockito.when(sourceService.get(Source.ALLEGRO)).thenReturn(allegroService);
         Mockito.when(allegroService.getItems(any(Search.class))).thenReturn(getItems());
         searchService.execute();
 

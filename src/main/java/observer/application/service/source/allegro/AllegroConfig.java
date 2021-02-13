@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class AllegroConfig {
 
     @Bean("categoryDtoCache")
-    public LoadingCache<String, List<CategoryDto>> getCategoryDtoCache(CategoryService categoryService) {
+    public LoadingCache<String, List<CategoryDto>> getCategoryDtoCache(AllegroCategoryService categoryService) {
         return CacheBuilder.newBuilder()
                 .maximumSize(100)
                 .expireAfterWrite(2, TimeUnit.DAYS)

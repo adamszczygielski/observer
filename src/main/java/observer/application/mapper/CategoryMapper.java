@@ -1,4 +1,4 @@
-package observer.application.common;
+package observer.application.mapper;
 
 import observer.application.api.CategoryDto;
 import observer.application.domain.Category;

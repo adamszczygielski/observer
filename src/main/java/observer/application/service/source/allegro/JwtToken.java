@@ -2,25 +2,30 @@ package observer.application.service.source.allegro;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 public class JwtToken implements Serializable {
 
     @JsonProperty("access_token")
     private String value;
-    private LocalDateTime dateCreated;
+    private final LocalDateTime dateCreated;
 
-    protected String getBearer() {
+    JwtToken() {
+        this.dateCreated = LocalDateTime.now();
+    }
+
+    String getBearer() {
         return "Bearer " + value;
     }
+
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    void setValue(String value) {
+        this.value = value;
+    }
+
 }

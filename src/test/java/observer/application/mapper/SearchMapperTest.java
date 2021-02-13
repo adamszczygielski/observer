@@ -1,4 +1,4 @@
-package observer.application.common;
+package observer.application.mapper;
 
 import observer.application.api.SearchDto;
 import observer.application.api.Source;

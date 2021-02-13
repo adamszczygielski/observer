@@ -1,11 +1,11 @@
-package observer.application.common;
+package observer.application.mapper;
 
 import observer.application.api.ItemDto;
 import observer.application.api.Source;
 import observer.application.domain.Item;
 import org.springframework.stereotype.Component;
 
-import static observer.application.common.Utils.trim;
+import static observer.application.mapper.MapperUtils.trim;
 
 @Component
 public class ItemMapper implements BaseMapper<Item, ItemDto> {
@@ -17,7 +17,7 @@ public class ItemMapper implements BaseMapper<Item, ItemDto> {
         return ItemDto.builder()
                 .itemId(item.getId())
                 .originId(item.getOriginId())
-                .dateCreated(Utils.toString(item.getDateCreated()))
+                .dateCreated(MapperUtils.toString(item.getDateCreated()))
                 .title(trim(item.getTitle(), MAX_LENGTH))
                 .url(item.getUrl())
                 .price(item.getPrice())

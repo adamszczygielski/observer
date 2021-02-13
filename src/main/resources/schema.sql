@@ -11,9 +11,8 @@ create table if not exists search
     category_name varchar(255),
     price_from int,
     price_to int,
-    date_updated timestamp not null,
+    date_updated timestamp,
     time_interval smallint not null,
-    is_active boolean not null,
     source_id smallint not null,
     primary key(id),
 );
@@ -34,7 +33,7 @@ create table if not exists item
    foreign key (search_id) references search(id) on delete cascade
 );
 
-create or replace view search_v as
+create view if not exists search_v as
 (
     select
         s.id,
@@ -45,7 +44,6 @@ create or replace view search_v as
         s.price_to,
         s.date_updated,
         s.time_interval,
-        s.is_active,
         s.source_id,
         count(i.id) as count
     from search s

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service(value = "olxCategoryService")
+@Service
 @RequiredArgsConstructor
-class CategoryService {
+class OlxCategoryService {
 
     private static final String URL = "https://www.olx.pl/sitemap/";
     private final DocumentService documentService;

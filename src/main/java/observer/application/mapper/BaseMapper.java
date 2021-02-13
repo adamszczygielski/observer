@@ -1,4 +1,4 @@
-package observer.application.common;
+package observer.application.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;

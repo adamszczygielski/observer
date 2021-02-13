@@ -63,13 +63,18 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label for="category">Category</label>
-                <select class="form-control" id="category"></select>
+                <label for="inputCategoryName">Category name</label>
+                <input class="form-control" type="text" id="inputCategoryName" name="inputCategoryName" th:field="*{categoryName}" readonly>
             </div>
             <div class="form-group col-md-4">
-                <label for="inputCategoryName">Selected</label>
-                <input class="form-control" type="text" id="inputCategoryName" name="inputCategoryName" th:field="*{categoryName}" readonly>
-                <input type="hidden" class="form-control" id="inputCategoryId" name="inputCategoryId" th:field="*{categoryId}" readonly>
+                <label for="inputCategoryName">Category ID</label>
+                <input class="form-control" type="text" id="inputCategoryId" name="inputCategoryId" th:field="*{categoryId}" readonly>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="category">Categories</label>
+                <select class="form-control" id="category"></select>
             </div>
         </div>
         <button type="button" class="btn btn-primary" id="selectCategoryButton" onclick="getCategories(false)">Select</button>

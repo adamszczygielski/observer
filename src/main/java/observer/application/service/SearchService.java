@@ -14,19 +14,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static observer.application.common.Utils.now;
+import static observer.application.mapper.MapperUtils.now;
 
 @Service
 @RequiredArgsConstructor
 public class SearchService extends UpdateTemplate<Search, List<Item>> {
 
     private final SearchRepository searchRepository;
-    private final ItemServiceFactory itemServiceFactory;
+    private final SourceService sourceService;
     private final ConfigProperties properties;
 
     @Transactional
     public void execute() {
-        searchRepository.findAllToUpdate(now(), PageRequest.of(0, properties.getSearchChunkSize())).forEach(this::updateSearch);
+        searchRepository.findOverdue(PageRequest.of(0, properties.getSearchChunkSize())).forEach(this::updateSearch);
     }
 
     @Transactional
@@ -40,7 +40,7 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
 
     List<Item> fetchItems(Search search) {
         Source source = Source.getSource(search.getSourceId());
-        ItemService itemService = itemServiceFactory.create(source);
+        ItemService itemService = sourceService.get(source);
         return itemService.getItems(search);
     }
 

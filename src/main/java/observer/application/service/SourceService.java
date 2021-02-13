@@ -2,19 +2,17 @@ package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.api.Source;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
-class ItemServiceFactory implements AbstractFactory<ItemService> {
+class SourceService {
 
     private final ItemService allegroService;
     private final ItemService olxService;
     private final ItemService ebayService;
 
-    @Override
-    public ItemService create(Source source) {
-
+    public ItemService get(Source source) {
         switch (source) {
             case ALLEGRO:
                 return allegroService;
@@ -26,4 +24,5 @@ class ItemServiceFactory implements AbstractFactory<ItemService> {
                 throw new IllegalArgumentException("No service implementation for: " + source.getLabel());
         }
     }
+
 }
