@@ -6,6 +6,7 @@ import observer.application.config.ConfigProperties;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
 import observer.application.repository.SearchRepository;
+import observer.application.task.ScheduledTask;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,24 +19,29 @@ import static observer.application.mapper.MapperUtils.now;
 
 @Service
 @RequiredArgsConstructor
-public class SearchService extends UpdateTemplate<Search, List<Item>> {
+public class SearchService extends UpdateTemplate<Search, List<Item>> implements ScheduledTask {
 
     private final SearchRepository searchRepository;
     private final SourceService sourceService;
     private final ConfigProperties properties;
 
+    @Override
     @Transactional
     public void execute() {
-        searchRepository.findOverdue(PageRequest.of(0, properties.getSearchChunkSize())).forEach(this::updateSearch);
+        searchRepository.findOverdue(PageRequest.of(0, properties.getSearchFetchChunkSize()))
+                .forEach(this::updateSearch);
     }
 
     @Transactional
     public void executeImmediately(List<Long> searchIds) {
-        searchRepository.findAllById(searchIds).forEach(this::updateSearch);
+        searchRepository.findAllById(searchIds)
+                .forEach(this::updateSearch);
     }
 
     boolean isAboveLimit(Search search) {
-        return search.getItemList().stream().filter(Item::getIsActive).count() > properties.getSearchUncheckedLimit();
+        return search.getItemList().stream()
+                .filter(Item::getIsActive)
+                .count() > properties.getSearchUncheckedLimit();
     }
 
     List<Item> fetchItems(Search search) {
@@ -55,7 +61,7 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
         List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(toList());
         search.getItemList().removeIf(item -> !item.getIsActive()
                 && !fetchedItemsIds.contains(item.getOriginId())
-                && item.getDateCreated().toLocalDateTime().plusDays(properties.getItemRemovalDelay()).isBefore(LocalDateTime.now()));
+                && item.getDateCreated().toLocalDateTime().plusDays(properties.getItemRemoveDelay()).isBefore(LocalDateTime.now()));
     }
 
     void updateDate(Search search) {

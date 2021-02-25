@@ -1,8 +1,3 @@
---drop view if exists search_v;
---drop table if exists parameter;
---drop table if exists item;
---drop table if exists search;
-
 create table if not exists search
 (
     id bigint auto_increment not null,

@@ -21,15 +21,15 @@ public class ItemApiService {
     private final SearchRepository searchRepository;
     private final SourceService sourceService;
 
-    public List<Item> fetchActiveItems(Long searchId) {
+    public List<Item> getActiveItems(Long searchId) {
         return itemRepository.findActive(searchId).orElseGet(ArrayList::new);
     }
 
-    public List<Item> fetchActiveItems() {
+    public List<Item> getActiveItems() {
         return itemRepository.findActive().orElseGet(ArrayList::new);
     }
 
-    public List<Item> fetchItemsPreview(Long searchId) {
+    public List<Item> fetchItems(Long searchId) {
         Optional<Search> searchOptional = searchRepository.findById(searchId);
         if(!searchOptional.isPresent()) {
             return new ArrayList<>();

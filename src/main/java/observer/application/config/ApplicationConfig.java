@@ -1,5 +1,6 @@
 package observer.application.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import observer.application.logger.AspectLogger;
 import observer.application.rest.RestInvoker;
 import observer.application.rest.RestInvokerImpl;
@@ -18,6 +19,11 @@ public class ApplicationConfig {
     @Bean("aspectLogger")
     public AspectLogger getAspectLogger() {
         return new AspectLogger();
+    }
+
+    @Bean("objectMapper")
+    public ObjectMapper getObjectMapper() {
+        return new ObjectMapper();
     }
 
 }

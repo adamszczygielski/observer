@@ -21,13 +21,13 @@ public class FormController {
     private final SearchMapper searchMapper;
 
     @GetMapping(value = "/search")
-    public String newForm(Model model) {
+    public String getForm(Model model) {
         model.addAttribute("searchDto", new SearchDto());
         return "form";
     }
 
     @GetMapping(value = "/search/{id}")
-    public String editForm(Model model, @PathVariable(name = "id") Long searchId) {
+    public String getForm(Model model, @PathVariable(name = "id") Long searchId) {
         model.addAttribute("searchDto", searchMapper.toSearchDto(searchApiService.getSearch(searchId)));
         return "form";
     }

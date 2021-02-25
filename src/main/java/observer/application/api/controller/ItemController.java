@@ -21,20 +21,20 @@ public class ItemController {
     private final ItemMapper itemMapper;
 
     @GetMapping
-    public String fetchActiveItems(Model model) {
-        model.addAttribute("items", itemMapper.toDtoList(itemApiService.fetchActiveItems()));
+    public String getActiveItems(Model model) {
+        model.addAttribute("items", itemMapper.toDtoList(itemApiService.getActiveItems()));
         return "items";
     }
 
     @GetMapping(value = "/{searchId}")
-    public String fetchActiveItems(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemMapper.toDtoList(itemApiService.fetchActiveItems(searchId)));
+    public String getActiveItems(Model model, @PathVariable Long searchId) {
+        model.addAttribute("items", itemMapper.toDtoList(itemApiService.getActiveItems(searchId)));
         return "items";
     }
 
     @GetMapping(value = "/{searchId}/preview")
-    public String fetchItemsPreview(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemMapper.toDtoList(itemApiService.fetchItemsPreview(searchId)));
+    public String fetchItems(Model model, @PathVariable Long searchId) {
+        model.addAttribute("items", itemMapper.toDtoList(itemApiService.fetchItems(searchId)));
         return "items-preview";
     }
 

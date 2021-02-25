@@ -28,8 +28,8 @@ public class SearchController {
     private final SearchViewMapper searchViewMapper;
 
     @GetMapping
-    public String fetchSearchViewList(Model model) {
-        model.addAttribute("searchViewDtoList", searchViewMapper.toDtoList(searchApiService.fetchSearchViewList()));
+    public String getSearchViewList(Model model) {
+        model.addAttribute("searchViewDtoList", searchViewMapper.toDtoList(searchApiService.getSearchViewList()));
         return "searches";
     }
 
@@ -49,7 +49,7 @@ public class SearchController {
     }
 
     @PatchMapping
-    public void updateSearches(@RequestParam("id") List<Long> searchIds) {
+    public void executeSearches(@RequestParam("id") List<Long> searchIds) {
         searchService.executeImmediately(searchIds);
     }
 

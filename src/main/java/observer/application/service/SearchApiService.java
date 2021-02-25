@@ -16,7 +16,7 @@ public class SearchApiService {
     private final SearchViewRepository searchViewRepository;
     private final SearchRepository searchRepository;
 
-    public List<SearchView> fetchSearchViewList() {
+    public List<SearchView> getSearchViewList() {
         return searchViewRepository.findAll();
     }
 

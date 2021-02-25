@@ -8,6 +8,7 @@ import observer.application.config.ConfigProperties;
 import observer.application.domain.Item;
 import observer.application.repository.ItemRepository;
 import observer.application.rest.RestInvoker;
+import observer.application.task.ScheduledTask;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,15 +24,16 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class NotificationService {
+public class NotificationService implements ScheduledTask {
 
     private static final String MESSAGE = "Found %s new item%s!";
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
     private final ItemRepository itemRepository;
     private final RestInvoker restInvoker;
     private final ConfigProperties properties;
 
+    @Override
     public void execute() {
         Optional<List<Item>> optionalItems = itemRepository.findUnnotified(PageRequest.of(0, 100));
 

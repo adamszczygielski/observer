@@ -23,13 +23,19 @@ public class ConfigProperties {
     @Value("${observer.onesignal.api.key}")
     private String onesignalApiKey;
 
-    @Value("${observer.search.chunk.size}")
-    private Integer searchChunkSize;
+    @Value("${observer.search.fetch-chunk-size}")
+    private Integer searchFetchChunkSize;
 
-    @Value("${observer.search.unchecked.limit}")
+    @Value("${observer.search.unchecked-limit}")
     private Integer searchUncheckedLimit;
 
-    @Value("${observer.item.removal.delay}")
-    private Integer itemRemovalDelay;
+    @Value("${observer.item.remove-delay}")
+    private Integer itemRemoveDelay;
+
+    @Value("${observer.scheduled.search.delay}")
+    private Integer scheduledSearchDelay;
+
+    @Value("${observer.scheduled.notification.delay}")
+    private Integer scheduledNotificationDelay;
 
 }
