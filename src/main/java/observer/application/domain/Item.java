@@ -9,7 +9,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Getter
 @Builder
@@ -32,7 +32,7 @@ public class Item implements Serializable {
     private Long searchId;
 
     @Column(name = "DATE_CREATED")
-    private Timestamp dateCreated;
+    private Instant dateCreated;
 
     @Column(name = "TITLE")
     private String title;

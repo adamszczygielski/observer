@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Getter
 @Table(name = "SEARCH_V")
@@ -35,7 +35,7 @@ public class SearchView {
     private Integer priceTo;
 
     @Column(name = "DATE_UPDATED")
-    private Timestamp dateUpdated;
+    private Instant dateUpdated;
 
     @Column(name = "TIME_INTERVAL")
     private Long timeInterval;

@@ -3,6 +3,8 @@ package observer.application.api;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalTime;
+
 @Getter
 @Builder
 public class SearchViewDto {
@@ -16,6 +18,6 @@ public class SearchViewDto {
     private final Long timeInterval;
     private final String source;
     private final Long count;
-    private final String dateUpdated;
+    private final LocalTime dateUpdated;
 
 }

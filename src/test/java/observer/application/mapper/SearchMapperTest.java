@@ -5,8 +5,6 @@ import observer.application.api.Source;
 import observer.application.domain.Search;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Timestamp;
-
 public class SearchMapperTest {
 
     private final SearchMapper searchMapper = new SearchMapper();
@@ -37,7 +35,7 @@ public class SearchMapperTest {
                 .searchId(1L)
                 .keyword("keyword")
                 //.category("category")
-                .dateUpdated(new Timestamp(0))
+                .dateUpdated(null)
                 .interval(new Short("5"))
                 .source(Source.ALLEGRO)
                 .priceFrom(100)

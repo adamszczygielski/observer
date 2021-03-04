@@ -8,10 +8,9 @@ import observer.application.service.source.ebay.model.SellingStatus;
 import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static observer.application.mapper.MapperUtils.now;
 
 @Component
 public class EbayMapper {
@@ -27,7 +26,7 @@ public class EbayMapper {
         return Item.builder()
                 .originId(searchItem.getItemId())
                 .searchId(searchId)
-                .dateCreated(now())
+                .dateCreated(Instant.now())
                 .title(searchItem.getTitle())
                 .price(toPrice(searchItem.getSellingStatus()))
                 .url(searchItem.getViewItemURL())

@@ -3,7 +3,7 @@ package observer.application.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @Setter
@@ -36,7 +36,7 @@ public class Search {
     private Integer priceTo;
 
     @Column(name = "DATE_UPDATED")
-    private Timestamp dateUpdated;
+    private Instant dateUpdated;
 
     @Column(name = "TIME_INTERVAL")
     private Short timeInterval;

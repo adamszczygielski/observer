@@ -5,9 +5,7 @@ import observer.application.api.Source;
 import observer.application.domain.SearchView;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-import java.util.Optional;
-
+import static observer.application.mapper.MapperUtils.toLocalTime;
 import static observer.application.mapper.MapperUtils.trim;
 
 @Component
@@ -25,16 +23,10 @@ public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
                 .priceFrom(searchView.getPriceFrom())
                 .priceTo(searchView.getPriceTo())
                 .source(Source.getSource(searchView.getSourceId()).getLabel())
-                .dateUpdated(toString(searchView.getDateUpdated()))
+                .dateUpdated(toLocalTime(searchView.getDateUpdated()))
                 .timeInterval(searchView.getTimeInterval())
                 .count(searchView.getCount())
                 .build();
-    }
-
-    private String toString(Timestamp lastUpdate) {
-        return Optional.ofNullable(lastUpdate)
-                .map(MapperUtils::toString)
-                .orElse("");
     }
 
 }

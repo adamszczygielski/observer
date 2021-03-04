@@ -11,11 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static observer.application.mapper.MapperUtils.now;
 
 @Service
 @RequiredArgsConstructor
@@ -61,11 +61,11 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> implements
         List<String> fetchedItemsIds = fetchedItems.stream().map(Item::getOriginId).collect(toList());
         search.getItemList().removeIf(item -> !item.getIsActive()
                 && !fetchedItemsIds.contains(item.getOriginId())
-                && item.getDateCreated().toLocalDateTime().plusDays(properties.getItemRemoveDelay()).isBefore(LocalDateTime.now()));
+                && item.getDateCreated().plus(properties.getItemRemoveDelay(), ChronoUnit.DAYS).isBefore(Instant.now()));
     }
 
     void updateDate(Search search) {
-        search.setDateUpdated(now());
+        search.setDateUpdated(Instant.now());
     }
 
 }

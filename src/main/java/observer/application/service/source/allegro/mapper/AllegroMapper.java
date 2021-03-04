@@ -10,10 +10,9 @@ import observer.application.service.source.allegro.model.OfferSellingMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static observer.application.mapper.MapperUtils.now;
 
 @Component
 public class AllegroMapper {
@@ -36,7 +35,7 @@ public class AllegroMapper {
         return Item.builder()
                 .originId(listingOffer.getId())
                 .searchId(searchId)
-                .dateCreated(now())
+                .dateCreated(Instant.now())
                 .title(listingOffer.getName())
                 .price(toPrice(listingOffer.getSellingMode()))
                 .url(toUrl(listingOffer))

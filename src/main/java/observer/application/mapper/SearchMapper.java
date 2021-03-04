@@ -6,6 +6,7 @@ import observer.application.api.Source;
 import observer.application.domain.Search;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 @Component
@@ -39,11 +40,11 @@ public class SearchMapper {
                 .build();
     }
 
-    private String toNullable(String s) {
-        if (Strings.isNullOrEmpty(s)) {
+    private String toNullable(@Nullable String value) {
+        if (Strings.isNullOrEmpty(value)) {
             return null;
         }
-        return s;
+        return value;
     }
 
 }

@@ -14,11 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.thymeleaf.util.StringUtils;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static observer.application.mapper.MapperUtils.now;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +53,7 @@ public class OlxService extends ItemService {
             Item item = Item.builder()
                     .originId(originIds.get(i).attr("data-id"))
                     .searchId(search.getId())
-                    .dateCreated(now())
+                    .dateCreated(Instant.now())
                     .title(titles.get(i).text())
                     .price(toPrice(prices.get(i)))
                     .url(toItemUrl(urls.get(i)))

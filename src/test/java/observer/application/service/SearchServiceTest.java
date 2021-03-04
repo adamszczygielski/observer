@@ -21,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class SearchServiceTest {
         Item item = Item.builder()
                 .originId("2000")
                 .searchId(1L)
-                .dateCreated(new Timestamp(0))
+                .dateCreated(null)
                 .title("Title test 2")
                 .price("100.00 PLN")
                 .url("https://test.pl/i2000.html")

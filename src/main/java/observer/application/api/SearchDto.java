@@ -1,9 +1,12 @@
 package observer.application.api;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -19,7 +22,7 @@ public class SearchDto {
     private String keyword;
     private String categoryId;
     private String categoryName;
-    private Timestamp dateUpdated;
+    private Instant dateUpdated;
 
     @NotNull
     @Min(1)
