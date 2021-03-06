@@ -2,8 +2,9 @@ package observer.application.mapper;
 
 import com.google.common.base.Strings;
 import observer.application.api.SearchDto;
-import observer.application.api.Source;
+import observer.application.domain.Source;
 import observer.application.domain.Search;
+import observer.application.domain.Status;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
@@ -19,6 +20,7 @@ public class SearchMapper {
                 .categoryId(toNullable(searchDto.getCategoryId()))
                 .categoryName(toNullable(searchDto.getCategoryName()))
                 .sourceId(searchDto.getSource().getId())
+                .statusId(Status.PENDING.getId())
                 .timeInterval(searchDto.getInterval())
                 .itemList(new ArrayList<>())
                 .priceFrom(searchDto.getPriceFrom())
@@ -37,6 +39,7 @@ public class SearchMapper {
                 .priceFrom(search.getPriceFrom())
                 .priceTo(search.getPriceTo())
                 .source(Source.getSource(search.getSourceId()))
+                .status(Status.getStatus(search.getStatusId()))
                 .build();
     }
 

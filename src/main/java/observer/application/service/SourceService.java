@@ -1,7 +1,7 @@
 package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.api.Source;
+import observer.application.domain.Source;
 import org.springframework.stereotype.Service;
 
 @Service

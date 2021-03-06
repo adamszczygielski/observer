@@ -9,6 +9,7 @@ create table if not exists search
     date_updated timestamp,
     time_interval smallint not null,
     source_id smallint not null,
+    status_id smallint not null,
     primary key(id),
 );
 
@@ -40,6 +41,7 @@ create view if not exists search_v as
         s.date_updated,
         s.time_interval,
         s.source_id,
+        s.status_id,
         count(i.id) as count
     from search s
     left join item i on s.id = i.search_id and i.is_active = true

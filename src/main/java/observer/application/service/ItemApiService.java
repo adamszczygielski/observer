@@ -1,7 +1,7 @@
 package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.api.Source;
+import observer.application.domain.Source;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
@@ -44,7 +44,7 @@ public class ItemApiService {
         itemRepository.setInactive(itemIds);
     }
 
-    public List<Category> getCategories(Long sourceId, String parentId) {
+    public List<Category> getCategories(int sourceId, String parentId) {
         Source source = Source.getSource(sourceId);
         ItemService itemService = sourceService.get(source);
         return itemService.getCategories(parentId);

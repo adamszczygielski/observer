@@ -50,7 +50,7 @@
             <div class="form-group col-md-4">
                 <label for="inputSource">Source</label>
                 <select th:field="*{source}" class="form-control" id="inputSource"  onchange="onSourceChange()" required>
-                    <option th:each="sourceOpt : ${T(observer.application.api.Source).values()}"
+                    <option th:each="sourceOpt : ${T(observer.application.domain.Source).values()}"
                             th:value="${sourceOpt}" th:text="${sourceOpt.label}" th:id="${sourceOpt.id}">
                     </option>
                 </select>

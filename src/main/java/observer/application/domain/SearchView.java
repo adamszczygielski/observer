@@ -38,11 +38,14 @@ public class SearchView {
     private Instant dateUpdated;
 
     @Column(name = "TIME_INTERVAL")
-    private Long timeInterval;
+    private Short timeInterval;
 
     @Column(name = "SOURCE_ID")
-    private Long sourceId;
+    private Integer sourceId;
+
+    @Column(name = "STATUS_ID")
+    private Integer statusId;
 
     @Column(name = "COUNT")
-    private Long count;
+    private Integer count;
 }

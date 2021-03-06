@@ -1,6 +1,7 @@
 package observer.application.service;
 
 import lombok.extern.slf4j.Slf4j;
+import observer.application.domain.Status;
 
 @Slf4j
 abstract class UpdateTemplate<S, I> {
@@ -14,9 +15,10 @@ abstract class UpdateTemplate<S, I> {
             I items = fetchItems(search);
             addNewItems(search, items);
             removeOldItems(search, items);
-            updateDate(search);
+            updateStatus(search, Status.SUCCESS);
         } catch (RuntimeException e) {
             log.error(e.getMessage(), e);
+            updateStatus(search, Status.FAIL);
         }
     }
 
@@ -28,5 +30,5 @@ abstract class UpdateTemplate<S, I> {
 
     abstract void removeOldItems(S search, I items);
 
-    abstract void updateDate(S search);
+    abstract void updateStatus(S search, Status status);
 }

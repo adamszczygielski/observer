@@ -50,6 +50,6 @@ public class Item implements Serializable {
     private Boolean isNotified;
 
     @Column(name = "SOURCE_ID")
-    private Long sourceId;
+    private Integer sourceId;
 
 }

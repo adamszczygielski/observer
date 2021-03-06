@@ -1,12 +1,12 @@
 package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.api.Source;
+import observer.application.domain.Source;
 import observer.application.config.ConfigProperties;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
+import observer.application.domain.Status;
 import observer.application.repository.SearchRepository;
-import observer.application.task.ScheduledTask;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +19,12 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
-public class SearchService extends UpdateTemplate<Search, List<Item>> implements ScheduledTask {
+public class SearchService extends UpdateTemplate<Search, List<Item>> {
 
     private final SearchRepository searchRepository;
     private final SourceService sourceService;
     private final ConfigProperties properties;
 
-    @Override
     @Transactional
     public void execute() {
         searchRepository.findOverdue(PageRequest.of(0, properties.getSearchFetchChunkSize()))
@@ -64,8 +63,9 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> implements
                 && item.getDateCreated().plus(properties.getItemRemoveDelay(), ChronoUnit.DAYS).isBefore(Instant.now()));
     }
 
-    void updateDate(Search search) {
+    void updateStatus(Search search, Status status) {
         search.setDateUpdated(Instant.now());
+        search.setStatusId(status.getId());
     }
 
 }

@@ -42,7 +42,10 @@ public class Search {
     private Short timeInterval;
 
     @Column(name = "SOURCE_ID")
-    private Long sourceId;
+    private Integer sourceId;
+
+    @Column(name = "STATUS_ID")
+    private Integer statusId;
 
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "SEARCH_ID")

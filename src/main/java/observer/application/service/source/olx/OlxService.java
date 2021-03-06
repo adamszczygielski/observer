@@ -2,7 +2,7 @@ package observer.application.service.source.olx;
 
 import com.google.common.cache.LoadingCache;
 import lombok.RequiredArgsConstructor;
-import observer.application.api.Source;
+import observer.application.domain.Source;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;

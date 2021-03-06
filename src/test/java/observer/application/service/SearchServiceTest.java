@@ -2,7 +2,7 @@ package observer.application.service;
 
 import lombok.SneakyThrows;
 import observer.application.Application;
-import observer.application.api.Source;
+import observer.application.domain.Source;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
 import observer.application.repository.SearchRepository;

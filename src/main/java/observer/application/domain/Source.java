@@ -1,4 +1,4 @@
-package observer.application.api;
+package observer.application.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,24 +11,24 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public enum Source {
 
-    ALLEGRO(1L, "Allegro"),
-    OLX(2L, "OLX"),
-    EBAY(3L, "eBay");
+    ALLEGRO(1, "Allegro"),
+    OLX(2, "OLX"),
+    EBAY(3, "eBay");
 
-    private static final Map<Long, Source> ENUM_MAP;
+    private static final Map<Integer, Source> ENUM_MAP;
 
-    private final Long id;
+    private final int id;
     private final String label;
 
     static {
-        Map<Long, Source> map = new ConcurrentHashMap<>();
+        Map<Integer, Source> map = new ConcurrentHashMap<>();
         for (Source source : Source.values()) {
             map.put(source.id, source);
         }
         ENUM_MAP = Collections.unmodifiableMap(map);
     }
 
-    public static Source getSource(Long sourceId) {
+    public static Source getSource(int sourceId) {
         return ENUM_MAP.get(sourceId);
     }
 }

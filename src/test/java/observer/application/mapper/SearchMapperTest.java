@@ -1,7 +1,7 @@
 package observer.application.mapper;
 
 import observer.application.api.SearchDto;
-import observer.application.api.Source;
+import observer.application.domain.Source;
 import observer.application.domain.Search;
 import org.junit.jupiter.api.Test;
 

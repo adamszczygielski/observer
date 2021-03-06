@@ -1,9 +1,13 @@
 package observer.application.mapper;
 
 import observer.application.api.SearchViewDto;
-import observer.application.api.Source;
 import observer.application.domain.SearchView;
+import observer.application.domain.Source;
+import observer.application.domain.Status;
 import org.springframework.stereotype.Component;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import static observer.application.mapper.MapperUtils.toLocalTime;
 import static observer.application.mapper.MapperUtils.trim;
@@ -23,10 +27,24 @@ public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
                 .priceFrom(searchView.getPriceFrom())
                 .priceTo(searchView.getPriceTo())
                 .source(Source.getSource(searchView.getSourceId()).getLabel())
+                .status(getActualStatusLabel(searchView).getLabel())
                 .dateUpdated(toLocalTime(searchView.getDateUpdated()))
                 .timeInterval(searchView.getTimeInterval())
                 .count(searchView.getCount())
                 .build();
+    }
+
+    private Status getActualStatusLabel(SearchView searchView) {
+        if (searchView.getStatusId() == Status.SUCCESS.getId() && isOverdue(searchView)) {
+            return Status.PENDING;
+        }
+        return Status.getStatus(searchView.getStatusId());
+    }
+
+    private boolean isOverdue(SearchView searchView) {
+        return searchView.getDateUpdated()
+                .plus(searchView.getTimeInterval(), ChronoUnit.MINUTES)
+                .isBefore(Instant.now());
     }
 
 }

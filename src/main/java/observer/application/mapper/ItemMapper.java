@@ -1,7 +1,7 @@
 package observer.application.mapper;
 
 import observer.application.api.ItemDto;
-import observer.application.api.Source;
+import observer.application.domain.Source;
 import observer.application.domain.Item;
 import org.springframework.stereotype.Component;
 

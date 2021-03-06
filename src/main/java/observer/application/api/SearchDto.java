@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import observer.application.domain.Source;
+import observer.application.domain.Status;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
@@ -31,6 +33,7 @@ public class SearchDto {
 
     @NotNull
     private Source source;
+    private Status status;
 
     @Min(1)
     @Max(100000)
