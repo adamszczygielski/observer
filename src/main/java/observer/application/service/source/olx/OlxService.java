@@ -2,17 +2,16 @@ package observer.application.service.source.olx;
 
 import com.google.common.cache.LoadingCache;
 import lombok.RequiredArgsConstructor;
-import observer.application.domain.Source;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
+import observer.application.domain.Source;
 import observer.application.service.ItemService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.thymeleaf.util.StringUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -98,7 +97,11 @@ public class OlxService extends ItemService {
 
     private String toItemUrl(Element element) {
         String url = element.attr("href");
-        return StringUtils.substringBefore(url, "#");
+        int endIndex = url.indexOf("#");
+        if (endIndex > 30) {
+            return url.substring(0, endIndex);
+        }
+        return url;
     }
 
     private String toPrice(Element element) {
