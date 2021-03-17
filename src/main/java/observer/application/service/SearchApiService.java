@@ -29,6 +29,8 @@ public class SearchApiService {
     }
 
     public Search getSearch(Long searchId) {
-        return searchRepository.findById(searchId).orElseThrow(() -> new IllegalArgumentException("Search doesn't exist"));
+        return searchRepository.findById(searchId).orElseThrow(
+                () -> new IllegalArgumentException("Search id '" + searchId + "' does not exist"));
     }
+
 }
