@@ -13,10 +13,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,30 +33,31 @@ public class NotificationService {
     private final ConfigProperties properties;
 
     public void execute() {
-        Optional<List<Item>> optionalItems = itemRepository.findUnnotified(PageRequest.of(0, 100));
+        itemRepository.findUnnotified(PageRequest.of(0, 100))
+                .ifPresent(items -> sendNotification(items.size())
+                        .ifPresent(response -> itemRepository.setNotified(items.stream().map(Item::getId)
+                                .collect(Collectors.toList()))));
+    }
 
-        if (!optionalItems.isPresent()) {
-            return;
+    private Optional<NotificationResponse> sendNotification(int itemsCount) {
+        try {
+            String requestBody = objectMapper.writeValueAsString(getNotificationRequest(itemsCount));
+            return Optional.of(
+                    restInvoker.post(getRequestUrl(), createHttpEntity(requestBody), NotificationResponse.class));
+        } catch (JsonProcessingException | RestClientException e) {
+            log.error("Sending notification failed", e);
         }
-        List<Item> items = optionalItems.get();
-        String requestBody = createRequestBody(items.size());
-        NotificationResponse notificationResponse =
-                restInvoker.post(createRequestUrl(), createHttpEntity(requestBody), NotificationResponse.class);
-
-        if (notificationResponse != null) {
-            itemRepository.setNotified(items.stream().map(Item::getId).collect(Collectors.toList()));
-        }
+        return Optional.empty();
     }
 
     private HttpEntity<String> createHttpEntity(String requestBody) {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.add("Authorization", properties.getOnesignalApiKey());
-
         return new HttpEntity<>(requestBody, requestHeaders);
     }
 
-    private String createRequestUrl() {
+    private String getRequestUrl() {
         return UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("onesignal.com")
@@ -64,22 +65,15 @@ public class NotificationService {
                 .build().toUriString();
     }
 
-    private String createRequestBody(int itemsCount) {
-        NotificationRequest notificationRequest = NotificationRequest.builder()
+    private NotificationRequest getNotificationRequest(int itemsCount) {
+        return NotificationRequest.builder()
                 .appId(properties.getOnesignalAppId())
                 .includedSegments(Collections.singletonList("All"))
-                .contents(Collections.singletonMap("en", createMessage(itemsCount)))
+                .contents(Collections.singletonMap("en", getMessageContent(itemsCount)))
                 .build();
-
-        try {
-            return objectMapper.writeValueAsString(notificationRequest);
-        } catch (JsonProcessingException e) {
-            log.error("Object serialization error", e);
-            return "{}";
-        }
     }
 
-    private String createMessage(int itemsCount) {
+    private String getMessageContent(int itemsCount) {
         if (itemsCount == 1) {
             return String.format(MESSAGE, itemsCount, "");
         }

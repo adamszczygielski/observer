@@ -27,18 +27,22 @@ public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
                 .priceFrom(searchView.getPriceFrom())
                 .priceTo(searchView.getPriceTo())
                 .source(Source.getSource(searchView.getSourceId()).getLabel())
-                .status(getActualStatusLabel(searchView).getLabel())
+                .status(getCurrentStatus(searchView).getLabel())
                 .dateUpdated(toLocalTime(searchView.getDateUpdated()))
                 .timeInterval(searchView.getTimeInterval())
                 .count(searchView.getCount())
                 .build();
     }
 
-    private Status getActualStatusLabel(SearchView searchView) {
-        if (searchView.getStatusId() == Status.SUCCESS.getId() && isOverdue(searchView)) {
+    private Status getCurrentStatus(SearchView searchView) {
+        if (isSuccess(searchView) && isOverdue(searchView)) {
             return Status.PENDING;
         }
         return Status.getStatus(searchView.getStatusId());
+    }
+
+    private boolean isSuccess(SearchView searchView) {
+        return searchView.getStatusId() == Status.SUCCESS.getId();
     }
 
     private boolean isOverdue(SearchView searchView) {

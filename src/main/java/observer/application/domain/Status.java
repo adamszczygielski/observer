@@ -11,9 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @AllArgsConstructor
 public enum Status {
 
-    FAIL(-1, "Fail"),
-    PENDING(0, "Pending"),
-    SUCCESS(1, "OK");
+    FAILED(-1, "Failed"),
+    STOPPED(0, "Stopped"),
+    PENDING(1, "Pending"),
+    SUCCESS(2, "OK");
 
     private static final Map<Integer, Status> ENUM_MAP;
 

@@ -18,7 +18,7 @@ abstract class UpdateTemplate<S, I> {
             updateStatus(search, Status.SUCCESS);
         } catch (RuntimeException e) {
             log.error(e.getMessage(), e);
-            updateStatus(search, Status.FAIL);
+            updateStatus(search, Status.FAILED);
         }
     }
 
