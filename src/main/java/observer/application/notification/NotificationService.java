@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -32,6 +33,7 @@ public class NotificationService {
     private final RestInvoker restInvoker;
     private final ConfigProperties properties;
 
+    @Transactional
     public void execute() {
         itemRepository.findUnnotified(PageRequest.of(0, 100))
                 .ifPresent(items -> sendNotification(items.size())

@@ -6,7 +6,9 @@ import observer.application.domain.SearchView;
 import observer.application.repository.SearchRepository;
 import observer.application.repository.SearchViewRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -20,6 +22,7 @@ public class SearchApiService {
         return searchViewRepository.findAll();
     }
 
+    @Transactional
     public void deleteSearches(List<Long> searchIds) {
         searchRepository.deleteByIds(searchIds);
     }
@@ -29,8 +32,8 @@ public class SearchApiService {
     }
 
     public Search getSearch(Long searchId) {
-        return searchRepository.findById(searchId).orElseThrow(
-                () -> new IllegalArgumentException("Search id '" + searchId + "' does not exist"));
+        return searchRepository.findById(searchId).orElseThrow(() -> new IllegalArgumentException(
+                MessageFormat.format("SearchId {0} does not exist", searchId)));
     }
 
 }

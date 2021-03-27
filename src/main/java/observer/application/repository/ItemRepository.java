@@ -7,12 +7,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
@@ -32,4 +30,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Modifying
     @Query("UPDATE Item i SET i.isActive = false WHERE i.id IN :itemIds")
     void setInactive(@Param("itemIds") List<Long> itemIds);
+
 }

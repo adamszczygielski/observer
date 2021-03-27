@@ -23,7 +23,8 @@ public class AspectLogger {
             "execution(* observer.application.notification.NotificationService.execute())";
 
     private static final String REST_INVOKER_POINTCUT =
-            "execution(* observer.application.rest.RestInvokerImpl.*(..)) || execution(* observer.application.service.source.olx.DocumentService.getDocument(..))";
+            "execution(* observer.application.rest.RestInvokerImpl.*(..)) || " +
+                    "execution(* observer.application.service.source.olx.DocumentService.getDocument(..))";
 
     @Around(ITEM_SERVICES_POINTCUT)
     public Object logItemServices(ProceedingJoinPoint joinPoint) throws Throwable {

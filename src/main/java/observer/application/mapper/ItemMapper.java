@@ -1,11 +1,12 @@
 package observer.application.mapper;
 
 import observer.application.api.ItemDto;
-import observer.application.domain.Source;
 import observer.application.domain.Item;
+import observer.application.domain.Source;
 import org.springframework.stereotype.Component;
 
-import static observer.application.mapper.MapperUtils.*;
+import static observer.application.mapper.MapperUtils.toLocalTime;
+import static observer.application.mapper.MapperUtils.trim;
 
 @Component
 public class ItemMapper implements BaseMapper<Item, ItemDto> {

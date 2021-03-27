@@ -8,6 +8,7 @@ import observer.application.domain.Search;
 import observer.application.repository.ItemRepository;
 import observer.application.repository.SearchRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class ItemApiService {
         return itemService.getItems(search);
     }
 
+    @Transactional
     public void deleteItems(List<Long> itemIds) {
         itemRepository.setInactive(itemIds);
     }

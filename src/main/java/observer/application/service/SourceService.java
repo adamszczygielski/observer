@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import observer.application.domain.Source;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+
 @Service
 @RequiredArgsConstructor
 class SourceService {
@@ -21,7 +23,8 @@ class SourceService {
             case EBAY:
                 return ebayService;
             default:
-                throw new IllegalArgumentException("No service implementation for: '" + source.getLabel() + "'");
+                throw new IllegalArgumentException(
+                        MessageFormat.format("No service implementation for {0}", source.getLabel()));
         }
     }
 
