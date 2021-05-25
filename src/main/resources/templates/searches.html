@@ -3,10 +3,10 @@
 <head>
     <title>Searches</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="120">
-    <link rel="stylesheet" href="/resources/bootstrap.min.css">
-    <link rel="shortcut icon" href="/resources/favicon.ico">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="120" http-equiv="refresh">
+    <link href="/resources/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/favicon.ico" rel="shortcut icon">
 </head>
 <body onload="countItems()">
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
@@ -14,33 +14,15 @@
 <script src="/resources/table-utils.js"></script>
 <script src="/resources/searches.js"></script>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="/searches">Searches</a>
-                    <a class="nav-item nav-link" href="/form/search">Form</a>
-                    <a class="nav-item nav-link" href="/items">Items</a>
-                </div>
-            </li>
-        </ul>
-        <div class="navbar-nav">
-            <a class="nav-item nav-link red" href="/logout">Logout</a>
-        </div>
-    </div>
-</nav>
+<div th:replace="navbar"></div>
 
-<form th:action="@{/searches}" th:method="delete" onsubmit="return remove(this)">
-<div class="container my-4">
-    <table id="items-table" class="table table-md table-hover">
-        <thead>
+<form onsubmit="return remove(this)" th:action="@{/searches}" th:method="delete">
+    <div class="container my-4">
+        <table class="table table-md table-hover" id="items-table">
+            <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" id="checkAll" onclick="toggle(this)">
+                    <input id="checkAll" onclick="toggle(this)" type="checkbox">
                 </th>
                 <th scope="col">Keyword</th>
                 <th scope="col">Source</th>
@@ -52,15 +34,16 @@
                 <th scope="col">Status</th>
                 <th>New</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr th:each="searchViewDto : ${searchViewDtoList}">
                 <td>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="id"  th:value="${searchViewDto.id}">
+                        <input class="form-check-input" name="id" th:value="${searchViewDto.id}" type="checkbox">
                     </div>
                 </td>
-                <td><a th:href="@{/items/} + ${searchViewDto.id} + @{/preview}"><span th:text="${searchViewDto.keyword}"></span></a></td>
+                <td><a th:href="@{/items/} + ${searchViewDto.id} + @{/preview}"><span
+                        th:text="${searchViewDto.keyword}"></span></a></td>
                 <td th:text="${searchViewDto.source}"></td>
                 <td th:text="${searchViewDto.categoryName}"></td>
                 <td th:text="${searchViewDto.priceFrom}"></td>
@@ -74,16 +57,16 @@
                     </span>
                 </td>
             </tr>
-        </tbody>
-    </table>
-</div>
-<div class="container my-4">
-    <button class="btn btn-primary btn-md" type="button" onclick="edit(this)">Edit</button>
-    <input type="hidden">
-    <button class="btn btn-primary btn-md" type="button" onclick="update()">Update</button>
-    <input type="hidden">
-    <button class="btn btn-danger btn-md" type="submit">Delete</button>
-</div>
+            </tbody>
+        </table>
+    </div>
+    <div class="container my-4">
+        <button class="btn btn-primary btn-md" onclick="edit(this)" type="button">Edit</button>
+        <input type="hidden">
+        <button class="btn btn-primary btn-md" onclick="update()" type="button">Update</button>
+        <input type="hidden">
+        <button class="btn btn-danger btn-md" type="submit">Delete</button>
+    </div>
 </form>
 
 </body>

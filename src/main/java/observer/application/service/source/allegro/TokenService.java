@@ -9,7 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ class TokenService {
         if (isValid(jwtToken)) {
             return jwtToken.getBearer();
         }
-        jwtToken = restInvoker.post(createRequestUrl(), createRequestHttpEntity(), JwtToken.class);
+        jwtToken = restInvoker.post(createRequestUrl(), createHttpEntity(), JwtToken.class);
         return jwtToken.getBearer();
     }
 
@@ -39,7 +40,7 @@ class TokenService {
                 .build().toUriString();
     }
 
-    private HttpEntity<String> createRequestHttpEntity() {
+    private HttpEntity<String> createHttpEntity() {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -50,7 +51,7 @@ class TokenService {
     private boolean isValid(JwtToken jwtToken) {
         return Optional.ofNullable(jwtToken)
                 .map(JwtToken::getDateCreated)
-                .map(dc -> dc.plusHours(properties.getAllegroTokenJwtHours()).isAfter(LocalDateTime.now()))
+                .map(date -> date.plus(properties.getAllegroTokenJwtHours(), ChronoUnit.HOURS).isAfter(Instant.now()))
                 .orElse(false);
     }
 

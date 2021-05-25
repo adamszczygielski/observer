@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" xmlns:th="http://www.w3.org/1999/xhtml">
+    <button aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler" data-target="#navbarNavAltMarkup" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="/searches"
+                       th:classappend="${#request.getServletPath() == '/searches' ? 'active' : ''}">Searches</a>
+                    <a class="nav-item nav-link" href="/form/search"
+                       th:classappend="${#request.getServletPath() == '/form/search' ? 'active' : ''}">Form</a>
+                    <a class="nav-item nav-link" href="/items"
+                       th:classappend="${#request.getServletPath() == '/items' ? 'active' : ''}">Items</a>
+                </div>
+            </li>
+        </ul>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link red" href="/logout">Logout</a>
+        </div>
+    </div>
+</nav>

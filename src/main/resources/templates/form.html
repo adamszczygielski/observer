@@ -4,71 +4,55 @@
     <title>Form</title>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link rel="stylesheet" href="/resources/bootstrap.min.css">
-    <link rel="shortcut icon" href="/resources/favicon.ico">
+    <link href="/resources/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/favicon.ico" rel="shortcut icon">
 </head>
 <body onload="javascript:getCategories(true)">
 <script src="/resources/form.js"></script>
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="/searches">Searches</a>
-                    <a class="nav-item nav-link active" href="/form/search">Form</a>
-                    <a class="nav-item nav-link" href="/items">Items</a>
-                </div>
-            </li>
-        </ul>
-        <div class="navbar-nav">
-            <a class="nav-item nav-link red" href="/logout">Logout</a>
-        </div>
-    </div>
-</nav>
+<div th:replace="navbar"></div>
 
 <div class="container my-4">
-    <form action="#" th:action="@{/searches}" th:object="${searchDto}" method="post">
-
+    <form action="#" method="post" th:action="@{/searches}" th:object="${searchDto}">
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputSearchId">Search ID</label>
-                <input type="number" class="form-control" id="inputSearchId" th:field="*{searchId}" readonly>
+                <input class="form-control" id="inputSearchId" readonly th:field="*{searchId}" type="number">
             </div>
             <div class="form-group col-md-4">
                 <label for="inputSearchId">Last update</label>
-                <input type="text" class="form-control" id="inputLastUpdate" th:field="*{dateUpdated}" disabled>
+                <input class="form-control" disabled id="inputLastUpdate" th:field="*{dateUpdated}" type="text">
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputSource">Source</label>
-                <select th:field="*{source}" class="form-control" id="inputSource"  onchange="onSourceChange()" required>
+                <select class="form-control" id="inputSource" onchange="onSourceChange()" required th:field="*{source}">
                     <option th:each="sourceOpt : ${T(observer.application.domain.Source).values()}"
-                            th:value="${sourceOpt}" th:text="${sourceOpt.label}" th:id="${sourceOpt.id}">
+                            th:id="${sourceOpt.id}" th:text="${sourceOpt.label}" th:value="${sourceOpt}">
                     </option>
                 </select>
             </div>
             <div class="form-group col-md-4">
                 <label for="inputKeyword">Keyword</label>
-                <input minlength="3" maxlength="40" type="text" class="form-control" id="inputKeyword" th:field="*{keyword}" required>
-                <div class="text-danger" th:if="${#fields.hasErrors('keyword')}" th:errors="*{keyword}">Keyword error</div>
+                <input class="form-control" id="inputKeyword" maxlength="40" minlength="3" required
+                       th:field="*{keyword}" type="text">
+                <div class="text-danger" th:errors="*{keyword}" th:if="${#fields.hasErrors('keyword')}">Keyword error
+                </div>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputCategoryName">Category name</label>
-                <input class="form-control" type="text" id="inputCategoryName" name="inputCategoryName" th:field="*{categoryName}" readonly>
+                <input class="form-control" id="inputCategoryName" name="inputCategoryName" readonly
+                       th:field="*{categoryName}" type="text">
             </div>
             <div class="form-group col-md-4">
                 <label for="inputCategoryName">Category ID</label>
-                <input class="form-control" type="text" id="inputCategoryId" name="inputCategoryId" th:field="*{categoryId}" readonly>
+                <input class="form-control" id="inputCategoryId" name="inputCategoryId" readonly
+                       th:field="*{categoryId}" type="text">
             </div>
         </div>
         <div class="form-row">
@@ -77,22 +61,24 @@
                 <select class="form-control" id="category"></select>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="selectCategoryButton" onclick="getCategories(false)">Select</button>
-        <button type="button" class="btn btn-primary" onclick="clearCategories()">Cancel</button>
+        <button class="btn btn-primary" id="selectCategoryButton" onclick="getCategories(false)" type="button">Select
+        </button>
+        <button class="btn btn-primary" onclick="clearCategories()" type="button">Cancel</button>
         <div class="form-row pt-4">
             <div class="form-group col-md-4">
                 <label for="inputPriceFrom">Price from</label>
-                <input type="number" min="1" max="100000" class="form-control" id="inputPriceFrom" th:field="*{priceFrom}">
+                <input class="form-control" id="inputPriceFrom" max="100000" min="1" th:field="*{priceFrom}"
+                       type="number">
             </div>
             <div class="form-group col-md-4">
                 <label for="inputPriceTo">Price to</label>
-                <input type="number" min="1" max="100000" class="form-control" id="inputPriceTo" th:field="*{priceTo}">
+                <input class="form-control" id="inputPriceTo" max="100000" min="1" th:field="*{priceTo}" type="number">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputInterval">Interval</label>
-                <select th:field="*{interval}" class="form-control" id="inputInterval">
+                <select class="form-control" id="inputInterval" th:field="*{interval}">
                     <option value="1">1</option>
                     <option value="5">5</option>
                     <option value="30">30</option>
@@ -101,7 +87,7 @@
                 </select>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
         <div class="text-danger" th:if="${#fields.hasErrors()}">Correct the errors and resubmit</div>
     </form>
 </div>

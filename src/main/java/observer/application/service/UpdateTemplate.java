@@ -15,10 +15,10 @@ abstract class UpdateTemplate<S, I> {
             I items = fetchItems(search);
             addNewItems(search, items);
             removeOldItems(search, items);
-            updateStatus(search, Status.SUCCESS);
+            updateStatusAndDate(search, Status.SUCCESS);
         } catch (RuntimeException e) {
             log.error(e.getMessage(), e);
-            updateStatus(search, Status.FAILED);
+            updateStatusAndDate(search, Status.FAILED);
         }
     }
 
@@ -30,5 +30,5 @@ abstract class UpdateTemplate<S, I> {
 
     abstract void removeOldItems(S search, I items);
 
-    abstract void updateStatus(S search, Status status);
+    abstract void updateStatusAndDate(S search, Status status);
 }

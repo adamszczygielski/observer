@@ -9,8 +9,8 @@ import observer.application.domain.Status;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.Instant;
 
@@ -24,9 +24,13 @@ public class SearchDto {
 
     @NotNull
     @Size(min = 3, max = 20)
-    @Pattern(regexp = "(.*[a-zA-Z\\d]){3}", message = "Must contain at least 3 characters")
+    @NotBlank
     private String keyword;
+
+    @NotBlank
     private String categoryId;
+
+    @NotBlank
     private String categoryName;
     private Instant dateUpdated;
 

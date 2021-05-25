@@ -5,21 +5,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ConfigProperties;
-import observer.application.domain.Item;
 import observer.application.repository.ItemRepository;
 import observer.application.rest.RestInvoker;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,12 +32,11 @@ public class NotificationService {
     private final RestInvoker restInvoker;
     private final ConfigProperties properties;
 
-    @Transactional
+    @Scheduled(fixedDelayString = "#{@configProperties.getScheduledNotificationDelay()}")
     public void execute() {
-        itemRepository.findUnnotified(PageRequest.of(0, 100))
-                .ifPresent(items -> sendNotification(items.size())
-                        .ifPresent(response -> itemRepository.setNotified(items.stream().map(Item::getId)
-                                .collect(Collectors.toList()))));
+        itemRepository.findActiveAndNotNotified(PageRequest.of(0, 100))
+                .ifPresent((itemIds -> sendNotification(itemIds.size())
+                        .ifPresent(response -> itemRepository.setNotified(itemIds))));
     }
 
     private Optional<NotificationResponse> sendNotification(int itemsCount) {
@@ -71,15 +69,12 @@ public class NotificationService {
         return NotificationRequest.builder()
                 .appId(properties.getOnesignalAppId())
                 .includedSegments(Collections.singletonList("All"))
-                .contents(Collections.singletonMap("en", getMessageContent(itemsCount)))
+                .contents(getNotificationContents(itemsCount))
                 .build();
     }
 
-    private String getMessageContent(int itemsCount) {
-        if (itemsCount == 1) {
-            return String.format(MESSAGE, itemsCount, "");
-        }
-        return String.format(MESSAGE, itemsCount, "s");
+    private Map<String, String> getNotificationContents(int itemsCount) {
+        return Collections.singletonMap("en", String.format(MESSAGE, itemsCount, itemsCount == 1 ? "" : "s"));
     }
 
 }

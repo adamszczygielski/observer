@@ -4,28 +4,24 @@ package observer.application.service.source.allegro;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public class JwtToken implements Serializable {
 
     @JsonProperty("access_token")
     private String value;
-    private final LocalDateTime dateCreated;
+    private final Instant dateCreated;
 
     JwtToken() {
-        this.dateCreated = LocalDateTime.now();
+        this.dateCreated = Instant.now();
     }
 
     String getBearer() {
         return "Bearer " + value;
     }
 
-    public LocalDateTime getDateCreated() {
+    public Instant getDateCreated() {
         return dateCreated;
-    }
-
-    void setValue(String value) {
-        this.value = value;
     }
 
 }
