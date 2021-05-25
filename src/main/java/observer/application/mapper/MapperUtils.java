@@ -11,29 +11,28 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MapperUtils {
+class MapperUtils {
 
     private static final char ELLIPSIS = '\u2026';
 
-    public static LocalTime toLocalTime(@Nullable Instant date) {
+    static LocalTime toLocalTime(@Nullable Instant date) {
         if (date != null) {
             return LocalTime.from(date.atZone(ZoneId.systemDefault())).truncatedTo(ChronoUnit.SECONDS);
         }
         return null;
     }
 
-    public static String normalize(String input) {
+    static String normalize(String string) {
         return Normalizer
-                .normalize(input, Normalizer.Form.NFD)
-                .substring(0, Math.min(input.length(), 30))
+                .normalize(string, Normalizer.Form.NFD)
                 .replaceAll("[^\\p{ASCII}]", "")
                 .replaceAll(" +", " ")
                 .toLowerCase();
     }
 
-    public static String trim(String string, int max) {
-        if (string != null && string.length() > max) {
-            return string.substring(0, max - 1) + ELLIPSIS;
+    static String trim(@Nullable String string, int maxLength) {
+        if (string != null && string.length() > maxLength) {
+            return string.substring(0, maxLength - 1) + ELLIPSIS;
         }
         return string;
     }

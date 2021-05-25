@@ -1,14 +1,14 @@
 package observer.application.mapper;
 
-import com.google.common.base.Strings;
 import observer.application.api.SearchDto;
-import observer.application.domain.Source;
 import observer.application.domain.Search;
+import observer.application.domain.Source;
 import observer.application.domain.Status;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
+
+import static observer.application.mapper.MapperUtils.normalize;
 
 @Component
 public class SearchMapper {
@@ -16,9 +16,9 @@ public class SearchMapper {
     public Search toSearch(SearchDto searchDto) {
         return Search.builder()
                 .id(searchDto.getSearchId())
-                .keyword(MapperUtils.normalize(searchDto.getKeyword()))
-                .categoryId(toNullable(searchDto.getCategoryId()))
-                .categoryName(toNullable(searchDto.getCategoryName()))
+                .keyword(normalize(searchDto.getKeyword()))
+                .categoryId(searchDto.getCategoryId())
+                .categoryName(searchDto.getCategoryName())
                 .sourceId(searchDto.getSource().getId())
                 .statusId(Status.PENDING.getId())
                 .timeInterval(searchDto.getInterval())
@@ -41,13 +41,6 @@ public class SearchMapper {
                 .source(Source.getSource(search.getSourceId()))
                 .status(Status.getStatus(search.getStatusId()))
                 .build();
-    }
-
-    private String toNullable(@Nullable String value) {
-        if (Strings.isNullOrEmpty(value)) {
-            return null;
-        }
-        return value;
     }
 
 }

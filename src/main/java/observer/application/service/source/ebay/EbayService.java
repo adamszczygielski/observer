@@ -29,8 +29,7 @@ public class EbayService extends ItemService {
 
     @Override
     public List<Item> getItems(Search search) {
-        List<SearchItem> searchItemList = fetchSearchItems(search);
-        return mapper.toItems(searchItemList, search.getId());
+        return mapper.toItems(fetchSearchItems(search), search.getId());
     }
 
     @Override
@@ -39,7 +38,6 @@ public class EbayService extends ItemService {
     }
 
     private List<SearchItem> fetchSearchItems(Search search) {
-
         FindItemsByKeywordsResponse findItemsByKeywordsResponse = restInvoker.get(
                 createListingRequestUrl(search), null, FindItemsByKeywordsResponse.class);
 
