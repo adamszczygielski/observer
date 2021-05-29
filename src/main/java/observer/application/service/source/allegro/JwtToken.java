@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.Instant;
 
-public class JwtToken implements Serializable {
+class JwtToken implements Serializable {
 
     @JsonProperty("access_token")
     private String value;
@@ -20,7 +20,7 @@ public class JwtToken implements Serializable {
         return "Bearer " + value;
     }
 
-    public Instant getDateCreated() {
+    Instant getDateCreated() {
         return dateCreated;
     }
 

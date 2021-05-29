@@ -22,15 +22,10 @@ public class SearchDto {
 
     private Long searchId;
 
-    @NotNull
     @Size(min = 3, max = 20)
     @NotBlank
     private String keyword;
-
-    @NotBlank
     private String categoryId;
-
-    @NotBlank
     private String categoryName;
     private Instant dateUpdated;
 
