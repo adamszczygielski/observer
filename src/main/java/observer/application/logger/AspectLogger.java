@@ -23,8 +23,10 @@ public class AspectLogger {
             "execution(* observer.application.notification.NotificationService.execute())";
 
     private static final String REST_INVOKER_POINTCUT =
-            "execution(* observer.application.rest.RestInvokerImpl.*(..)) || " +
-                    "execution(* observer.application.service.source.olx.DocumentService.getDocument(..))";
+            "execution(* observer.application.rest.RestInvokerImpl.*(..))";
+
+    private static final String DOCUMENT_SERVICE_POINTCUT =
+            "execution(* observer.application.service.source.olx.DocumentService.getDocument(..))";
 
     @Around(ITEM_SERVICES_POINTCUT)
     public Object logItemServices(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -55,6 +57,14 @@ public class AspectLogger {
 
     @Around(REST_INVOKER_POINTCUT)
     public Object logRestInvoker(ProceedingJoinPoint joinPoint) throws Throwable {
+        String url = (String) joinPoint.getArgs()[0];
+        log.info(url);
+
+        return joinPoint.proceed();
+    }
+
+    @Around(DOCUMENT_SERVICE_POINTCUT)
+    public Object logDocumentService(ProceedingJoinPoint joinPoint) throws Throwable {
         String url = (String) joinPoint.getArgs()[0];
         log.info(url);
 

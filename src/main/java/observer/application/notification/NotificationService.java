@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import observer.application.config.ConfigProperties;
+import observer.application.config.ApplicationProperties;
 import observer.application.repository.ItemRepository;
 import observer.application.rest.RestInvoker;
 import org.springframework.data.domain.PageRequest;
@@ -30,9 +30,9 @@ public class NotificationService {
     private final ObjectMapper objectMapper;
     private final ItemRepository itemRepository;
     private final RestInvoker restInvoker;
-    private final ConfigProperties properties;
+    private final ApplicationProperties properties;
 
-    @Scheduled(fixedDelayString = "#{@configProperties.getScheduledNotificationDelay()}")
+    @Scheduled(fixedDelayString = "#{@applicationProperties.getScheduledNotificationDelay()}")
     public void execute() {
         itemRepository.findActiveAndNotNotified(PageRequest.of(0, 100))
                 .ifPresent((itemIds -> sendNotification(itemIds.size())

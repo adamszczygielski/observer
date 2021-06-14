@@ -1,7 +1,7 @@
 package observer.application.service.source.ebay;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.config.ConfigProperties;
+import observer.application.config.ApplicationProperties;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
@@ -25,7 +25,7 @@ public class EbayService extends ItemService {
 
     private final EbayMapper mapper;
     private final RestInvoker restInvoker;
-    private final ConfigProperties properties;
+    private final ApplicationProperties properties;
 
     @Override
     public List<Item> getItems(Search search) {

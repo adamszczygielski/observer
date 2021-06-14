@@ -16,7 +16,7 @@ abstract class UpdateTemplate<S, I> {
             addNewItems(search, items);
             removeOldItems(search, items);
             updateStatusAndDate(search, Status.SUCCESS);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             updateStatusAndDate(search, Status.FAILED);
         }

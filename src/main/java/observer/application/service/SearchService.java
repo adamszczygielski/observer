@@ -1,7 +1,7 @@
 package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.config.ConfigProperties;
+import observer.application.config.ApplicationProperties;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
 import observer.application.domain.Source;
@@ -24,9 +24,9 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
 
     private final SearchRepository searchRepository;
     private final SourceService sourceService;
-    private final ConfigProperties properties;
+    private final ApplicationProperties properties;
 
-    @Scheduled(fixedDelayString = "#{@configProperties.getScheduledSearchDelay()}")
+    @Scheduled(fixedDelayString = "#{@applicationProperties.getScheduledSearchDelay()}")
     @Transactional
     public void execute() {
         searchRepository.findOverdue(PageRequest.of(0, properties.getSearchFetchChunkSize()))

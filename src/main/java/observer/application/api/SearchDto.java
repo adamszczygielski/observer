@@ -30,8 +30,8 @@ public class SearchDto {
     private Instant dateUpdated;
 
     @NotNull
-    @Min(1)
-    @Max(1440)
+    @Min(5)
+    @Max(360)
     private Short interval;
 
     @NotNull

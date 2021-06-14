@@ -1,7 +1,7 @@
 package observer.application.service.source.allegro;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.config.ConfigProperties;
+import observer.application.config.ApplicationProperties;
 import observer.application.rest.RestInvoker;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +19,7 @@ import java.util.Optional;
 class TokenService {
 
     private final RestInvoker restInvoker;
-    private final ConfigProperties properties;
+    private final ApplicationProperties properties;
 
     private JwtToken jwtToken;
 

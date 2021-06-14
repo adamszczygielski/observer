@@ -3,7 +3,7 @@ package observer.application.service.source.allegro;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import observer.application.service.source.allegro.model.CategoryDto;
+import observer.application.service.source.allegro.model.category.CategoryDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

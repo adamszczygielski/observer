@@ -2,8 +2,8 @@ package observer.application.service.source.allegro;
 
 import lombok.AllArgsConstructor;
 import observer.application.rest.RestInvoker;
-import observer.application.service.source.allegro.model.CategoriesDto;
-import observer.application.service.source.allegro.model.CategoryDto;
+import observer.application.service.source.allegro.model.category.CategoriesDto;
+import observer.application.service.source.allegro.model.category.CategoryDto;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
