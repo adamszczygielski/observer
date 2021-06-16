@@ -2,7 +2,6 @@ package observer.application.service.source.olx;
 
 import com.google.common.cache.LoadingCache;
 import lombok.RequiredArgsConstructor;
-import observer.application.config.ApplicationProperties;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
@@ -25,7 +24,6 @@ public class OlxService extends ItemService {
 
     private final LoadingCache<String, List<Category>> categoryCache;
     private final DocumentService documentService;
-    private final ApplicationProperties properties;
 
     @Override
     public List<Item> getItems(Search search) {
@@ -39,7 +37,6 @@ public class OlxService extends ItemService {
 
     private List<Item> fetchItems(Search search) {
         List<Item> items = new ArrayList<>();
-        randomizedDelay(properties.getOlxDelayMillis());
 
         Document document = documentService.getDocument(getRequestUrl(search));
         if (!containsItems(document)) {

@@ -14,14 +14,4 @@ public abstract class ItemService {
 
     protected abstract List<Category> getCategories(String parentId);
 
-    protected void randomizedDelay(long millis) {
-        if (millis > 0) {
-            try {
-                Thread.sleep((long) (millis + Math.random() * millis / 2));
-            } catch (InterruptedException e) {
-                log.error("Interrupted thread", e);
-            }
-        }
-    }
-
 }

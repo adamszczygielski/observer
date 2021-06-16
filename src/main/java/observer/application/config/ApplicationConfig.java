@@ -48,7 +48,7 @@ public class ApplicationConfig {
         webClient.getOptions().setCssEnabled(false);
         webClient.getOptions().setDownloadImages(false);
         webClient.getOptions().setAppletEnabled(false);
-        webClient.getOptions().setRedirectEnabled(false);
+        webClient.getOptions().setRedirectEnabled(true);
         return webClient;
     }
 

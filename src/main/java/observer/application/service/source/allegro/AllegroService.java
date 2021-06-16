@@ -53,7 +53,6 @@ public class AllegroService extends ItemService {
         log.info(url);
         String listingJson = "{}";
         try {
-            randomizedDelay(properties.getAllegroDelayMillis());
             HtmlPage htmlPage = webClient.getPage(url);
             String pageContent = htmlPage.getPage().asXml();
             listingJson = pageContent.substring(pageContent.indexOf(JSON_START_PATTERN) + JSON_START_PATTERN.length(),

@@ -1,6 +1,7 @@
 package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ApplicationProperties;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
@@ -8,7 +9,6 @@ import observer.application.domain.Source;
 import observer.application.domain.Status;
 import observer.application.repository.SearchRepository;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +18,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SearchService extends UpdateTemplate<Search, List<Item>> {
@@ -26,10 +27,9 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
     private final SourceService sourceService;
     private final ApplicationProperties properties;
 
-    @Scheduled(fixedDelayString = "#{@applicationProperties.getScheduledSearchDelay()}")
-    @Transactional
-    public void execute() {
-        searchRepository.findOverdue(PageRequest.of(0, properties.getSearchFetchChunkSize()))
+   @Transactional
+    public void invoke(Source source) {
+        searchRepository.findOverdue(source.getId(), PageRequest.of(0, 1))
                 .forEach(this::updateSearch);
     }
 

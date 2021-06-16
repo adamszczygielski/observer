@@ -13,9 +13,8 @@ import java.util.List;
 @Repository
 public interface SearchRepository extends JpaRepository<Search, Long> {
 
-    @Query("SELECT s FROM Search s WHERE NOW() > DATEADD(MINUTE, s.timeInterval, s.dateUpdated) " +
-            "OR s.dateUpdated IS NULL ORDER BY s.dateUpdated")
-    List<Search> findOverdue(Pageable pageable);
+    @Query("SELECT s FROM Search s WHERE s.sourceId =:sourceId AND (NOW() > DATEADD(MINUTE, s.timeInterval, s.dateUpdated) OR s.dateUpdated IS NULL) ORDER BY s.dateUpdated")
+    List<Search> findOverdue(Integer sourceId, Pageable pageable);
 
     @Modifying
     @Query("DELETE FROM Search s WHERE s.id IN :searchIds")

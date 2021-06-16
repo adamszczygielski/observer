@@ -20,6 +20,9 @@ public class ApplicationProperties {
     @Value("${observer.olx.delay.millis}")
     private Long olxDelayMillis;
 
+    @Value("${observer.ebay.delay.millis}")
+    private Long ebayDelayMillis;
+
     @Value("${observer.ebay.security.appname}")
     private String ebaySecurityAppname;
 
@@ -29,17 +32,11 @@ public class ApplicationProperties {
     @Value("${observer.onesignal.api.key}")
     private String onesignalApiKey;
 
-    @Value("${observer.search.fetch-chunk-size}")
-    private Integer searchFetchChunkSize;
-
     @Value("${observer.search.unchecked-limit}")
     private Integer searchUncheckedLimit;
 
     @Value("${observer.item.remove-delay}")
     private Integer itemRemoveDelay;
-
-    @Value("${observer.scheduled.search.delay}")
-    private Integer scheduledSearchDelay;
 
     @Value("${observer.scheduled.notification.delay}")
     private Integer scheduledNotificationDelay;
