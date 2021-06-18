@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.util.Objects;
 
 @Getter
 @Builder
@@ -56,5 +57,23 @@ public class Item {
 
     @Column(name = "SOURCE_ID")
     private Integer sourceId;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Item other = (Item) obj;
+        if (Objects.equals(originId, other.originId)) {
+            return Objects.equals(sourceId, other.sourceId);
+        }
+        return false;
+    }
 
 }

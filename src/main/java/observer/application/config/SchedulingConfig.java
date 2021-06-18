@@ -39,13 +39,12 @@ public class SchedulingConfig implements SchedulingConfigurer {
         );
     }
 
-    private Trigger createTrigger(Long millis) {
+    private Trigger createTrigger(long millis) {
         return triggerContext -> {
             Optional<Date> lastCompletionTime = Optional.ofNullable(triggerContext.lastCompletionTime());
-            long randomizedDelay = randomizeDelay(millis);
             Instant nextExecutionTime = lastCompletionTime.orElseGet(Date::new)
                     .toInstant()
-                    .plusMillis(randomizedDelay);
+                    .plusMillis(randomizeDelay(millis));
 
             return Date.from(nextExecutionTime);
         };

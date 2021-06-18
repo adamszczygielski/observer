@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 @Setter
 @Getter
@@ -64,5 +65,25 @@ public class Search {
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "SEARCH_ID")
     private List<Item> itemList;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Search other = (Search) obj;
+        if (Objects.equals(sourceId, other.sourceId)) {
+            if (Objects.equals(keyword, other.keyword)) {
+                return Objects.equals(categoryId, other.categoryId);
+            }
+        }
+        return false;
+    }
 
 }

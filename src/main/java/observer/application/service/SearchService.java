@@ -52,24 +52,15 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
     }
 
     void addNewItems(Search search, List<Item> fetchedItems) {
-        List<String> searchItemsIds = search.getItemList().stream()
-                .map(Item::getOriginId)
+        List<Item> newItems = fetchedItems.stream()
+                .filter(item -> !search.getItemList().contains(item))
                 .collect(toList());
 
-        List<Item> newItemsList = fetchedItems.stream()
-                .filter(fetchedItem -> !searchItemsIds.contains(fetchedItem.getOriginId()))
-                .collect(toList());
-
-        search.getItemList().addAll(newItemsList);
+        search.getItemList().addAll(newItems);
     }
 
     void removeOldItems(Search search, List<Item> fetchedItems) {
-        List<String> fetchedItemsIds = fetchedItems.stream()
-                .map(Item::getOriginId)
-                .collect(toList());
-
-        search.getItemList().removeIf(item -> !item.getIsActive()
-                && !fetchedItemsIds.contains(item.getOriginId())
+        search.getItemList().removeIf(item -> !item.getIsActive() && !fetchedItems.contains(item)
                 && item.getDateCreated().plus(properties.getItemRemoveDelay(), ChronoUnit.DAYS).isBefore(Instant.now()));
     }
 

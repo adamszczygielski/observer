@@ -27,8 +27,12 @@ public class SearchApiService {
         searchRepository.deleteByIds(searchIds);
     }
 
+    @Transactional
     public void addSearch(Search search) {
-        searchRepository.save(search);
+        List<Search> searches = searchRepository.findAll();
+        if (!searches.contains(search)) {
+            searchRepository.save(search);
+        }
     }
 
     public Search getSearch(Long searchId) {
