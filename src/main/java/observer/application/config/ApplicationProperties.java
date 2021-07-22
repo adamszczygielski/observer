@@ -41,16 +41,13 @@ public class ApplicationProperties {
     @Value("${observer.scheduled.notification.delay}")
     private Integer scheduledNotificationDelay;
 
-    @Value("${observer.proxy.username}")
-    private String proxyUsername;
+    @Value("${observer.proxies}")
+    private String[] proxies;
 
-    @Value("${observer.proxy.password}")
-    private String proxyPassword;
+    @Value("${observer.chromedriver.headless}")
+    private Boolean chromedriverHeadless;
 
-    @Value("${observer.proxy.host}")
-    private String proxyHost;
-
-    @Value("${observer.proxy.port}")
-    private Integer proxyPort;
+    @Value("${observer.chromedriver.images}")
+    private Boolean chromedriverImages;
 
 }

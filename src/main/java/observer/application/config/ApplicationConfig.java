@@ -1,17 +1,20 @@
 package observer.application.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.DefaultCredentialsProvider;
-import com.gargoylesoftware.htmlunit.WebClient;
 import observer.application.logger.AspectLogger;
 import observer.application.rest.RestInvoker;
 import observer.application.rest.RestInvokerImpl;
-import org.apache.http.auth.AuthScope;
+import observer.application.service.RandomService;
+import org.apache.commons.exec.OS;
+import org.openqa.selenium.Proxy;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.lang.reflect.Array;
 
 @Configuration
 public class ApplicationConfig {
@@ -31,25 +34,39 @@ public class ApplicationConfig {
         return new ObjectMapper();
     }
 
-    @Bean("webClient")
-    public WebClient getWebClient(ApplicationProperties properties) {
-        WebClient webClient = new WebClient(BrowserVersion.FIREFOX);
+    @Bean("webDriver")
+    public WebDriver getWebDriver(ApplicationProperties properties, RandomService randomService) {
 
-        if (!StringUtils.isEmpty(properties.getProxyHost())) {
-            DefaultCredentialsProvider credentialsProvider = new DefaultCredentialsProvider();
-
-            credentialsProvider.addCredentials(properties.getProxyUsername(), properties.getProxyPassword(),
-                    properties.getProxyHost(), properties.getProxyPort(), AuthScope.ANY_REALM);
-
-            webClient.setCredentialsProvider(credentialsProvider);
+        if (OS.isFamilyWindows()) {
+            System.setProperty("webdriver.chrome.driver", "driver-win/chromedriver.exe");
+        } else if (OS.isFamilyUnix()) {
+            System.setProperty("webdriver.chrome.driver", "driver-linux/chromedriver");
         }
 
-        webClient.getOptions().setJavaScriptEnabled(false);
-        webClient.getOptions().setCssEnabled(false);
-        webClient.getOptions().setDownloadImages(false);
-        webClient.getOptions().setAppletEnabled(false);
-        webClient.getOptions().setRedirectEnabled(true);
-        return webClient;
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments(
+                randomService.getUserAgentArg(),
+                randomService.getWindowSizeArg(),
+                "--ignore-certificate-errors",
+                "--disable-blink-features=AutomationControlled"
+        );
+
+        if (!properties.getChromedriverImages()) {
+            options.addArguments("--blink-settings=imagesEnabled=false");
+        }
+
+        String[] proxies = properties.getProxies();
+        if (proxies.length > 0) {
+            Proxy proxy = new Proxy();
+            proxy.setSslProxy((String) Array.get(proxies, 0));
+            options.setProxy(proxy);
+        }
+
+        if (properties.getChromedriverHeadless()) {
+            options.addArguments("--headless");
+        }
+
+        return new ChromeDriver(options);
     }
 
 }

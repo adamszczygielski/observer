@@ -42,6 +42,7 @@ public class NotificationService {
     private Optional<NotificationResponse> sendNotification(int itemsCount) {
         try {
             String requestBody = objectMapper.writeValueAsString(getNotificationRequest(itemsCount));
+            log.info("Notification has been sent");
             return Optional.of(
                     restInvoker.post(getRequestUrl(), createHttpEntity(requestBody), NotificationResponse.class));
         } catch (JsonProcessingException | RestClientException e) {

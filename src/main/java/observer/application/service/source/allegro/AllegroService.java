@@ -1,24 +1,22 @@
 package observer.application.service.source.allegro;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.google.common.cache.LoadingCache;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import observer.application.config.ApplicationProperties;
 import observer.application.domain.Category;
 import observer.application.domain.Item;
 import observer.application.domain.Search;
 import observer.application.service.ItemService;
+import observer.application.service.RandomService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
 import observer.application.service.source.allegro.model.category.CategoryDto;
 import observer.application.service.source.allegro.model.listing.Element;
 import observer.application.service.source.allegro.model.listing.ListingResponse;
+import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +30,9 @@ public class AllegroService extends ItemService {
 
     private final AllegroMapper mapper;
     private final LoadingCache<String, List<CategoryDto>> categoryDtoCache;
-    private final WebClient webClient;
-    private final ApplicationProperties properties;
+    private final WebDriver webDriver;
     private final Gson gson = new Gson();
+    private final RandomService randomService;
 
     @Override
     public List<Item> getItems(Search search) {
@@ -51,21 +49,16 @@ public class AllegroService extends ItemService {
 
     private List<Element> getElements(String url) {
         log.info(url);
-        String listingJson = "{}";
-        try {
-            HtmlPage htmlPage = webClient.getPage(url);
-            String pageContent = htmlPage.getPage().asXml();
-            listingJson = pageContent.substring(pageContent.indexOf(JSON_START_PATTERN) + JSON_START_PATTERN.length(),
-                    pageContent.indexOf(JSON_END_PATTERN))
-                    .replace("\\u002F", "/")
-                    .replace("\\\\\\\"", " ")
-                    .replace("\\\"", "\"");
+        randomizeBrowser();
+        webDriver.navigate().to(url);
+        String pageContent = webDriver.getPageSource();
+        webDriver.navigate().to("about:blank");
 
-        } catch (IOException e) {
-            log.error("Error while fetching elements", e);
-        } finally {
-            webClient.close();
-        }
+        String listingJson = pageContent.substring(pageContent.indexOf(JSON_START_PATTERN) + JSON_START_PATTERN.length(),
+                pageContent.indexOf(JSON_END_PATTERN))
+                .replace("\\u002F", "/")
+                .replace("\\\\\\\"", " ")
+                .replace("\\\"", "\"");
 
         return gson.fromJson(listingJson, ListingResponse.class).getItems().getElements().stream()
                 .filter(element -> element.getId() != null)
@@ -89,7 +82,7 @@ public class AllegroService extends ItemService {
                 .replaceAll(" ", "%20"))
                 .queryParam("order", "n")
                 .queryParam("strategy", "NO_FALLBACK")
-                .queryParam("ref","dym-redirect");
+                .queryParam("ref", "dym-redirect");
 
         Integer priceFrom = search.getPriceFrom();
         if (priceFrom != null) {
@@ -102,6 +95,11 @@ public class AllegroService extends ItemService {
         }
 
         return uriComponentsBuilder.build().toUriString();
+    }
+
+    private void randomizeBrowser() {
+        webDriver.manage().deleteAllCookies();
+        webDriver.manage().window().setSize(randomService.getDimension());
     }
 
 }
