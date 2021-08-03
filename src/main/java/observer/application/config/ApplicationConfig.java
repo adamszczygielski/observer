@@ -36,7 +36,6 @@ public class ApplicationConfig {
 
     @Bean("webDriver")
     public WebDriver getWebDriver(ApplicationProperties properties, RandomService randomService) {
-
         if (OS.isFamilyWindows()) {
             System.setProperty("webdriver.chrome.driver", "driver-win/chromedriver.exe");
         } else if (OS.isFamilyUnix()) {

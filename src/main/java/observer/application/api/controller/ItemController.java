@@ -47,4 +47,5 @@ public class ItemController {
         itemApiService.deleteItems(itemIds);
         return "redirect:" + request.getHeader("Referer");
     }
+
 }

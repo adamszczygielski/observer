@@ -3,6 +3,7 @@ package observer.application.domain;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,13 +20,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 
 @Setter
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "SEARCH")
 @Entity
 public class Search {
@@ -36,9 +37,11 @@ public class Search {
     private Long id;
 
     @Column(name = "KEYWORD")
+    @EqualsAndHashCode.Include
     private String keyword;
 
     @Column(name = "CATEGORY_ID")
+    @EqualsAndHashCode.Include
     private String categoryId;
 
     @Column(name = "CATEGORY_NAME")
@@ -57,6 +60,7 @@ public class Search {
     private Short timeInterval;
 
     @Column(name = "SOURCE_ID")
+    @EqualsAndHashCode.Include
     private Integer sourceId;
 
     @Column(name = "STATUS_ID")
@@ -65,25 +69,5 @@ public class Search {
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "SEARCH_ID")
     private List<Item> itemList;
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Search other = (Search) obj;
-        if (Objects.equals(sourceId, other.sourceId)) {
-            if (Objects.equals(keyword, other.keyword)) {
-                return Objects.equals(categoryId, other.categoryId);
-            }
-        }
-        return false;
-    }
 
 }

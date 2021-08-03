@@ -17,13 +17,13 @@ public class RandomService {
 
     private final Random random = new Random();
 
-    public int getRandomInt(int min, int max) {
+    public int getInt(int min, int max) {
         return random.nextInt(max - min) + min;
     }
 
     public Dimension getDimension() {
-        int width = getRandomInt(800, 1920);
-        int height = getRandomInt(600, 1200);
+        int width = getInt(800, 1920);
+        int height = getInt(600, 1200);
         return new Dimension(width, height);
     }
 

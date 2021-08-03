@@ -3,6 +3,7 @@ package observer.application.domain;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NotFound;
@@ -15,12 +16,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.Instant;
-import java.util.Objects;
 
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "ITEM")
 @Entity
 public class Item {
@@ -32,6 +33,7 @@ public class Item {
     private Long id;
 
     @Column(name = "ORIGIN_ID")
+    @EqualsAndHashCode.Include
     private String originId;
 
     @Column(name = "SEARCH_ID")
@@ -56,24 +58,7 @@ public class Item {
     private Boolean isNotified;
 
     @Column(name = "SOURCE_ID")
+    @EqualsAndHashCode.Include
     private Integer sourceId;
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Item other = (Item) obj;
-        if (Objects.equals(originId, other.originId)) {
-            return Objects.equals(sourceId, other.sourceId);
-        }
-        return false;
-    }
 
 }

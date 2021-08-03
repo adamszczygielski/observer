@@ -33,12 +33,6 @@ public class SearchService extends UpdateTemplate<Search, List<Item>> {
                 .forEach(this::updateSearch);
     }
 
-    @Transactional
-    public void executeImmediately(List<Long> searchIds) {
-        searchRepository.findAllById(searchIds)
-                .forEach(this::updateSearch);
-    }
-
     boolean isAboveLimit(Search search) {
         return search.getItemList().stream()
                 .filter(Item::getIsActive)

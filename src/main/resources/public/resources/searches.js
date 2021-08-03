@@ -9,7 +9,6 @@ function countItems() {
             sum += parseInt(text);
         }
     }
-
     displayCounter(sum);
 }
 
@@ -29,35 +28,4 @@ function remove() {
         return false;
     }
     return confirm('Are you sure?');
-}
-
-function update() {
-    var url = createUpdateUrl();
-
-    if (typeof url == 'undefined') {
-        return;
-    }
-    var xhr = new XMLHttpRequest();
-    xhr.open('PATCH', url, true);
-    xhr.onload = function () {
-        if (xhr.status == "200") {
-            location.reload();
-        }
-    }
-    xhr.send();
-}
-
-function createUpdateUrl() {
-    var ids = getSelectedIds();
-    var url;
-
-    if (ids.length > 0) {
-        url = "/searches?id=" + ids[0];
-        for (var i = 1; i < ids.length; i++) {
-            url += "," + ids[i];
-        }
-    } else {
-        alert("No searches selected!");
-    }
-    return url;
 }

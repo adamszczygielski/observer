@@ -22,22 +22,41 @@ public class SearchApiService {
         return searchViewRepository.findAll();
     }
 
+    public Search getSearch(Long searchId) {
+        return searchRepository.findById(searchId).orElseThrow(() -> new IllegalArgumentException(
+                MessageFormat.format("SearchId {0} does not exist", searchId)));
+    }
+
     @Transactional
     public void deleteSearches(List<Long> searchIds) {
         searchRepository.deleteByIds(searchIds);
     }
 
     @Transactional
-    public void addSearch(Search search) {
+    public void addOrUpdateSearch(Search search) {
+        if (search.getId() != null) {
+            updateSearch(search);
+        } else {
+            addSearch(search);
+        }
+    }
+
+    private void addSearch(Search search) {
         List<Search> searches = searchRepository.findAll();
         if (!searches.contains(search)) {
             searchRepository.save(search);
         }
     }
 
-    public Search getSearch(Long searchId) {
-        return searchRepository.findById(searchId).orElseThrow(() -> new IllegalArgumentException(
-                MessageFormat.format("SearchId {0} does not exist", searchId)));
+    private void updateSearch(Search search) {
+        searchRepository.findById(search.getId()).ifPresent(s -> {
+            s.setKeyword(search.getKeyword());
+            s.setCategoryId(search.getCategoryId());
+            s.setCategoryName(search.getCategoryName());
+            s.setPriceFrom(search.getPriceFrom());
+            s.setPriceTo(search.getPriceTo());
+            s.setTimeInterval(search.getTimeInterval());
+        });
     }
 
 }
