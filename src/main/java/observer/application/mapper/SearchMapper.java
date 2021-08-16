@@ -1,9 +1,9 @@
 package observer.application.mapper;
 
-import observer.application.api.SearchDto;
-import observer.application.domain.Search;
-import observer.application.domain.Source;
-import observer.application.domain.Status;
+import observer.application.dto.SearchDto;
+import observer.application.model.Search;
+import observer.application.model.Source;
+import observer.application.model.Status;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

@@ -1,10 +1,9 @@
 package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.domain.Category;
-import observer.application.domain.Item;
-import observer.application.domain.Search;
-import observer.application.domain.Source;
+import observer.application.model.Category;
+import observer.application.model.Item;
+import observer.application.model.Search;
 import observer.application.repository.ItemRepository;
 import observer.application.repository.SearchRepository;
 import org.springframework.stereotype.Service;
@@ -37,18 +36,13 @@ public class ItemApiService {
     }
 
     public List<Category> getCategories(int sourceId, String parentId) {
-        ItemService itemService = getItemService(sourceId);
+        ItemService itemService = sourceService.get(sourceId);
         return itemService.getCategories(parentId);
     }
 
     private List<Item> fetchItems(Search search) {
-        ItemService itemService = getItemService(search.getSourceId());
+        ItemService itemService = sourceService.get(search.getSourceId());
         return itemService.getItems(search);
-    }
-
-    private ItemService getItemService(int sourceId) {
-        Source source = Source.getSource(sourceId);
-        return sourceService.get(source);
     }
 
 }

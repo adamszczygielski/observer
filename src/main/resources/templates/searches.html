@@ -18,6 +18,10 @@
 
 <form onsubmit="return remove(this)" th:action="@{/searches}" th:method="delete">
     <div class="container my-4">
+        <button class="btn btn-primary btn-md" onclick="edit(this)" type="button">Edit</button>
+        <button class="btn btn-danger btn-md" type="submit">Delete</button>
+    </div>
+    <div class="container my-4">
         <table class="table table-md table-hover" id="items-table">
             <thead>
             <tr>
@@ -59,10 +63,6 @@
             </tr>
             </tbody>
         </table>
-    </div>
-    <div class="container my-4">
-        <button class="btn btn-primary btn-md" onclick="edit(this)" type="button">Edit</button>
-        <button class="btn btn-danger btn-md" type="submit">Delete</button>
     </div>
 </form>
 

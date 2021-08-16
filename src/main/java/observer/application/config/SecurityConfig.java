@@ -1,6 +1,6 @@
 package observer.application.config;
 
-import observer.application.api.controller.ItemController;
+import observer.application.controller.ItemController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

@@ -2,10 +2,10 @@ package observer.application.service.source.olx;
 
 import com.google.common.cache.LoadingCache;
 import lombok.RequiredArgsConstructor;
-import observer.application.domain.Category;
-import observer.application.domain.Item;
-import observer.application.domain.Search;
-import observer.application.domain.Source;
+import observer.application.model.Category;
+import observer.application.model.Item;
+import observer.application.model.Search;
+import observer.application.model.Source;
 import observer.application.service.ItemService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

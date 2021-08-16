@@ -2,9 +2,9 @@ package observer.application.service;
 
 import lombok.SneakyThrows;
 import observer.application.Application;
-import observer.application.domain.Source;
-import observer.application.domain.Item;
-import observer.application.domain.Search;
+import observer.application.model.Source;
+import observer.application.model.Item;
+import observer.application.model.Search;
 import observer.application.repository.SearchRepository;
 import observer.application.service.source.allegro.AllegroService;
 import org.junit.Before;
@@ -37,7 +37,7 @@ import static org.mockito.ArgumentMatchers.any;
 @Transactional
 public class SearchServiceTest {
 
-    private SearchService searchService;
+    private SearchUpdateService searchService;
 
     @Autowired
     private SearchRepository searchRepository;
@@ -56,7 +56,7 @@ public class SearchServiceTest {
     @Test
     @SneakyThrows
     public void shouldUpdateSearch() {
-        Mockito.when(sourceService.get(Source.ALLEGRO)).thenReturn(allegroService);
+        Mockito.when(sourceService.get(Source.ALLEGRO.getId())).thenReturn(allegroService);
         Mockito.when(allegroService.getItems(any(Search.class))).thenReturn(getItems());
 
         Assertions.assertEquals(2,

@@ -1,6 +1,6 @@
 package observer.application.repository;
 
-import observer.application.domain.Item;
+import observer.application.model.Item;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

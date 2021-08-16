@@ -1,4 +1,4 @@
-package observer.application.notification;
+package observer.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class NotificationResponse implements Serializable {
+public class NotificationResponseDto implements Serializable {
 
     private String id;
     private Integer recipients;

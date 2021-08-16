@@ -1,10 +1,8 @@
 package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.domain.Source;
+import observer.application.model.Source;
 import org.springframework.stereotype.Service;
-
-import java.text.MessageFormat;
 
 @Service
 @RequiredArgsConstructor
@@ -14,8 +12,8 @@ class SourceService {
     private final ItemService olxService;
     private final ItemService ebayService;
 
-    public ItemService get(Source source) {
-        switch (source) {
+    ItemService get(Integer sourceId) {
+        switch (Source.getSource(sourceId)) {
             case ALLEGRO:
                 return allegroService;
             case OLX:
@@ -23,8 +21,7 @@ class SourceService {
             case EBAY:
                 return ebayService;
             default:
-                throw new IllegalArgumentException(
-                        MessageFormat.format("No service implementation for {0}", source.getLabel()));
+                throw new IllegalArgumentException("No service implementation found!");
         }
     }
 

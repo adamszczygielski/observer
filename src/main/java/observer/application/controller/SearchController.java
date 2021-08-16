@@ -1,7 +1,7 @@
-package observer.application.api.controller;
+package observer.application.controller;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.api.SearchDto;
+import observer.application.dto.SearchDto;
 import observer.application.mapper.SearchMapper;
 import observer.application.mapper.SearchViewMapper;
 import observer.application.service.SearchApiService;

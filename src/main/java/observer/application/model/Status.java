@@ -1,4 +1,4 @@
-package observer.application.domain;
+package observer.application.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

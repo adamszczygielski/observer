@@ -1,4 +1,4 @@
-package observer.application.notification;
+package observer.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Builder
 @Getter
-class NotificationRequest implements Serializable {
+public class NotificationRequestDto implements Serializable {
 
     @JsonProperty("app_id")
     private final String appId;

@@ -1,8 +1,8 @@
 package observer.application.mapper;
 
-import observer.application.api.ItemDto;
-import observer.application.domain.Item;
-import observer.application.domain.Source;
+import observer.application.dto.ItemDto;
+import observer.application.model.Item;
+import observer.application.model.Source;
 import org.springframework.stereotype.Component;
 
 import static observer.application.mapper.MapperUtils.toLocalTime;

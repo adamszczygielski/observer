@@ -1,7 +1,7 @@
 package observer.application.mapper;
 
-import observer.application.api.CategoryDto;
-import observer.application.domain.Category;
+import observer.application.dto.CategoryDto;
+import observer.application.model.Category;
 import org.springframework.stereotype.Component;
 
 @Component

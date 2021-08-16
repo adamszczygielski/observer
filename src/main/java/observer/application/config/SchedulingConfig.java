@@ -1,7 +1,8 @@
 package observer.application.config;
 
-import observer.application.domain.Source;
-import observer.application.service.SearchService;
+import observer.application.model.Source;
+import observer.application.service.RandomService;
+import observer.application.service.SearchUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.Trigger;
@@ -18,23 +19,26 @@ import java.util.Optional;
 public class SchedulingConfig implements SchedulingConfigurer {
 
     @Autowired
-    SearchService searchService;
+    private SearchUpdateService searchUpdateService;
 
     @Autowired
-    ApplicationProperties applicationProperties;
+    private ApplicationProperties applicationProperties;
+
+    @Autowired
+    private RandomService randomService;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.addTriggerTask(
-                () -> searchService.invoke(Source.ALLEGRO),
+                () -> searchUpdateService.invoke(Source.ALLEGRO),
                 createTrigger(applicationProperties.getAllegroDelayMillis())
         );
         taskRegistrar.addTriggerTask(
-                () -> searchService.invoke(Source.EBAY),
+                () -> searchUpdateService.invoke(Source.EBAY),
                 createTrigger(applicationProperties.getEbayDelayMillis())
         );
         taskRegistrar.addTriggerTask(
-                () -> searchService.invoke(Source.OLX),
+                () -> searchUpdateService.invoke(Source.OLX),
                 createTrigger(applicationProperties.getOlxDelayMillis())
         );
     }
@@ -44,17 +48,10 @@ public class SchedulingConfig implements SchedulingConfigurer {
             Optional<Date> lastCompletionTime = Optional.ofNullable(triggerContext.lastCompletionTime());
             Instant nextExecutionTime = lastCompletionTime.orElseGet(Date::new)
                     .toInstant()
-                    .plusMillis(randomizeDelay(millis));
+                    .plusMillis(randomService.getDelay(millis));
 
             return Date.from(nextExecutionTime);
         };
-    }
-
-    private long randomizeDelay(long millis) {
-        if (millis > 0) {
-            return (long) (millis + Math.random() * millis / 2);
-        }
-        return millis;
     }
 
 }

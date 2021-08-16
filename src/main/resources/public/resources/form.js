@@ -2,14 +2,16 @@ function onSourceChange() {
     var sourceSelector = document.getElementById("inputSource");
     var categorySelector = document.getElementById("category");
     var button = document.getElementById("selectCategoryButton");
-
     clearCategories();
-    if (sourceSelector.value == "EBAY") {
-        button.disabled = true;
-        categorySelector.disabled = true;
-    } else {
-        button.disabled = false;
-        categorySelector.disabled = false;
+
+    switch (sourceSelector) {
+        case 'EBAY':
+            button.disabled = true;
+            categorySelector.disabled = true;
+            break;
+        default:
+            button.disabled = false;
+            categorySelector.disabled = false;
     }
 }
 

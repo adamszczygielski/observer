@@ -1,11 +1,11 @@
-package observer.application.api;
+package observer.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import observer.application.domain.Source;
-import observer.application.domain.Status;
+import observer.application.model.Source;
+import observer.application.model.Status;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

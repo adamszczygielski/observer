@@ -1,4 +1,4 @@
-package observer.application.domain;
+package observer.application.model;
 
 import lombok.Getter;
 import org.hibernate.annotations.Immutable;

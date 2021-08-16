@@ -1,9 +1,9 @@
 package observer.application.mapper;
 
-import observer.application.api.SearchViewDto;
-import observer.application.domain.SearchView;
-import observer.application.domain.Source;
-import observer.application.domain.Status;
+import observer.application.dto.SearchViewDto;
+import observer.application.model.SearchView;
+import observer.application.model.Source;
+import observer.application.model.Status;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

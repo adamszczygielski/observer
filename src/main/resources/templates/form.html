@@ -30,7 +30,7 @@
             <div class="form-group col-md-4">
                 <label for="inputSource">Source</label>
                 <select class="form-control" id="inputSource" onchange="onSourceChange()" required th:field="*{source}">
-                    <option th:each="sourceOpt : ${T(observer.application.domain.Source).values()}"
+                    <option th:each="sourceOpt : ${T(observer.application.model.Source).values()}"
                             th:id="${sourceOpt.id}" th:text="${sourceOpt.label}" th:value="${sourceOpt}">
                     </option>
                 </select>

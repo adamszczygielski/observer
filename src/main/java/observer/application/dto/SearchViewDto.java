@@ -1,4 +1,4 @@
-package observer.application.api;
+package observer.application.dto;
 
 import lombok.Builder;
 import lombok.Getter;

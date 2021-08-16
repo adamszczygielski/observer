@@ -1,8 +1,8 @@
-package observer.application.api.controller;
+package observer.application.controller;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.api.CategoryDto;
-import observer.application.domain.Category;
+import observer.application.dto.CategoryDto;
+import observer.application.model.Category;
 import observer.application.mapper.CategoryMapper;
 import observer.application.service.ItemApiService;
 import org.springframework.web.bind.annotation.CrossOrigin;

@@ -2,9 +2,9 @@ package observer.application.service.source.ebay;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.config.ApplicationProperties;
-import observer.application.domain.Category;
-import observer.application.domain.Item;
-import observer.application.domain.Search;
+import observer.application.model.Category;
+import observer.application.model.Item;
+import observer.application.model.Search;
 import observer.application.rest.RestInvoker;
 import observer.application.service.ItemService;
 import observer.application.service.source.ebay.mapper.EbayMapper;

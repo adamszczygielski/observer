@@ -1,8 +1,8 @@
 package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.domain.Search;
-import observer.application.domain.SearchView;
+import observer.application.model.Search;
+import observer.application.model.SearchView;
 import observer.application.repository.SearchRepository;
 import observer.application.repository.SearchViewRepository;
 import org.springframework.stereotype.Service;

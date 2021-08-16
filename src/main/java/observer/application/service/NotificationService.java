@@ -1,10 +1,12 @@
-package observer.application.notification;
+package observer.application.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ApplicationProperties;
+import observer.application.dto.NotificationRequestDto;
+import observer.application.dto.NotificationResponseDto;
 import observer.application.repository.ItemRepository;
 import observer.application.rest.RestInvoker;
 import org.springframework.data.domain.PageRequest;
@@ -39,12 +41,12 @@ public class NotificationService {
                         .ifPresent(response -> itemRepository.setNotified(itemIds))));
     }
 
-    private Optional<NotificationResponse> sendNotification(int itemsCount) {
+    private Optional<NotificationResponseDto> sendNotification(int itemsCount) {
         try {
             String requestBody = objectMapper.writeValueAsString(getNotificationRequest(itemsCount));
             log.info("Notification has been sent");
             return Optional.of(
-                    restInvoker.post(getRequestUrl(), createHttpEntity(requestBody), NotificationResponse.class));
+                    restInvoker.post(getRequestUrl(), createHttpEntity(requestBody), NotificationResponseDto.class));
         } catch (JsonProcessingException | RestClientException e) {
             log.error("Sending notification failed", e);
         }
@@ -66,8 +68,8 @@ public class NotificationService {
                 .build().toUriString();
     }
 
-    private NotificationRequest getNotificationRequest(int itemsCount) {
-        return NotificationRequest.builder()
+    private NotificationRequestDto getNotificationRequest(int itemsCount) {
+        return NotificationRequestDto.builder()
                 .appId(properties.getOnesignalAppId())
                 .includedSegments(Collections.singletonList("All"))
                 .contents(getNotificationContents(itemsCount))

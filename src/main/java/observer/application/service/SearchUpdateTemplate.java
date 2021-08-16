@@ -1,10 +1,10 @@
 package observer.application.service;
 
 import lombok.extern.slf4j.Slf4j;
-import observer.application.domain.Status;
+import observer.application.model.Status;
 
 @Slf4j
-abstract class UpdateTemplate<S, I> {
+abstract class SearchUpdateTemplate<S, I> {
 
     void updateSearch(S search) {
         if (isAboveLimit(search)) {

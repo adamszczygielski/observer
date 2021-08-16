@@ -1,11 +1,11 @@
-package observer.application.api;
+package observer.application.model;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class CategoryDto {
+public class Category {
 
     private final String id;
     private final String name;

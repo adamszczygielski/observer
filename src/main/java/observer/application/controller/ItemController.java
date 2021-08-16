@@ -1,4 +1,4 @@
-package observer.application.api.controller;
+package observer.application.controller;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.mapper.ItemMapper;

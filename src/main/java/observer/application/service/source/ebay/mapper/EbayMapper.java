@@ -1,7 +1,7 @@
 package observer.application.service.source.ebay.mapper;
 
-import observer.application.domain.Source;
-import observer.application.domain.Item;
+import observer.application.model.Source;
+import observer.application.model.Item;
 import observer.application.service.source.ebay.model.Amount;
 import observer.application.service.source.ebay.model.SearchItem;
 import observer.application.service.source.ebay.model.SellingStatus;

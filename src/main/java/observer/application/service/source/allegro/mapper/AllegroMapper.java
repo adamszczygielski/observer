@@ -1,8 +1,8 @@
 package observer.application.service.source.allegro.mapper;
 
-import observer.application.domain.Category;
-import observer.application.domain.Item;
-import observer.application.domain.Source;
+import observer.application.model.Category;
+import observer.application.model.Item;
+import observer.application.model.Source;
 import observer.application.service.source.allegro.model.category.CategoryDto;
 import observer.application.service.source.allegro.model.listing.Element;
 import observer.application.service.source.allegro.model.listing.Normal;

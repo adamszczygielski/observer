@@ -3,7 +3,7 @@ package observer.application.service.source.olx;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import observer.application.domain.Category;
+import observer.application.model.Category;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
