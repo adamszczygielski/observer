@@ -47,7 +47,4 @@ public class ApplicationProperties {
     @Value("${observer.chromedriver.headless}")
     private Boolean chromedriverHeadless;
 
-    @Value("${observer.chromedriver.images}")
-    private Boolean chromedriverImages;
-
 }

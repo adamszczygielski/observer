@@ -52,13 +52,21 @@ public class AllegroService extends ItemService {
         randomizeBrowser();
         webDriver.navigate().to(url);
         String pageContent = webDriver.getPageSource();
-        webDriver.navigate().to("about:blank");
 
-        String listingJson = pageContent.substring(pageContent.indexOf(JSON_START_PATTERN) + JSON_START_PATTERN.length(),
-                pageContent.indexOf(JSON_END_PATTERN))
+        int beginIndex = pageContent.indexOf(JSON_START_PATTERN) + JSON_START_PATTERN.length();
+        int endIndex = pageContent.indexOf(JSON_END_PATTERN);
+
+        if (endIndex == -1) {
+            webDriver.navigate().to("about:blank");
+            throw new IllegalArgumentException("No json found in page content!");
+        }
+
+        String listingJson = pageContent.substring(beginIndex, endIndex)
                 .replace("\\u002F", "/")
                 .replace("\\\\\\\"", " ")
                 .replace("\\\"", "\"");
+
+        webDriver.navigate().to("about:blank");
 
         return gson.fromJson(listingJson, ListingResponse.class).getItems().getElements().stream()
                 .filter(element -> element.getId() != null)
@@ -78,7 +86,7 @@ public class AllegroService extends ItemService {
             uriComponentsBuilder.path("listing");
         }
 
-        uriComponentsBuilder.queryParam("string", search.getKeyword()
+        uriComponentsBuilder.queryParam("string", randomService.randomizeCase(search.getKeyword())
                 .replaceAll(" ", "%20"))
                 .queryParam("order", "n")
                 .queryParam("strategy", "NO_FALLBACK")
@@ -98,7 +106,6 @@ public class AllegroService extends ItemService {
     }
 
     private void randomizeBrowser() {
-        webDriver.manage().deleteAllCookies();
         webDriver.manage().window().setSize(randomService.getDimension());
     }
 

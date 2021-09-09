@@ -48,7 +48,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
             Optional<Date> lastCompletionTime = Optional.ofNullable(triggerContext.lastCompletionTime());
             Instant nextExecutionTime = lastCompletionTime.orElseGet(Date::new)
                     .toInstant()
-                    .plusMillis(randomService.getDelay(millis));
+                    .plusMillis(randomService.randomize(millis));
 
             return Date.from(nextExecutionTime);
         };

@@ -50,10 +50,6 @@ public class ApplicationConfig {
                 "--disable-blink-features=AutomationControlled"
         );
 
-        if (!properties.getChromedriverImages()) {
-            options.addArguments("--blink-settings=imagesEnabled=false");
-        }
-
         String[] proxies = properties.getProxies();
         if (proxies.length > 0) {
             Proxy proxy = new Proxy();
@@ -63,6 +59,7 @@ public class ApplicationConfig {
 
         if (properties.getChromedriverHeadless()) {
             options.addArguments("--headless");
+            options.addArguments("--blink-settings=imagesEnabled=false");
         }
 
         return new ChromeDriver(options);

@@ -30,10 +30,22 @@ public class RandomService {
         return String.format(WINDOW_SIZE_ARG, dimension.width, dimension.height);
     }
 
-    public long getDelay(long millis) {
+    public long randomize(long millis) {
         int min = (int) (millis - (millis * 0.3));
         int max = (int) (millis + (millis * 0.3));
         return getInt(min, max);
+    }
+
+    public String randomizeCase(String string) {
+        StringBuilder sb = new StringBuilder();
+        for (char c : string.toCharArray()) {
+            if (random.nextBoolean()) {
+                sb.append(Character.toUpperCase(c));
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
     private int getInt(int min, int max) {

@@ -22,8 +22,7 @@ public class AspectLogger {
     @Around(ITEM_SERVICES_POINTCUT)
     public Object logItemServices(ProceedingJoinPoint joinPoint) throws Throwable {
         Search search = (Search) joinPoint.getArgs()[0];
-        log.info("Sending request: {}, searchId: {}, sourceId: {}", joinPoint.getSignature().toShortString(),
-                search.getId(), search.getSourceId());
+        log.info(search.toString());
 
         return joinPoint.proceed();
     }

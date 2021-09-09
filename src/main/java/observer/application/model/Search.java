@@ -70,4 +70,20 @@ public class Search {
     @JoinColumn(name = "SEARCH_ID")
     private List<Item> itemList;
 
+    @Override
+    public String toString() {
+        return "Search{" +
+                "id=" + id +
+                ", keyword='" + keyword + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", categoryName='" + categoryName + '\'' +
+                ", priceFrom=" + priceFrom +
+                ", priceTo=" + priceTo +
+                ", dateUpdated=" + dateUpdated +
+                ", timeInterval=" + timeInterval +
+                ", sourceId=" + sourceId +
+                ", statusId=" + statusId +
+                '}';
+    }
+
 }
