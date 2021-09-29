@@ -17,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,7 @@ public class AllegroService extends ItemService {
 
     private static final String JSON_START_PATTERN = "__listing_StoreState\":\"";
     private static final String JSON_END_PATTERN = "\",\"__listing_CookieMonster";
+    private static final String FALLBACK = "Fuzzy search message";
 
     private final AllegroMapper mapper;
     private final LoadingCache<String, List<CategoryDto>> categoryDtoCache;
@@ -52,6 +54,10 @@ public class AllegroService extends ItemService {
         randomizeBrowser();
         webDriver.navigate().to(url);
         String pageContent = webDriver.getPageSource();
+
+        if (pageContent.contains(FALLBACK)) {
+            return new ArrayList<>();
+        }
 
         int beginIndex = pageContent.indexOf(JSON_START_PATTERN) + JSON_START_PATTERN.length();
         int endIndex = pageContent.indexOf(JSON_END_PATTERN);

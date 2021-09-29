@@ -1,9 +1,9 @@
 package observer.application.config;
 
+import lombok.RequiredArgsConstructor;
 import observer.application.model.Source;
 import observer.application.service.RandomService;
 import observer.application.service.SearchUpdateService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,16 +16,12 @@ import java.util.Optional;
 
 @Configuration
 @EnableScheduling
+@RequiredArgsConstructor
 public class SchedulingConfig implements SchedulingConfigurer {
 
-    @Autowired
-    private SearchUpdateService searchUpdateService;
-
-    @Autowired
-    private ApplicationProperties applicationProperties;
-
-    @Autowired
-    private RandomService randomService;
+    private final SearchUpdateService searchUpdateService;
+    private final ApplicationProperties applicationProperties;
+    private final RandomService randomService;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
