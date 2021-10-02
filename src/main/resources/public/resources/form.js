@@ -1,10 +1,10 @@
 function onSourceChange() {
     var sourceSelector = document.getElementById("inputSource");
-    var categorySelector = document.getElementById("category");
+    var categorySelector = document.getElementById("categorySelector");
     var button = document.getElementById("selectCategoryButton");
-    clearCategories();
+    clearCategory();
 
-    switch (sourceSelector) {
+    switch (sourceSelector.value) {
         case 'EBAY':
             button.disabled = true;
             categorySelector.disabled = true;
@@ -15,35 +15,32 @@ function onSourceChange() {
     }
 }
 
-function clearCategories() {
-    document.getElementById("category").length = 0;
+function clearCategory() {
+    document.getElementById("inputCategoryName").value = null;
+    document.getElementById("inputCategoryId").value = null;
+    document.getElementById("categorySelector").length = 0;
     getCategories();
 }
 
-function getCategories(isFirstCall) {
-    var xhr = new XMLHttpRequest();
-    var categorySelector = document.getElementById("category");
+function getCategories() {
     var sourceSelector = document.getElementById("inputSource");
-    var selectedCategoryId = '';
-    var selectedCategoryName = '';
-    var selectedSourceId = sourceSelector.options[sourceSelector.selectedIndex].id
-    var url = '/categories?sourceId=' + selectedSourceId;
+    var sourceId = sourceSelector.options[document.getElementById("inputSource").selectedIndex].id;
+    var categorySelector = document.getElementById("categorySelector");
+    var categoryId;
 
-    if (typeof categorySelector.options[categorySelector.selectedIndex] != 'undefined') {
-        selectedCategoryId = categorySelector.options[categorySelector.selectedIndex].value;
-        selectedCategoryName = categorySelector.options[categorySelector.selectedIndex].text;
-        url += '&parentId=' + selectedCategoryId;
+    var index = categorySelector.selectedIndex;
+    if (index > -1) {
+        categoryId = categorySelector.options[index].value;
+        document.getElementById("inputCategoryId").value = categorySelector.options[index].value;
+        document.getElementById("inputCategoryName").value = categorySelector.options[index].text;
     }
+
+    var url = createRequestUrl(sourceId, categoryId);
+    var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
 
     xhr.onload = function() {
         var data = JSON.parse(this.response);
-
-        if (!isFirstCall) {
-            document.getElementById("inputCategoryId").value = selectedCategoryId;
-            document.getElementById("inputCategoryName").value = selectedCategoryName;
-        }
-
         if (Object.keys(data).length == 0) {
             return;
         }
@@ -58,4 +55,12 @@ function getCategories(isFirstCall) {
         })
     }
     xhr.send();
+}
+
+function createRequestUrl(sourceId, parentId) {
+    var url = '/categories?sourceId=' + sourceId;
+    if (parentId) {
+        url += '&parentId=' + parentId;
+    }
+    return url;
 }

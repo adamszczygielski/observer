@@ -1,11 +1,11 @@
-function toggle(source) {
+function toggleCheckboxes(checked) {
     checkboxes = getCheckboxes();
     for (var i = 0, n = checkboxes.length; i < n; i++) {
-        checkboxes[i].checked = source.checked;
+        checkboxes[i].checked = checked;
     }
 }
 
-function getSelectedId() {
+function getFirstSelectedId() {
     checkboxes = getCheckboxes();
     for (var i = 0, n = checkboxes.length; i < n; i++) {
         if (checkboxes[i].checked) {
@@ -29,8 +29,8 @@ function getCheckboxes() {
     return document.getElementsByName('id');
 }
 
-function displayCounter(sum) {
-    if (sum > 0) {
-        document.title = "(" + sum + ")" + " " + document.title;
+function displayCounter(val) {
+    if (val > 0) {
+        document.title = "(" + val + ")" + " " + document.title;
     }
 }

@@ -1,20 +1,21 @@
 function countItems() {
     var sum = 0;
-    var text;
     var table = document.getElementById("items-table");
-
-    for (var i = 1; i < table.rows.length; i++) {
-        text = table.rows[i].cells[9].innerText;
-        if (text) {
-            sum += parseInt(text);
+    var length = table.rows.length;
+    if (length == 1) {
+        return;
+    }
+    for (var i = 1; i < length; i++) {
+        val = table.rows[i].cells[9].innerText;
+        if (val) {
+            sum += parseInt(val);
         }
     }
-    displayCounter(sum);
+    return sum;
 }
 
-function edit() {
-    var id = getSelectedId();
-
+function redirectToEdit() {
+    var id = getFirstSelectedId();
     if (typeof id != 'undefined') {
         window.location.href = "/form/search/" + id;
         return;
@@ -22,8 +23,8 @@ function edit() {
     alert("No searches selected!");
 }
 
-function remove() {
-    if (typeof getSelectedId() == 'undefined') {
+function onDelete() {
+    if (typeof getFirstSelectedId() == 'undefined') {
         alert("No searches selected!");
         return false;
     }

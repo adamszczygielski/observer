@@ -1,15 +1,13 @@
 function countItems() {
-    var rows = document
+    return document
         .getElementById('items-table')
         .getElementsByTagName("tbody")[0]
         .getElementsByTagName("tr")
         .length;
-
-    displayCounter(rows);
 }
 
-function remove(source) {
-    if (typeof getSelectedId() == 'undefined') {
+function onDelete() {
+    if (typeof getFirstSelectedId() == 'undefined') {
         alert("No items selected!");
         return false;
     }

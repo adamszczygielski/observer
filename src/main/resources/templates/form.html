@@ -7,13 +7,11 @@
     <link href="/resources/bootstrap.min.css" rel="stylesheet">
     <link href="/resources/favicon.ico" rel="shortcut icon">
 </head>
-<body onload="javascript:getCategories(true)">
+<body onload="getCategories()">
 <script src="/resources/form.js"></script>
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
-
 <div th:replace="navbar"></div>
-
 <div class="container my-4">
     <form action="#" method="post" th:action="@{/searches}" th:object="${searchDto}">
         <div class="form-row">
@@ -57,13 +55,13 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label for="category">Categories</label>
-                <select class="form-control" id="category"></select>
+                <label for="categorySelector">Categories</label>
+                <select class="form-control" id="categorySelector"></select>
             </div>
         </div>
-        <button class="btn btn-primary" id="selectCategoryButton" onclick="getCategories(false)" type="button">Select
+        <button class="btn btn-primary" id="selectCategoryButton" onclick="getCategories()" type="button">Select
         </button>
-        <button class="btn btn-primary" onclick="clearCategories()" type="button">Cancel</button>
+        <button class="btn btn-primary" onclick="clearCategory()" type="button">Cancel</button>
         <div class="form-row pt-4">
             <div class="form-group col-md-4">
                 <label for="inputPriceFrom">Price from</label>

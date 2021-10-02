@@ -8,15 +8,13 @@
     <link href="/resources/bootstrap.min.css" rel="stylesheet">
     <link href="/resources/favicon.ico" rel="shortcut icon">
 </head>
-<body onload="countItems()">
+<body onload="displayCounter(countItems())">
 <script src="/resources/jquery-3.5.1.slim.min.js"></script>
 <script src="/resources/bootstrap.min.js"></script>
 <script src="/resources/table-utils.js"></script>
 <script src="/resources/items.js"></script>
-
 <div th:replace="navbar"></div>
-
-<form onsubmit="return remove(this)" th:action="@{/items}" th:method="delete">
+<form onsubmit="return onDelete()" th:action="@{/items}" th:method="delete">
     <div class="container my-4">
         <input type="hidden">
         <button class="btn btn-danger btn-md" type="submit">Delete</button>
@@ -26,7 +24,7 @@
             <thead>
             <tr>
                 <th scope="col">
-                    <input id="checkAll" onclick="toggle(this)" type="checkbox">
+                    <input id="checkAll" onclick="toggleCheckboxes(this.checked)" type="checkbox">
                 </th>
                 <th scope="col">Title</th>
                 <th scope="col">Source</th>
@@ -50,6 +48,5 @@
         </table>
     </div>
 </form>
-
 </body>
 </html>
