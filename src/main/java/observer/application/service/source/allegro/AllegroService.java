@@ -17,8 +17,9 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -26,9 +27,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AllegroService extends ItemService {
 
-    private static final String JSON_START_PATTERN = "__listing_StoreState\":\"";
-    private static final String JSON_END_PATTERN = "\",\"__listing_CookieMonster";
-    private static final String FALLBACK = "Fuzzy search message";
+    private static final String JSON_BEGIN_PATTERN = "__listing_StoreState\":\"";
+    private static final String JSON_END_PATTERN = "}\"}</script>";
+    private static final String FALLBACK_PATTERN = "first yellow information";
 
     private final AllegroMapper mapper;
     private final LoadingCache<String, List<CategoryDto>> categoryDtoCache;
@@ -39,8 +40,15 @@ public class AllegroService extends ItemService {
     @Override
     public List<Item> getItems(Search search) {
         String url = getRequestUrl(search);
-        List<Element> elements = getElements(url);
-        return mapper.toItems(elements, search.getId());
+        String pageSource = getPageSource(url);
+
+        Optional<String> listingResponseJson = getListingResponseJson(pageSource);
+        if (listingResponseJson.isPresent()) {
+            List<Element> elements = getElements(listingResponseJson.get());
+            return mapper.toItems(elements, search.getId());
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     @Override
@@ -49,34 +57,45 @@ public class AllegroService extends ItemService {
         return mapper.toCategories(categories);
     }
 
-    private List<Element> getElements(String url) {
+    private String getPageSource(String url) {
         log.info(url);
         randomizeBrowser();
         webDriver.navigate().to(url);
-        String pageContent = webDriver.getPageSource();
+        String pageSource = webDriver.getPageSource();
+        webDriver.navigate().to("about:blank");
+        return pageSource;
+    }
 
-        if (pageContent.contains(FALLBACK)) {
-            return new ArrayList<>();
+    private List<Element> getElements(String listingResponseJson) {
+        return gson.fromJson(listingResponseJson, ListingResponse.class)
+                .getItems().getElements().stream()
+                .filter(element -> element.getId() != null)
+                .collect(Collectors.toList());
+    }
+
+    private Optional<String> getListingResponseJson(String pageContent) {
+        if (pageContent.contains(FALLBACK_PATTERN)) {
+            return Optional.empty();
         }
 
-        int beginIndex = pageContent.indexOf(JSON_START_PATTERN) + JSON_START_PATTERN.length();
-        int endIndex = pageContent.indexOf(JSON_END_PATTERN);
-
-        if (endIndex == -1) {
-            webDriver.navigate().to("about:blank");
-            throw new IllegalArgumentException("No json found in page content!");
+        int beginPatternIndex = pageContent.indexOf(JSON_BEGIN_PATTERN);
+        if (beginPatternIndex == -1) {
+            throw new IllegalArgumentException("Json begin index has not been found!");
         }
 
-        String listingJson = pageContent.substring(beginIndex, endIndex)
+        int endPatternIndex = pageContent.indexOf(JSON_END_PATTERN);
+        if (endPatternIndex == -1) {
+            throw new IllegalArgumentException("Json end index has not been found!");
+        }
+
+        int jsonBeginIndex = beginPatternIndex + JSON_BEGIN_PATTERN.length();
+        int jsonEndIndex = endPatternIndex + 1;
+        String json = pageContent.substring(jsonBeginIndex, jsonEndIndex)
                 .replace("\\u002F", "/")
                 .replace("\\\\\\\"", " ")
                 .replace("\\\"", "\"");
 
-        webDriver.navigate().to("about:blank");
-
-        return gson.fromJson(listingJson, ListingResponse.class).getItems().getElements().stream()
-                .filter(element -> element.getId() != null)
-                .collect(Collectors.toList());
+        return Optional.of(json);
     }
 
     private String getRequestUrl(Search search) {

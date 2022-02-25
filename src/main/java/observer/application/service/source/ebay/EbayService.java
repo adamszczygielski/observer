@@ -15,7 +15,7 @@ import observer.application.service.source.ebay.model.SearchResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +34,7 @@ public class EbayService extends ItemService {
 
     @Override
     public List<Category> getCategories(String parentId) {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     private List<SearchItem> fetchSearchItems(Search search) {
@@ -44,7 +44,7 @@ public class EbayService extends ItemService {
         return Optional.of(findItemsByKeywordsResponse)
                 .map(BaseFindingServiceResponse::getSearchResult)
                 .map(SearchResult::getItem)
-                .orElse(new ArrayList<>());
+                .orElse(Collections.emptyList());
     }
 
     private String createListingRequestUrl(Search search) {

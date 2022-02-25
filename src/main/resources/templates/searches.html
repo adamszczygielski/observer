@@ -14,11 +14,7 @@
 <script src="/resources/table-utils.js"></script>
 <script src="/resources/searches.js"></script>
 <div th:replace="navbar"></div>
-<form onsubmit="return onDelete()" th:action="@{/searches}" th:method="delete">
-    <div class="container my-4">
-        <button class="btn btn-primary btn-md" onclick="redirectToEdit()" type="button">Edit</button>
-        <button class="btn btn-danger btn-md" type="submit">Delete</button>
-    </div>
+<form th:action="@{/searches}" th:method="delete">
     <div class="container my-4">
         <table class="table table-md table-hover" id="items-table">
             <thead>
@@ -35,6 +31,7 @@
                 <th scope="col">Updated at</th>
                 <th scope="col">Status</th>
                 <th>New</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -44,8 +41,11 @@
                         <input class="form-check-input" name="id" th:value="${searchViewDto.id}" type="checkbox">
                     </div>
                 </td>
-                <td><a th:href="@{/items/} + ${searchViewDto.id} + @{/preview}"><span
-                        th:text="${searchViewDto.keyword}"></span></a></td>
+                <td>
+                    <a th:href="@{/items/} + ${searchViewDto.id} + @{/preview}">
+                        <span th:text="${searchViewDto.keyword}"></span>
+                    </a>
+                </td>
                 <td th:text="${searchViewDto.source}"></td>
                 <td th:text="${searchViewDto.categoryName}"></td>
                 <td th:text="${searchViewDto.priceFrom}"></td>
@@ -57,6 +57,10 @@
                     <span th:unless="${searchViewDto.count} == '0'">
                         <a th:href="@{/items/} + ${searchViewDto.id}"><span th:text="${searchViewDto.count}"></span></a>
                     </span>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm" name="id" th:value="${searchViewDto.id}" type="submit">&#xE107</button>
+                    <button class="btn btn-primary btn-sm" th:onclick="'editSearch('+${searchViewDto.id}+')'" type="button">&#xE104</button>
                 </td>
             </tr>
             </tbody>

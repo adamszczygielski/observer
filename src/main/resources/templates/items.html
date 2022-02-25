@@ -14,11 +14,7 @@
 <script src="/resources/table-utils.js"></script>
 <script src="/resources/items.js"></script>
 <div th:replace="navbar"></div>
-<form onsubmit="return onDelete()" th:action="@{/items}" th:method="delete">
-    <div class="container my-4">
-        <input type="hidden">
-        <button class="btn btn-danger btn-md" type="submit">Delete</button>
-    </div>
+<form th:action="@{/items}" th:method="delete">
     <div class="container my-4">
         <table class="table table-md table-hover" id="items-table">
             <thead>
@@ -30,6 +26,7 @@
                 <th scope="col">Source</th>
                 <th scope="col">Created at</th>
                 <th scope="col">Price</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -43,6 +40,9 @@
                 <td th:text="${item.source}"></td>
                 <td th:text="${item.dateCreated}"></td>
                 <td th:text="${item.price}"></td>
+                <td>
+                    <button class="btn btn-danger btn-sm" name="id" th:value="${item.itemId}" type="submit">&#xE107</button>
+                </td>
             </tr>
             </tbody>
         </table>

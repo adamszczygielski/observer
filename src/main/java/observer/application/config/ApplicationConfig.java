@@ -44,7 +44,6 @@ public class ApplicationConfig {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments(
-                randomService.getUserAgentArg(),
                 randomService.getWindowSizeArg(),
                 "--ignore-certificate-errors",
                 "--disable-blink-features=AutomationControlled"
@@ -59,6 +58,9 @@ public class ApplicationConfig {
 
         if (properties.getChromedriverHeadless()) {
             options.addArguments("--headless");
+        }
+
+        if (!properties.getChromedriverImages()) {
             options.addArguments("--blink-settings=imagesEnabled=false");
         }
 

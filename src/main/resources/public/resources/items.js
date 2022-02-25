@@ -5,11 +5,3 @@ function countItems() {
         .getElementsByTagName("tr")
         .length;
 }
-
-function onDelete() {
-    if (typeof getFirstSelectedId() == 'undefined') {
-        alert("No items selected!");
-        return false;
-    }
-    return true;
-}
