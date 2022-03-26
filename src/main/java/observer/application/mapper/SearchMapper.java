@@ -6,7 +6,7 @@ import observer.application.model.Source;
 import observer.application.model.Status;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 import static observer.application.mapper.MapperUtils.normalize;
 
@@ -22,7 +22,7 @@ public class SearchMapper {
                 .sourceId(searchDto.getSource().getId())
                 .statusId(Status.PENDING.getId())
                 .timeInterval(searchDto.getInterval())
-                .itemList(new ArrayList<>())
+                .itemList(Collections.emptyList())
                 .priceFrom(searchDto.getPriceFrom())
                 .priceTo(searchDto.getPriceTo())
                 .build();

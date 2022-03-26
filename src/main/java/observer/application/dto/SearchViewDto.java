@@ -3,7 +3,7 @@ package observer.application.dto;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalTime;
+import java.time.Instant;
 
 @Getter
 @Builder
@@ -18,7 +18,7 @@ public class SearchViewDto {
     private final Short timeInterval;
     private final String source;
     private final Integer count;
-    private final LocalTime dateUpdated;
+    private final Instant dateUpdated;
     private final String status;
 
 }

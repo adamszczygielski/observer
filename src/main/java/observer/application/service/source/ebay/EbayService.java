@@ -5,8 +5,9 @@ import observer.application.config.ApplicationProperties;
 import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
+import observer.application.model.Source;
 import observer.application.rest.RestInvoker;
-import observer.application.service.ItemService;
+import observer.application.service.source.SourceService;
 import observer.application.service.source.ebay.mapper.EbayMapper;
 import observer.application.service.source.ebay.model.BaseFindingServiceResponse;
 import observer.application.service.source.ebay.model.FindItemsByKeywordsResponse;
@@ -21,11 +22,16 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class EbayService extends ItemService {
+public class EbayService implements SourceService {
 
     private final EbayMapper mapper;
     private final RestInvoker restInvoker;
     private final ApplicationProperties properties;
+
+    @Override
+    public Source getSource() {
+        return Source.EBAY;
+    }
 
     @Override
     public List<Item> getItems(Search search) {

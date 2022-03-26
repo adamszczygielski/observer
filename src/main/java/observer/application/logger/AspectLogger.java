@@ -5,13 +5,15 @@ import observer.application.model.Search;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 
 @Aspect
 @Slf4j
+@Component
 public class AspectLogger {
 
     private static final String ITEM_SERVICES_POINTCUT =
-            "execution(* observer.application.service.source.*.*.getItems(..))";
+            "execution(* observer.application.service.source.SourceService.getItems(..))";
 
     private static final String REST_INVOKER_POINTCUT =
             "execution(* observer.application.rest.RestInvokerImpl.*(..))";

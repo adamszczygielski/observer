@@ -36,12 +36,16 @@
                         <input class="form-check-input" name="id" th:value="${item.itemId}" type="checkbox">
                     </div>
                 </td>
-                <td><a target="_blank" th:href="${item.url}"><span th:text="${item.title}"></span></a></td>
+                <td>
+                    <a target="_blank" th:href="${item.url}">
+                        <span th:text="${#strings.abbreviate(item.title, 40)}"></span>
+                    </a>
+                </td>
                 <td th:text="${item.source}"></td>
-                <td th:text="${item.dateCreated}"></td>
+                <td th:text="${#dates.format(item.dateCreated, 'HH:mm:ss')}"></td>
                 <td th:text="${item.price}"></td>
                 <td>
-                    <button class="btn btn-danger btn-sm" name="id" th:value="${item.itemId}" type="submit">&#xE107</button>
+                    <button class="btn btn-danger btn-sm" name="id" th:value="${item.itemId}" type="submit">Delete</button>
                 </td>
             </tr>
             </tbody>

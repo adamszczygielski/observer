@@ -1,7 +1,6 @@
 package observer.application.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import observer.application.logger.AspectLogger;
 import observer.application.rest.RestInvoker;
 import observer.application.rest.RestInvokerImpl;
 import observer.application.service.RandomService;
@@ -22,11 +21,6 @@ public class ApplicationConfig {
     @Bean("restInvoker")
     public RestInvoker getRestInvoker() {
         return new RestInvokerImpl(new RestTemplate());
-    }
-
-    @Bean("aspectLogger")
-    public AspectLogger getAspectLogger() {
-        return new AspectLogger();
     }
 
     @Bean("objectMapper")

@@ -37,7 +37,7 @@ import static org.mockito.ArgumentMatchers.any;
 @Transactional
 public class SearchServiceTest {
 
-    private SearchUpdateService searchService;
+    private SearchExecutionService searchExecutionService;
 
     @Autowired
     private SearchRepository searchRepository;
@@ -46,7 +46,7 @@ public class SearchServiceTest {
     private AllegroService allegroService;
 
     @Mock
-    private SourceService sourceService;
+    private SourceServiceResolver sourceServiceResolver;
 
     @Before
     public void init() {
@@ -56,7 +56,7 @@ public class SearchServiceTest {
     @Test
     @SneakyThrows
     public void shouldUpdateSearch() {
-        Mockito.when(sourceService.get(Source.ALLEGRO.getId())).thenReturn(allegroService);
+        Mockito.when(sourceServiceResolver.get(Source.ALLEGRO.getId())).thenReturn(allegroService);
         Mockito.when(allegroService.getItems(any(Search.class))).thenReturn(getItems());
 
         Assertions.assertEquals(2,

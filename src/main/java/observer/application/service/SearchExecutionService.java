@@ -19,16 +19,16 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
-public class SearchUpdateService extends SearchUpdateTemplate<Search, List<Item>> {
+public class SearchExecutionService extends SearchExecutionTemplate<Search, List<Item>> {
 
     private final SearchRepository searchRepository;
-    private final SourceService sourceService;
+    private final SourceServiceResolver sourceServiceResolver;
     private final ApplicationProperties properties;
 
     @Transactional
-    public void invoke(Source source) {
+    public void execute(Source source) {
         searchRepository.findOverdue(source.getId(), PageRequest.of(0, 1))
-                .forEach(this::updateSearch);
+                .forEach(this::execute);
     }
 
     @Override
@@ -40,8 +40,7 @@ public class SearchUpdateService extends SearchUpdateTemplate<Search, List<Item>
 
     @Override
     List<Item> fetchItems(Search search) {
-        ItemService itemService = sourceService.get(search.getSourceId());
-        return itemService.getItems(search);
+        return sourceServiceResolver.get(search.getSourceId()).getItems(search);
     }
 
     @Override

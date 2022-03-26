@@ -24,7 +24,11 @@
         </thead>
         <tbody>
         <tr th:each="item : ${items}">
-            <td><a target="_blank" th:href="${item.url}"><span th:text="${item.title}"></span></a></td>
+            <td>
+                <a target="_blank" th:href="${item.url}">
+                    <span th:text="${#strings.abbreviate(item.title, 40)}"></span>
+                </a>
+            </td>
             <td th:text="${item.source}"></td>
             <td th:text="${item.price}"></td>
         </tr>

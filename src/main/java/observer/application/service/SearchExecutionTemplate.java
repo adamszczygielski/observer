@@ -4,9 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import observer.application.model.Status;
 
 @Slf4j
-abstract class SearchUpdateTemplate<S, I> {
+abstract class SearchExecutionTemplate<S, I> {
 
-    void updateSearch(S search) {
+    final void execute(S search) {
         if (isAboveLimit(search)) {
             return;
         }

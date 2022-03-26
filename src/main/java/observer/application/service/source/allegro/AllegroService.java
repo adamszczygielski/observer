@@ -7,8 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.service.ItemService;
+import observer.application.model.Source;
 import observer.application.service.RandomService;
+import observer.application.service.source.SourceService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
 import observer.application.service.source.allegro.model.category.CategoryDto;
 import observer.application.service.source.allegro.model.listing.Element;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AllegroService extends ItemService {
+public class AllegroService implements SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "__listing_StoreState\":\"";
     private static final String JSON_END_PATTERN = "}\"}</script>";
@@ -38,17 +39,17 @@ public class AllegroService extends ItemService {
     private final RandomService randomService;
 
     @Override
+    public Source getSource() {
+        return Source.ALLEGRO;
+    }
+
+    @Override
     public List<Item> getItems(Search search) {
         String url = getRequestUrl(search);
         String pageSource = getPageSource(url);
-
-        Optional<String> listingResponseJson = getListingResponseJson(pageSource);
-        if (listingResponseJson.isPresent()) {
-            List<Element> elements = getElements(listingResponseJson.get());
-            return mapper.toItems(elements, search.getId());
-        } else {
-            return Collections.emptyList();
-        }
+        return getListingResponseJson(pageSource)
+                .map(json -> mapper.toItems(getElements(json), search.getId()))
+                .orElse(Collections.emptyList());
     }
 
     @Override
@@ -83,7 +84,7 @@ public class AllegroService extends ItemService {
             throw new IllegalArgumentException("Json begin index has not been found!");
         }
 
-        int endPatternIndex = pageContent.indexOf(JSON_END_PATTERN);
+        int endPatternIndex = pageContent.indexOf(JSON_END_PATTERN, beginPatternIndex);
         if (endPatternIndex == -1) {
             throw new IllegalArgumentException("Json end index has not been found!");
         }

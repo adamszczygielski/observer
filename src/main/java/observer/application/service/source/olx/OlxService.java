@@ -6,7 +6,7 @@ import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
-import observer.application.service.ItemService;
+import observer.application.service.source.SourceService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -20,10 +20,15 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OlxService extends ItemService {
+public class OlxService implements SourceService {
 
     private final LoadingCache<String, List<Category>> categoryCache;
     private final DocumentService documentService;
+
+    @Override
+    public Source getSource() {
+        return Source.OLX;
+    }
 
     @Override
     public List<Item> getItems(Search search) {

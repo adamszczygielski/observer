@@ -3,7 +3,7 @@ package observer.application.config;
 import lombok.RequiredArgsConstructor;
 import observer.application.model.Source;
 import observer.application.service.RandomService;
-import observer.application.service.SearchUpdateService;
+import observer.application.service.SearchExecutionService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -19,32 +19,32 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SchedulingConfig implements SchedulingConfigurer {
 
-    private final SearchUpdateService searchUpdateService;
+    private final SearchExecutionService searchExecutionService;
     private final ApplicationProperties applicationProperties;
     private final RandomService randomService;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.addTriggerTask(
-                () -> searchUpdateService.invoke(Source.ALLEGRO),
+                () -> searchExecutionService.execute(Source.ALLEGRO),
                 createTrigger(applicationProperties.getAllegroDelayMillis())
         );
         taskRegistrar.addTriggerTask(
-                () -> searchUpdateService.invoke(Source.EBAY),
+                () -> searchExecutionService.execute(Source.EBAY),
                 createTrigger(applicationProperties.getEbayDelayMillis())
         );
         taskRegistrar.addTriggerTask(
-                () -> searchUpdateService.invoke(Source.OLX),
+                () -> searchExecutionService.execute(Source.OLX),
                 createTrigger(applicationProperties.getOlxDelayMillis())
         );
     }
 
-    private Trigger createTrigger(long millis) {
+    private Trigger createTrigger(long delayMillis) {
         return triggerContext -> {
-            Optional<Date> lastCompletionTime = Optional.ofNullable(triggerContext.lastCompletionTime());
-            Instant nextExecutionTime = lastCompletionTime.orElseGet(Date::new)
+            Instant nextExecutionTime = Optional.ofNullable(triggerContext.lastCompletionTime())
+                    .orElseGet(Date::new)
                     .toInstant()
-                    .plusMillis(randomService.randomize(millis));
+                    .plusMillis(randomService.randomize(delayMillis));
 
             return Date.from(nextExecutionTime);
         };

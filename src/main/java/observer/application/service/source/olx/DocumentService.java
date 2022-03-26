@@ -15,7 +15,6 @@ public class DocumentService {
         try {
             return connection.get();
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }

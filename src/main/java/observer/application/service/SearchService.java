@@ -13,42 +13,42 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SearchApiService {
+public class SearchService {
 
     private final SearchViewRepository searchViewRepository;
     private final SearchRepository searchRepository;
 
-    public List<SearchView> getSearchViewList() {
+    public List<SearchView> getViewList() {
         return searchViewRepository.findAll();
     }
 
-    public Search getSearch(Long searchId) {
+    public Search get(Long searchId) {
         return searchRepository.findById(searchId).orElseThrow(() -> new IllegalArgumentException(
                 MessageFormat.format("SearchId {0} does not exist", searchId)));
     }
 
     @Transactional
-    public void deleteSearches(List<Long> searchIds) {
+    public void delete(List<Long> searchIds) {
         searchRepository.deleteByIds(searchIds);
     }
 
     @Transactional
-    public void addOrUpdateSearch(Search search) {
+    public void createOrUpdate(Search search) {
         if (search.getId() != null) {
-            updateSearch(search);
+            update(search);
         } else {
-            addSearch(search);
+            create(search);
         }
     }
 
-    private void addSearch(Search search) {
+    private void create(Search search) {
         List<Search> searches = searchRepository.findAll();
         if (!searches.contains(search)) {
             searchRepository.save(search);
         }
     }
 
-    private void updateSearch(Search search) {
+    private void update(Search search) {
         searchRepository.findById(search.getId()).ifPresent(s -> {
             s.setKeyword(search.getKeyword());
             s.setCategoryId(search.getCategoryId());

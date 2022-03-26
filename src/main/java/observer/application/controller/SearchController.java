@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import observer.application.dto.SearchDto;
 import observer.application.mapper.SearchMapper;
 import observer.application.mapper.SearchViewMapper;
-import observer.application.service.SearchApiService;
+import observer.application.service.SearchService;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,13 +29,13 @@ public class SearchController {
 
     public static final String API_PATH = "/searches";
 
-    private final SearchApiService searchApiService;
+    private final SearchService searchService;
     private final SearchMapper searchMapper;
     private final SearchViewMapper searchViewMapper;
 
     @GetMapping
     public String getSearchViewList(Model model) {
-        model.addAttribute("searchViewDtoList", searchViewMapper.toDtoList(searchApiService.getSearchViewList()));
+        model.addAttribute("searchViewDtoList", searchViewMapper.toDtoList(searchService.getViewList()));
         return "searches";
     }
 
@@ -44,13 +44,13 @@ public class SearchController {
         if (bindingResult.hasErrors()) {
             return "form";
         }
-        searchApiService.addOrUpdateSearch(searchMapper.toSearch(searchDto));
+        searchService.createOrUpdate(searchMapper.toSearch(searchDto));
         return "redirect:" + API_PATH;
     }
 
     @DeleteMapping
     public String deleteSearches(@RequestParam("id") List<Long> searchIds, HttpServletRequest request) {
-        searchApiService.deleteSearches(searchIds);
+        searchService.delete(searchIds);
         return goBack(request);
     }
 

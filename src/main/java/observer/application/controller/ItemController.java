@@ -2,7 +2,7 @@ package observer.application.controller;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.mapper.ItemMapper;
-import observer.application.service.ItemApiService;
+import observer.application.service.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,30 +21,30 @@ public class ItemController {
 
     public static final String API_PATH = "/items";
 
-    private final ItemApiService itemApiService;
+    private final ItemService itemService;
     private final ItemMapper itemMapper;
 
     @GetMapping
     public String getActiveItems(Model model) {
-        model.addAttribute("items", itemMapper.toDtoList(itemApiService.getActiveItems()));
+        model.addAttribute("items", itemMapper.toDtoList(itemService.getActiveItems()));
         return "items";
     }
 
     @GetMapping(value = "/{searchId}")
     public String getActiveItems(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemMapper.toDtoList(itemApiService.getActiveItems(searchId)));
+        model.addAttribute("items", itemMapper.toDtoList(itemService.getActiveItems(searchId)));
         return "items";
     }
 
     @GetMapping(value = "/{searchId}/preview")
     public String fetchItems(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemMapper.toDtoList(itemApiService.fetchItems(searchId)));
+        model.addAttribute("items", itemMapper.toDtoList(itemService.fetchItems(searchId)));
         return "items-preview";
     }
 
     @DeleteMapping
     public String deleteItems(@RequestParam("id") List<Long> itemIds, HttpServletRequest request) {
-        itemApiService.deleteItems(itemIds);
+        itemService.deleteItems(itemIds);
         return "redirect:" + request.getHeader("Referer");
     }
 
