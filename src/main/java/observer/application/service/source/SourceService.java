@@ -1,18 +1,25 @@
 package observer.application.service.source;
 
+import observer.application.config.ApplicationProperties;
 import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public interface SourceService {
+public abstract class SourceService {
 
-    Source getSource();
+    @Autowired
+    protected ApplicationProperties applicationProperties;
 
-    List<Item> getItems(Search search);
+    public abstract Source getSource();
 
-    List<Category> getCategories(String parentId);
+    public abstract long getDelay();
+
+    public abstract List<Item> getItems(Search search);
+
+    public abstract List<Category> getCategories(String parentId);
 
 }

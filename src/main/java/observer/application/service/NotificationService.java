@@ -32,7 +32,7 @@ public class NotificationService {
     private final ObjectMapper objectMapper;
     private final ItemRepository itemRepository;
     private final RestInvoker restInvoker;
-    private final ApplicationProperties properties;
+    private final ApplicationProperties applicationProperties;
 
     @Scheduled(fixedDelayString = "#{@applicationProperties.getScheduledNotificationDelay()}")
     public void execute() {
@@ -56,7 +56,7 @@ public class NotificationService {
     private HttpEntity<String> createHttpEntity(String requestBody) {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.add("Authorization", properties.getOnesignalApiKey());
+        requestHeaders.add("Authorization", applicationProperties.getOnesignalApiKey());
         return new HttpEntity<>(requestBody, requestHeaders);
     }
 
@@ -70,7 +70,7 @@ public class NotificationService {
 
     private NotificationRequestDto getNotificationRequest(int itemsCount) {
         return NotificationRequestDto.builder()
-                .appId(properties.getOnesignalAppId())
+                .appId(applicationProperties.getOnesignalAppId())
                 .includedSegments(Collections.singletonList("All"))
                 .contents(getNotificationContents(itemsCount))
                 .build();

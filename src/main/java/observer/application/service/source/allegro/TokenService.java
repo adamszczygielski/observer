@@ -19,7 +19,7 @@ import java.util.Optional;
 class TokenService {
 
     private final RestInvoker restInvoker;
-    private final ApplicationProperties properties;
+    private final ApplicationProperties applicationProperties;
 
     private JwtToken jwtToken;
 
@@ -44,14 +44,14 @@ class TokenService {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        requestHeaders.add("Authorization", properties.getAllegroTokenPrivate());
+        requestHeaders.add("Authorization", applicationProperties.getAllegroTokenPrivate());
         return new HttpEntity<>(requestHeaders);
     }
 
     private boolean isValid(JwtToken jwtToken) {
         return Optional.ofNullable(jwtToken)
                 .map(JwtToken::getDateCreated)
-                .map(date -> date.plus(properties.getAllegroTokenJwtHours(), ChronoUnit.HOURS).isAfter(Instant.now()))
+                .map(date -> date.plus(applicationProperties.getAllegroTokenJwtHours(), ChronoUnit.HOURS).isAfter(Instant.now()))
                 .orElse(false);
     }
 

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AllegroService implements SourceService {
+public class AllegroService extends SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "__listing_StoreState\":\"";
     private static final String JSON_END_PATTERN = "}\"}</script>";
@@ -41,6 +41,11 @@ public class AllegroService implements SourceService {
     @Override
     public Source getSource() {
         return Source.ALLEGRO;
+    }
+
+    @Override
+    public long getDelay() {
+        return applicationProperties.getAllegroDelayMillis();
     }
 
     @Override

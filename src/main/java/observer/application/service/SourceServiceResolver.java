@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 public class SourceServiceResolver {
 
     private final EnumMap<Source, SourceService> sourceServiceEnumMap;
+    private final List<SourceService> sourceServices;
 
     public SourceServiceResolver(List<SourceService> sourceServices) {
+        this.sourceServices = sourceServices;
         sourceServiceEnumMap = sourceServices.stream()
                 .collect(Collectors.toMap(
                         SourceService::getSource,
@@ -31,6 +33,10 @@ public class SourceServiceResolver {
 
     public SourceService get(int sourceId) {
         return get(Source.getSource(sourceId));
+    }
+
+    public List<SourceService> getAll() {
+        return sourceServices;
     }
 
 }

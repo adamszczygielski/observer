@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OlxService implements SourceService {
+public class OlxService extends SourceService {
 
     private final LoadingCache<String, List<Category>> categoryCache;
     private final DocumentService documentService;
@@ -28,6 +28,11 @@ public class OlxService implements SourceService {
     @Override
     public Source getSource() {
         return Source.OLX;
+    }
+
+    @Override
+    public long getDelay() {
+        return applicationProperties.getOlxDelayMillis();
     }
 
     @Override

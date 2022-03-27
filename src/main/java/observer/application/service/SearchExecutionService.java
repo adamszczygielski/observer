@@ -23,7 +23,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
 
     private final SearchRepository searchRepository;
     private final SourceServiceResolver sourceServiceResolver;
-    private final ApplicationProperties properties;
+    private final ApplicationProperties applicationProperties;
 
     @Transactional
     public void execute(Source source) {
@@ -35,7 +35,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
     boolean isAboveLimit(Search search) {
         return search.getItemList().stream()
                 .filter(Item::getIsActive)
-                .count() > properties.getSearchUncheckedLimit();
+                .count() > applicationProperties.getSearchUncheckedLimit();
     }
 
     @Override
@@ -52,8 +52,10 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
 
     @Override
     void removeOldItems(Search search, List<Item> fetchedItems) {
-        search.getItemList().removeIf(item -> !item.getIsActive() && !fetchedItems.contains(item)
-                && item.getDateCreated().plus(properties.getItemRemoveDelay(), ChronoUnit.DAYS).isBefore(Instant.now()));
+        search.getItemList().removeIf(
+                item -> !item.getIsActive() && !fetchedItems.contains(item) && item.getDateCreated()
+                        .plus(applicationProperties.getItemRemoveDelay(), ChronoUnit.DAYS)
+                        .isBefore(Instant.now()));
     }
 
     @Override

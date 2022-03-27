@@ -1,10 +1,11 @@
 package observer.application.config;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.model.Source;
 import observer.application.service.RandomService;
 import observer.application.service.SearchExecutionService;
+import observer.application.service.SourceServiceResolver;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
@@ -20,23 +21,17 @@ import java.util.Optional;
 public class SchedulingConfig implements SchedulingConfigurer {
 
     private final SearchExecutionService searchExecutionService;
-    private final ApplicationProperties applicationProperties;
+    private final SourceServiceResolver sourceServiceResolver;
     private final RandomService randomService;
 
     @Override
-    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        taskRegistrar.addTriggerTask(
-                () -> searchExecutionService.execute(Source.ALLEGRO),
-                createTrigger(applicationProperties.getAllegroDelayMillis())
-        );
-        taskRegistrar.addTriggerTask(
-                () -> searchExecutionService.execute(Source.EBAY),
-                createTrigger(applicationProperties.getEbayDelayMillis())
-        );
-        taskRegistrar.addTriggerTask(
-                () -> searchExecutionService.execute(Source.OLX),
-                createTrigger(applicationProperties.getOlxDelayMillis())
-        );
+    public void configureTasks(@NonNull ScheduledTaskRegistrar taskRegistrar) {
+        sourceServiceResolver.getAll().forEach(s -> {
+            taskRegistrar.addTriggerTask(
+                    () -> searchExecutionService.execute(s.getSource()),
+                    createTrigger(s.getDelay())
+            );
+        });
     }
 
     private Trigger createTrigger(long delayMillis) {

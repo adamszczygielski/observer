@@ -1,7 +1,6 @@
 package observer.application.service.source.ebay;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.config.ApplicationProperties;
 import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
@@ -22,15 +21,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class EbayService implements SourceService {
+public class EbayService extends SourceService {
 
     private final EbayMapper mapper;
     private final RestInvoker restInvoker;
-    private final ApplicationProperties properties;
 
     @Override
     public Source getSource() {
         return Source.EBAY;
+    }
+
+    @Override
+    public long getDelay() {
+        return applicationProperties.getEbayDelayMillis();
     }
 
     @Override
@@ -63,7 +66,7 @@ public class EbayService implements SourceService {
                 .pathSegment("v1")
                 .queryParam("OPERATION-NAME", "findItemsByKeywords")
                 .queryParam("SERVICE-VERSION", "1.13.0")
-                .queryParam("SECURITY-APPNAME", properties.getEbaySecurityAppname())
+                .queryParam("SECURITY-APPNAME", applicationProperties.getEbaySecurityAppname())
                 .queryParam("RESPONSE-DATA-FORMAT", "XML")
                 .queryParam("keywords", search.getKeyword().replaceAll(" ", "+"))
                 .queryParam("sortOrder", "StartTimeNewest")
