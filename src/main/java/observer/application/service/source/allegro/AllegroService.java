@@ -45,25 +45,25 @@ public class AllegroService extends SourceService {
 
     @Override
     public long getDelay() {
-        return applicationProperties.getAllegroDelayMillis();
+        return applicationProperties.getAllegroDelaySeconds();
     }
 
     @Override
-    public List<Item> getItems(Search search) {
+    public List<Item> fetchItems(Search search) {
         String url = getRequestUrl(search);
-        String pageSource = getPageSource(url);
+        String pageSource = fetchPageSource(url);
         return getListingResponseJson(pageSource)
                 .map(json -> mapper.toItems(getElements(json), search.getId()))
                 .orElse(Collections.emptyList());
     }
 
     @Override
-    public List<Category> getCategories(String parentId) {
+    public List<Category> fetchCategories(String parentId) {
         List<CategoryDto> categories = categoryDtoCache.getUnchecked(parentId);
         return mapper.toCategories(categories);
     }
 
-    private String getPageSource(String url) {
+    private String fetchPageSource(String url) {
         log.info(url);
         randomizeBrowser();
         webDriver.navigate().to(url);

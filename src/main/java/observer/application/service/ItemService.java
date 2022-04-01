@@ -28,7 +28,7 @@ public class ItemService {
 
     public List<Item> fetchItems(Long searchId) {
         return searchRepository.findById(searchId)
-                .map(s -> sourceServiceResolver.get(s.getSourceId()).getItems(s))
+                .map(s -> sourceServiceResolver.get(s.getSourceId()).fetchItems(s))
                 .orElse(Collections.emptyList());
     }
 
@@ -37,7 +37,7 @@ public class ItemService {
     }
 
     public List<Category> getCategories(int sourceId, String parentId) {
-        return sourceServiceResolver.get(sourceId).getCategories(parentId);
+        return sourceServiceResolver.get(sourceId).fetchCategories(parentId);
     }
 
 }

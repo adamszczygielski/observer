@@ -18,8 +18,8 @@ public abstract class SourceService {
 
     public abstract long getDelay();
 
-    public abstract List<Item> getItems(Search search);
+    public abstract List<Item> fetchItems(Search search);
 
-    public abstract List<Category> getCategories(String parentId);
+    public abstract List<Category> fetchCategories(String parentId);
 
 }

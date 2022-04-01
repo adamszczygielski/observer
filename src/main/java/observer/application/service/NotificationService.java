@@ -34,7 +34,7 @@ public class NotificationService {
     private final RestInvoker restInvoker;
     private final ApplicationProperties applicationProperties;
 
-    @Scheduled(fixedDelayString = "#{@applicationProperties.getScheduledNotificationDelay()}")
+    @Scheduled(fixedDelayString = "#{@applicationProperties.getNotificationDelaySeconds()}")
     public void execute() {
         itemRepository.findActiveAndNotNotified(PageRequest.of(0, 100))
                 .ifPresent((itemIds -> sendNotification(itemIds.size())

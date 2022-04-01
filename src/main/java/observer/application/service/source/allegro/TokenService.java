@@ -51,7 +51,7 @@ class TokenService {
     private boolean isValid(JwtToken jwtToken) {
         return Optional.ofNullable(jwtToken)
                 .map(JwtToken::getDateCreated)
-                .map(date -> date.plus(applicationProperties.getAllegroTokenJwtHours(), ChronoUnit.HOURS).isAfter(Instant.now()))
+                .map(date -> date.plus(applicationProperties.getAllegroTokenJwtExpirationHours(), ChronoUnit.HOURS).isAfter(Instant.now()))
                 .orElse(false);
     }
 

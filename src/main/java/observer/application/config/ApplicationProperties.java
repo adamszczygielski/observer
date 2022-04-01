@@ -11,17 +11,17 @@ public class ApplicationProperties {
     @Value("${observer.allegro.token.private}")
     private String allegroTokenPrivate;
 
-    @Value("${observer.allegro.token.jwt.hours}")
-    private Integer allegroTokenJwtHours;
+    @Value("${observer.allegro.token.jwt.expiration.hours}")
+    private Integer allegroTokenJwtExpirationHours;
 
-    @Value("${observer.allegro.delay.millis}")
-    private Long allegroDelayMillis;
+    @Value("${observer.allegro.delay.seconds}")
+    private Long allegroDelaySeconds;
 
-    @Value("${observer.olx.delay.millis}")
-    private Long olxDelayMillis;
+    @Value("${observer.olx.delay.seconds}")
+    private Long olxDelaySeconds;
 
-    @Value("${observer.ebay.delay.millis}")
-    private Long ebayDelayMillis;
+    @Value("${observer.ebay.delay.seconds}")
+    private Long ebayDelaySeconds;
 
     @Value("${observer.ebay.security.appname}")
     private String ebaySecurityAppname;
@@ -35,11 +35,11 @@ public class ApplicationProperties {
     @Value("${observer.search.unchecked-limit}")
     private Integer searchUncheckedLimit;
 
-    @Value("${observer.item.remove-delay}")
-    private Integer itemRemoveDelay;
+    @Value("${observer.item.remove.delay.days}")
+    private Integer itemRemoveDelayDays;
 
-    @Value("${observer.scheduled.notification.delay}")
-    private Integer scheduledNotificationDelay;
+    @Value("${observer.notification.delay.seconds}")
+    private Integer notificationDelaySeconds;
 
     @Value("${observer.proxies}")
     private String[] proxies;

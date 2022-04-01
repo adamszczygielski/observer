@@ -57,7 +57,7 @@ public class SearchServiceTest {
     @SneakyThrows
     public void shouldUpdateSearch() {
         Mockito.when(sourceServiceResolver.get(Source.ALLEGRO.getId())).thenReturn(allegroService);
-        Mockito.when(allegroService.getItems(any(Search.class))).thenReturn(getItems());
+        Mockito.when(allegroService.fetchItems(any(Search.class))).thenReturn(getItems());
 
         Assertions.assertEquals(2,
                 searchRepository.findById(1L).orElseThrow(Exception::new).getItemList().size());

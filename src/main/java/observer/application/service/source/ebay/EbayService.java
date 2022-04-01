@@ -33,16 +33,16 @@ public class EbayService extends SourceService {
 
     @Override
     public long getDelay() {
-        return applicationProperties.getEbayDelayMillis();
+        return applicationProperties.getEbayDelaySeconds();
     }
 
     @Override
-    public List<Item> getItems(Search search) {
+    public List<Item> fetchItems(Search search) {
         return mapper.toItems(fetchSearchItems(search), search.getId());
     }
 
     @Override
-    public List<Category> getCategories(String parentId) {
+    public List<Category> fetchCategories(String parentId) {
         return Collections.emptyList();
     }
 

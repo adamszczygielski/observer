@@ -32,20 +32,16 @@ public class OlxService extends SourceService {
 
     @Override
     public long getDelay() {
-        return applicationProperties.getOlxDelayMillis();
+        return applicationProperties.getOlxDelaySeconds();
     }
 
     @Override
-    public List<Item> getItems(Search search) {
-        return fetchItems(search);
-    }
-
-    @Override
-    public List<Category> getCategories(String parentId) {
+    public List<Category> fetchCategories(String parentId) {
         return categoryCache.getUnchecked(parentId);
     }
 
-    private List<Item> fetchItems(Search search) {
+    @Override
+    public List<Item> fetchItems(Search search) {
         List<Item> items = new ArrayList<>();
 
         Document document = documentService.getDocument(getRequestUrl(search));

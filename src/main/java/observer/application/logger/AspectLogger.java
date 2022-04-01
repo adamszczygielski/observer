@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class AspectLogger {
 
     private static final String ITEM_SERVICES_POINTCUT =
-            "execution(* observer.application.service.source.SourceService.getItems(..))";
+            "execution(* observer.application.service.source.SourceService.fetchItems(..))";
 
     private static final String REST_INVOKER_POINTCUT =
             "execution(* observer.application.rest.RestInvokerImpl.*(..))";

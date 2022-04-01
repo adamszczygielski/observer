@@ -15,7 +15,7 @@ public class DocumentService {
         try {
             return connection.get();
         } catch (IOException e) {
-            return null;
+            throw new IllegalStateException("Could not fetch page content!");
         }
     }
 

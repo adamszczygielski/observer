@@ -40,7 +40,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
 
     @Override
     List<Item> fetchItems(Search search) {
-        return sourceServiceResolver.get(search.getSourceId()).getItems(search);
+        return sourceServiceResolver.get(search.getSourceId()).fetchItems(search);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
     void removeOldItems(Search search, List<Item> fetchedItems) {
         search.getItemList().removeIf(
                 item -> !item.getIsActive() && !fetchedItems.contains(item) && item.getDateCreated()
-                        .plus(applicationProperties.getItemRemoveDelay(), ChronoUnit.DAYS)
+                        .plus(applicationProperties.getItemRemoveDelayDays(), ChronoUnit.DAYS)
                         .isBefore(Instant.now()));
     }
 
