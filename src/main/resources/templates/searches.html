@@ -59,7 +59,7 @@
                     </span>
                 </td>
                 <td class="text-nowrap">
-                    <button class="btn btn-danger" name="id" th:value="${searchViewDto.id}" type="submit">Delete</button>
+                    <button class="btn btn-danger" name="id" th:value="${searchViewDto.id}" type="submit" onclick="onDelete(event)">Delete</button>
                     <button class="btn btn-primary" th:onclick="'editSearch('+${searchViewDto.id}+')'" type="button">Edit</button>
                 </td>
             </tr>

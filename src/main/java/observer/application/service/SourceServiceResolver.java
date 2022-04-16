@@ -4,6 +4,7 @@ import observer.application.model.Source;
 import observer.application.service.source.SourceService;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Function;
@@ -13,10 +14,8 @@ import java.util.stream.Collectors;
 public class SourceServiceResolver {
 
     private final EnumMap<Source, SourceService> sourceServiceEnumMap;
-    private final List<SourceService> sourceServices;
 
     public SourceServiceResolver(List<SourceService> sourceServices) {
-        this.sourceServices = sourceServices;
         sourceServiceEnumMap = sourceServices.stream()
                 .collect(Collectors.toMap(
                         SourceService::getSource,
@@ -36,7 +35,7 @@ public class SourceServiceResolver {
     }
 
     public List<SourceService> getAll() {
-        return sourceServices;
+        return new ArrayList<>(sourceServiceEnumMap.values());
     }
 
 }

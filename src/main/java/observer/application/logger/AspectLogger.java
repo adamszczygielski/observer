@@ -22,10 +22,9 @@ public class AspectLogger {
             "execution(* observer.application.service.source.olx.DocumentService.getDocument(..))";
 
     @Around(ITEM_SERVICES_POINTCUT)
-    public Object logItemServices(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object logSourceService(ProceedingJoinPoint joinPoint) throws Throwable {
         Search search = (Search) joinPoint.getArgs()[0];
         log.info(search.toString());
-
         return joinPoint.proceed();
     }
 
@@ -33,7 +32,6 @@ public class AspectLogger {
     public Object logRestInvoker(ProceedingJoinPoint joinPoint) throws Throwable {
         String url = (String) joinPoint.getArgs()[0];
         log.info(url);
-
         return joinPoint.proceed();
     }
 
@@ -41,7 +39,6 @@ public class AspectLogger {
     public Object logDocumentService(ProceedingJoinPoint joinPoint) throws Throwable {
         String url = (String) joinPoint.getArgs()[0];
         log.info(url);
-
         return joinPoint.proceed();
     }
 

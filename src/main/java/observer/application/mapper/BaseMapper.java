@@ -8,7 +8,6 @@ public interface BaseMapper<F, T> {
     T toDto(F from);
 
     default List<T> toDtoList(List<F> elements) {
-
         return elements.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());

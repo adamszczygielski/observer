@@ -13,3 +13,9 @@ function countItems() {
 function editSearch(id) {
     window.location.href = "/form/search/" + id;
 }
+
+function onDelete(event) {
+    if (!confirm('Are you sure?')) {
+        event.preventDefault();
+    }
+}
