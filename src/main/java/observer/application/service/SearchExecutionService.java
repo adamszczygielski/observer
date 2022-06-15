@@ -21,13 +21,15 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class SearchExecutionService extends SearchExecutionTemplate<Search, List<Item>> {
 
+    private static final PageRequest PAGE_REQUEST = PageRequest.of(0, 1);
+
     private final SearchRepository searchRepository;
     private final SourceServiceResolver sourceServiceResolver;
     private final ApplicationProperties applicationProperties;
 
     @Transactional
     public void execute(Source source) {
-        searchRepository.findOverdue(source.getId(), PageRequest.of(0, 1))
+        searchRepository.findOverdue(source.getId(), PAGE_REQUEST)
                 .forEach(this::execute);
     }
 

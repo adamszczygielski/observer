@@ -27,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class NotificationService {
 
+    private static final PageRequest PAGE_REQUEST = PageRequest.of(0, 100);
     private static final String MESSAGE = "Found %s new item%s!";
 
     private final ObjectMapper objectMapper;
@@ -36,7 +37,7 @@ public class NotificationService {
 
     @Scheduled(fixedDelayString = "#{@applicationProperties.getNotificationDelaySeconds()}")
     public void execute() {
-        itemRepository.findActiveAndNotNotified(PageRequest.of(0, 100))
+        itemRepository.findActiveAndNotNotified(PAGE_REQUEST)
                 .ifPresent((itemIds -> sendNotification(itemIds.size())
                         .ifPresent(response -> itemRepository.setNotified(itemIds))));
     }
