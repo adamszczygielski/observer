@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EbayService extends SourceService {
 
-    private final EbayMapper mapper;
+    private final EbayMapper mapper = new EbayMapper();
     private final RestInvoker restInvoker;
 
     @Override
@@ -32,7 +32,7 @@ public class EbayService extends SourceService {
     }
 
     @Override
-    public long getDelay() {
+    public long getDelaySeconds() {
         return applicationProperties.getEbayDelaySeconds();
     }
 

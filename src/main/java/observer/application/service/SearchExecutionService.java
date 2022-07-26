@@ -7,6 +7,7 @@ import observer.application.model.Search;
 import observer.application.model.Source;
 import observer.application.model.Status;
 import observer.application.repository.SearchRepository;
+import observer.application.service.source.SourceServiceResolver;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

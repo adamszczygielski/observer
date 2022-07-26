@@ -17,6 +17,8 @@
             </li>
         </ul>
         <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/log"
+               th:classappend="${#request.getServletPath() == '/log' ? 'active' : ''}">Log</a>
             <a class="nav-item nav-link red" href="/logout">Logout</a>
         </div>
     </div>

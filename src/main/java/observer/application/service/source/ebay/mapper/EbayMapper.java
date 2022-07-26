@@ -5,14 +5,12 @@ import observer.application.model.Item;
 import observer.application.service.source.ebay.model.Amount;
 import observer.application.service.source.ebay.model.SearchItem;
 import observer.application.service.source.ebay.model.SellingStatus;
-import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class EbayMapper {
 
     private static final DecimalFormat decimalFormat = new DecimalFormat("#.00");

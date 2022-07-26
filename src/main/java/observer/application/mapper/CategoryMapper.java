@@ -2,9 +2,7 @@ package observer.application.mapper;
 
 import observer.application.dto.CategoryDto;
 import observer.application.model.Category;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CategoryMapper implements BaseMapper<Category, CategoryDto> {
 
     @Override

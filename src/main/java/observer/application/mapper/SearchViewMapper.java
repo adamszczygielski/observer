@@ -4,12 +4,10 @@ import observer.application.dto.SearchViewDto;
 import observer.application.model.SearchView;
 import observer.application.model.Source;
 import observer.application.model.Status;
-import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-@Component
 public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
 
     @Override

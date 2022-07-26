@@ -4,13 +4,10 @@ import observer.application.dto.SearchDto;
 import observer.application.model.Search;
 import observer.application.model.Source;
 import observer.application.model.Status;
-import org.springframework.stereotype.Component;
 
+import java.text.Normalizer;
 import java.util.Collections;
 
-import static observer.application.mapper.MapperUtils.normalize;
-
-@Component
 public class SearchMapper {
 
     public Search toSearch(SearchDto searchDto) {
@@ -41,6 +38,14 @@ public class SearchMapper {
                 .source(Source.getSource(search.getSourceId()))
                 .status(Status.getStatus(search.getStatusId()))
                 .build();
+    }
+
+    private static String normalize(String string) {
+        return Normalizer
+                .normalize(string, Normalizer.Form.NFD)
+                .replaceAll("[^\\p{ASCII}]", "")
+                .replaceAll(" +", " ")
+                .toLowerCase();
     }
 
 }

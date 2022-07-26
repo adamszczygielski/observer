@@ -1,21 +1,14 @@
 package observer.application.service.source.allegro;
 
-import lombok.RequiredArgsConstructor;
 import observer.application.config.ApplicationProperties;
 import observer.application.rest.RestInvoker;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
-import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
 class TokenService {
 
     private final RestInvoker restInvoker;
@@ -23,8 +16,13 @@ class TokenService {
 
     private JwtToken jwtToken;
 
+    public TokenService(RestInvoker restInvoker, ApplicationProperties applicationProperties) {
+        this.restInvoker = restInvoker;
+        this.applicationProperties = applicationProperties;
+    }
+
     protected String fetchAccessToken() {
-        if (isValid(jwtToken)) {
+        if (jwtToken != null && jwtToken.isValid(applicationProperties.getAllegroTokenJwtExpirationHours())) {
             return jwtToken.getBearer();
         }
         jwtToken = restInvoker.post(createRequestUrl(), createHttpEntity(), JwtToken.class);
@@ -46,13 +44,6 @@ class TokenService {
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         requestHeaders.add("Authorization", applicationProperties.getAllegroTokenPrivate());
         return new HttpEntity<>(requestHeaders);
-    }
-
-    private boolean isValid(JwtToken jwtToken) {
-        return Optional.ofNullable(jwtToken)
-                .map(JwtToken::getDateCreated)
-                .map(date -> date.plus(applicationProperties.getAllegroTokenJwtExpirationHours(), ChronoUnit.HOURS).isAfter(Instant.now()))
-                .orElse(false);
     }
 
 }

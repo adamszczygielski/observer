@@ -3,9 +3,7 @@ package observer.application.mapper;
 import observer.application.dto.ItemDto;
 import observer.application.model.Item;
 import observer.application.model.Source;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ItemMapper implements BaseMapper<Item, ItemDto> {
 
     @Override

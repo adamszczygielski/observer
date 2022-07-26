@@ -1,9 +1,7 @@
 package observer.application.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import observer.application.rest.RestInvoker;
 import observer.application.rest.RestInvokerImpl;
-import observer.application.service.RandomService;
 import org.apache.commons.exec.OS;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
@@ -23,25 +21,23 @@ public class ApplicationConfig {
         return new RestInvokerImpl(new RestTemplate());
     }
 
-    @Bean("objectMapper")
-    public ObjectMapper getObjectMapper() {
-        return new ObjectMapper();
+    @Bean("webDriver")
+    public WebDriver getWebDriver(ApplicationProperties properties) {
+        setWebDriverProperties();
+        return new ChromeDriver(createChromeOptions(properties));
     }
 
-    @Bean("webDriver")
-    public WebDriver getWebDriver(ApplicationProperties properties, RandomService randomService) {
+    private void setWebDriverProperties() {
         if (OS.isFamilyWindows()) {
             System.setProperty("webdriver.chrome.driver", "driver-win/chromedriver.exe");
         } else if (OS.isFamilyUnix()) {
             System.setProperty("webdriver.chrome.driver", "driver-linux/chromedriver");
         }
+    }
 
+    private ChromeOptions createChromeOptions(ApplicationProperties properties) {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments(
-                randomService.getWindowSizeArg(),
-                "--ignore-certificate-errors",
-                "--disable-blink-features=AutomationControlled"
-        );
+        options.addArguments("--ignore-certificate-errors", "--disable-blink-features=AutomationControlled");
 
         String[] proxies = properties.getProxies();
         if (proxies.length > 0) {
@@ -58,7 +54,7 @@ public class ApplicationConfig {
             options.addArguments("--blink-settings=imagesEnabled=false");
         }
 
-        return new ChromeDriver(options);
+        return options;
     }
 
 }

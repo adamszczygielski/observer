@@ -1,6 +1,6 @@
 package observer.application.service.source.allegro;
 
-import lombok.AllArgsConstructor;
+import observer.application.config.ApplicationProperties;
 import observer.application.rest.RestInvoker;
 import observer.application.service.source.allegro.model.category.CategoriesDto;
 import observer.application.service.source.allegro.model.category.CategoryDto;
@@ -15,11 +15,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 class AllegroCategoryService {
 
-    private final TokenService tokenService;
     private final RestInvoker restInvoker;
+    private final TokenService tokenService;
+
+    public AllegroCategoryService(RestInvoker restInvoker, ApplicationProperties applicationProperties) {
+        this.restInvoker = restInvoker;
+        this.tokenService = new TokenService(restInvoker, applicationProperties);
+    }
 
     protected List<CategoryDto> fetchCategories(String parentId) {
         CategoriesDto categoriesDto = restInvoker.get(

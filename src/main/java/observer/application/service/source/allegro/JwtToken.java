@@ -1,16 +1,16 @@
 package observer.application.service.source.allegro;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 class JwtToken implements Serializable {
 
+    private final Instant dateCreated;
     @JsonProperty("access_token")
     private String value;
-    private final Instant dateCreated;
 
     JwtToken() {
         this.dateCreated = Instant.now();
@@ -20,8 +20,9 @@ class JwtToken implements Serializable {
         return "Bearer " + value;
     }
 
-    Instant getDateCreated() {
-        return dateCreated;
+    boolean isValid(long expirationTimeHours) {
+        return dateCreated.plus(expirationTimeHours, ChronoUnit.HOURS)
+                .isAfter(Instant.now());
     }
 
 }

@@ -30,7 +30,7 @@ public class NotificationService {
     private static final PageRequest PAGE_REQUEST = PageRequest.of(0, 100);
     private static final String MESSAGE = "Found %s new item%s!";
 
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final ItemRepository itemRepository;
     private final RestInvoker restInvoker;
     private final ApplicationProperties applicationProperties;

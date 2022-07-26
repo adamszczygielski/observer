@@ -46,5 +46,5 @@ create view if not exists search_v as
     from search s
     left join item i on s.id = i.search_id and i.is_active = true
     group by s.id
-    order by count desc, s.keyword, s.source_id
+    order by s.keyword, s.source_id
 );

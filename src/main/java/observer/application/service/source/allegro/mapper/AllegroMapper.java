@@ -7,14 +7,12 @@ import observer.application.service.source.allegro.model.category.CategoryDto;
 import observer.application.service.source.allegro.model.listing.Element;
 import observer.application.service.source.allegro.model.listing.Normal;
 import observer.application.service.source.allegro.model.listing.Price;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class AllegroMapper {
 
     public List<Category> toCategories(List<CategoryDto> dtoList) {
@@ -47,14 +45,18 @@ public class AllegroMapper {
     private String toUrl(Element element) {
         String url = element.getUrl();
         if (url.length() > 255) {
-            return UriComponentsBuilder.newInstance()
-                    .scheme("https")
-                    .host("allegro.pl")
-                    .path("i{id}.html")
-                    .buildAndExpand(element.getId())
-                    .toUriString();
+            return toUrl(element.getId());
         }
         return url;
+    }
+
+    private String toUrl(String elementId) {
+        return UriComponentsBuilder.newInstance()
+                .scheme("https")
+                .host("allegro.pl")
+                .path("i{id}.html")
+                .buildAndExpand(elementId)
+                .toUriString();
     }
 
 }

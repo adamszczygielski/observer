@@ -31,7 +31,7 @@ public class OlxService extends SourceService {
     }
 
     @Override
-    public long getDelay() {
+    public long getDelaySeconds() {
         return applicationProperties.getOlxDelaySeconds();
     }
 
@@ -64,7 +64,7 @@ public class OlxService extends SourceService {
                     .url(toItemUrl(urls.get(i)))
                     .isActive(true)
                     .isNotified(false)
-                    .sourceId(Source.OLX.getId())
+                    .sourceId(getSource().getId())
                     .build();
 
             items.add(item);
@@ -74,8 +74,8 @@ public class OlxService extends SourceService {
     }
 
     private boolean containsItems(Document document) {
-        Elements noItemsResponse = document.select("#body-container > div > div > div > p");
-        return noItemsResponse.size() != 1;
+        Elements elements = document.select("#body-container > div > div > div > p");
+        return elements.size() != 1;
     }
 
     private String getRequestUrl(Search search) {
@@ -111,7 +111,9 @@ public class OlxService extends SourceService {
     }
 
     private String toPrice(Element element) {
-        return element.text().replace(" ", "").replace("zł", ".00 PLN");
+        return element.text()
+                .replace(" ", "")
+                .replace("zł", ".00 PLN");
     }
 
     private String toKeyword(Search search) {

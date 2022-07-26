@@ -22,7 +22,7 @@ public class CategoryController {
     public static final String API_PATH = "/categories";
 
     private final ItemService itemService;
-    private final CategoryMapper categoryMapper;
+    private final CategoryMapper categoryMapper = new CategoryMapper();
 
     @GetMapping
     public List<CategoryDto> getCategories(

@@ -1,9 +1,9 @@
 package observer.application.config;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.service.RandomService;
+import observer.application.service.RandomUtils;
 import observer.application.service.SearchExecutionService;
-import observer.application.service.SourceServiceResolver;
+import observer.application.service.source.SourceServiceResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.Trigger;
@@ -27,14 +27,13 @@ public class SchedulingConfig implements SchedulingConfigurer {
 
     private final SearchExecutionService searchExecutionService;
     private final SourceServiceResolver sourceServiceResolver;
-    private final RandomService randomService;
 
     @Override
     public void configureTasks(@NonNull ScheduledTaskRegistrar taskRegistrar) {
         sourceServiceResolver.getAll().forEach(sourceService -> {
             taskRegistrar.addTriggerTask(
                     () -> searchExecutionService.execute(sourceService.getSource()),
-                    createTrigger(sourceService.getDelay())
+                    createTrigger(sourceService.getDelaySeconds())
             );
         });
     }
@@ -44,7 +43,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
             Instant nextExecutionTime = Optional.ofNullable(triggerContext.lastCompletionTime())
                     .orElseGet(Date::new)
                     .toInstant()
-                    .plus(randomService.randomize(delaySeconds), ChronoUnit.SECONDS);
+                    .plus(RandomUtils.randomize(delaySeconds, delaySeconds * 0.3), ChronoUnit.SECONDS);
 
             int nextExecutionHour = nextExecutionTime.atOffset(ZoneOffset.from(OffsetDateTime.now())).getHour();
             if (nextExecutionHour < END_OF_NIGHTTIME_HOUR) {

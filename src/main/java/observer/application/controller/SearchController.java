@@ -30,8 +30,8 @@ public class SearchController {
     public static final String API_PATH = "/searches";
 
     private final SearchService searchService;
-    private final SearchMapper searchMapper;
-    private final SearchViewMapper searchViewMapper;
+    private final SearchMapper searchMapper = new SearchMapper();
+    private final SearchViewMapper searchViewMapper = new SearchViewMapper();
 
     @GetMapping
     public String getSearchViewList(Model model) {

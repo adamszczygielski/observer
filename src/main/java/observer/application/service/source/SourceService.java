@@ -16,7 +16,7 @@ public abstract class SourceService {
 
     public abstract Source getSource();
 
-    public abstract long getDelay();
+    public abstract long getDelaySeconds();
 
     public abstract List<Item> fetchItems(Search search);
 

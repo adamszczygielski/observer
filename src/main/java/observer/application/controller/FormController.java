@@ -18,7 +18,7 @@ public class FormController {
     public static final String API_PATH = "/form";
 
     private final SearchService searchService;
-    private final SearchMapper searchMapper;
+    private final SearchMapper searchMapper = new SearchMapper();
 
     @GetMapping(value = "/search")
     public String getForm(Model model) {

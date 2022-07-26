@@ -5,6 +5,7 @@ import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.repository.ItemRepository;
 import observer.application.repository.SearchRepository;
+import observer.application.service.source.SourceServiceResolver;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

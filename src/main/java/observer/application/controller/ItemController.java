@@ -22,7 +22,7 @@ public class ItemController {
     public static final String API_PATH = "/items";
 
     private final ItemService itemService;
-    private final ItemMapper itemMapper;
+    private final ItemMapper itemMapper = new ItemMapper();
 
     @GetMapping
     public String getActiveItems(Model model) {

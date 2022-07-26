@@ -8,7 +8,7 @@ import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
-import observer.application.service.RandomService;
+import observer.application.service.RandomUtils;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
 import observer.application.service.source.allegro.model.category.CategoryDto;
@@ -32,11 +32,10 @@ public class AllegroService extends SourceService {
     private static final String JSON_END_PATTERN = "}\"}</script>";
     private static final String FALLBACK_PATTERN = "first yellow information";
 
-    private final AllegroMapper mapper;
+    private final AllegroMapper mapper = new AllegroMapper();
+    private final Gson gson = new Gson();
     private final LoadingCache<String, List<CategoryDto>> categoryDtoCache;
     private final WebDriver webDriver;
-    private final Gson gson = new Gson();
-    private final RandomService randomService;
 
     @Override
     public Source getSource() {
@@ -44,7 +43,7 @@ public class AllegroService extends SourceService {
     }
 
     @Override
-    public long getDelay() {
+    public long getDelaySeconds() {
         return applicationProperties.getAllegroDelaySeconds();
     }
 
@@ -117,7 +116,7 @@ public class AllegroService extends SourceService {
             uriComponentsBuilder.path("listing");
         }
 
-        uriComponentsBuilder.queryParam("string", randomService.randomizeCase(search.getKeyword())
+        uriComponentsBuilder.queryParam("string", RandomUtils.randomizeCase(search.getKeyword())
                 .replaceAll(" ", "%20"))
                 .queryParam("order", "n")
                 .queryParam("strategy", "NO_FALLBACK")
@@ -137,7 +136,7 @@ public class AllegroService extends SourceService {
     }
 
     private void randomizeBrowser() {
-        webDriver.manage().window().setSize(randomService.getDimension());
+        webDriver.manage().window().setSize(RandomUtils.getDimension());
     }
 
 }

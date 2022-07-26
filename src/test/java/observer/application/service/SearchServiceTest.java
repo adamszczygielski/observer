@@ -6,6 +6,7 @@ import observer.application.model.Source;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.repository.SearchRepository;
+import observer.application.service.source.SourceServiceResolver;
 import observer.application.service.source.allegro.AllegroService;
 import org.junit.Before;
 import org.junit.Test;
