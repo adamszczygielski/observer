@@ -10,19 +10,18 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT i FROM Item i WHERE i.searchId = :searchId AND i.isActive = true ORDER BY i.dateCreated DESC")
-    Optional<List<Item>> findActive(@Param("searchId") Long searchId);
+    List<Item> findActive(@Param("searchId") Long searchId);
 
     @Query("SELECT i FROM Item i WHERE i.isActive = true ORDER BY i.dateCreated DESC")
-    Optional<List<Item>> findActive();
+    List<Item> findActive();
 
-    @Query("SELECT i.id FROM Item i WHERE i.isActive = true AND i.isNotified = false ORDER BY i.dateCreated")
-    Optional<List<Long>> findActiveAndNotNotified(Pageable pageable);
+    @Query("SELECT i FROM Item i WHERE i.isActive = true AND i.isNotified = false ORDER BY i.dateCreated")
+    List<Item> findActiveAndNotNotified(Pageable pageable);
 
     @Modifying
     @Transactional

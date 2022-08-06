@@ -9,13 +9,13 @@ public class ItemMapper implements BaseMapper<Item, ItemDto> {
     @Override
     public ItemDto toDto(Item item) {
         return ItemDto.builder()
-                .itemId(item.getId())
+                .id(item.getId())
                 .originId(item.getOriginId())
                 .dateCreated(item.getDateCreated())
                 .title(item.getTitle())
                 .url(item.getUrl())
                 .price(item.getPrice())
-                .source(Source.getSource(item.getSourceId()).getLabel())
+                .source(Source.getLabel(item.getSourceId()))
                 .build();
     }
 

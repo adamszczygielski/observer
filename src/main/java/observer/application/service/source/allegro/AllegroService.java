@@ -1,26 +1,28 @@
 package observer.application.service.source.allegro;
 
 import com.google.common.cache.LoadingCache;
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
+import observer.application.rest.JsonMapper;
 import observer.application.service.RandomUtils;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
 import observer.application.service.source.allegro.model.category.CategoryDto;
 import observer.application.service.source.allegro.model.listing.Element;
 import observer.application.service.source.allegro.model.listing.ListingResponse;
+import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,11 +31,12 @@ import java.util.stream.Collectors;
 public class AllegroService extends SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "__listing_StoreState\":\"";
-    private static final String JSON_END_PATTERN = "}\"}</script>";
+    private static final String JSON_END_PATTERN = "\"}</script>";
     private static final String FALLBACK_PATTERN = "first yellow information";
+    private static final short STRICT_FILTER_THRESHOLD = 5;
 
     private final AllegroMapper mapper = new AllegroMapper();
-    private final Gson gson = new Gson();
+    private final JsonMapper jsonMapper;
     private final LoadingCache<String, List<CategoryDto>> categoryDtoCache;
     private final WebDriver webDriver;
 
@@ -51,15 +54,29 @@ public class AllegroService extends SourceService {
     public List<Item> fetchItems(Search search) {
         String url = getRequestUrl(search);
         String pageSource = fetchPageSource(url);
-        return getListingResponseJson(pageSource)
-                .map(json -> mapper.toItems(getElements(json), search.getId()))
-                .orElse(Collections.emptyList());
+        if (pageSource.contains(FALLBACK_PATTERN)) {
+            return Collections.emptyList();
+        }
+
+        String listingResponseJson = getListingResponseJson(pageSource);
+        List<Element> elements = getElements(listingResponseJson);
+        if (elements.size() > STRICT_FILTER_THRESHOLD) {
+            return elements.stream()
+                    .filter(e -> containsAllKeywords(e.getTitle().getText(), search.getKeyword()))
+                    .map(element -> mapper.toItem(element, search.getId()))
+                    .collect(Collectors.toList());
+        } else {
+            return elements.stream()
+                    .map(element -> mapper.toItem(element, search.getId()))
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override
     public List<Category> fetchCategories(String parentId) {
-        List<CategoryDto> categories = categoryDtoCache.getUnchecked(parentId);
-        return mapper.toCategories(categories);
+        return categoryDtoCache.getUnchecked(parentId).stream()
+                .map(mapper::toCategory)
+                .collect(Collectors.toList());
     }
 
     private String fetchPageSource(String url) {
@@ -72,35 +89,33 @@ public class AllegroService extends SourceService {
     }
 
     private List<Element> getElements(String listingResponseJson) {
-        return gson.fromJson(listingResponseJson, ListingResponse.class)
+        return jsonMapper.toObject(listingResponseJson, ListingResponse.class)
                 .getItems().getElements().stream()
                 .filter(element -> element.getId() != null)
                 .collect(Collectors.toList());
     }
 
-    private Optional<String> getListingResponseJson(String pageContent) {
-        if (pageContent.contains(FALLBACK_PATTERN)) {
-            return Optional.empty();
-        }
+    private String getListingResponseJson(String pageSource) {
+        int jsonBeginIndex = getJsonBeginIndex(pageSource);
+        int jsonEndIndex = getJsonEndIndex(pageSource, jsonBeginIndex);
+        String unescapedJson = pageSource.substring(jsonBeginIndex, jsonEndIndex);
+        return StringEscapeUtils.unescapeJson(unescapedJson);
+    }
 
-        int beginPatternIndex = pageContent.indexOf(JSON_BEGIN_PATTERN);
+    private int getJsonBeginIndex(String pageSource) {
+        int beginPatternIndex = pageSource.indexOf(JSON_BEGIN_PATTERN);
         if (beginPatternIndex == -1) {
             throw new IllegalArgumentException("Json begin index has not been found!");
         }
+        return beginPatternIndex + JSON_BEGIN_PATTERN.length();
+    }
 
-        int endPatternIndex = pageContent.indexOf(JSON_END_PATTERN, beginPatternIndex);
+    private int getJsonEndIndex(String pageSource, int jsonBeginIndex) {
+        int endPatternIndex = pageSource.indexOf(JSON_END_PATTERN, jsonBeginIndex);
         if (endPatternIndex == -1) {
             throw new IllegalArgumentException("Json end index has not been found!");
         }
-
-        int jsonBeginIndex = beginPatternIndex + JSON_BEGIN_PATTERN.length();
-        int jsonEndIndex = endPatternIndex + 1;
-        String json = pageContent.substring(jsonBeginIndex, jsonEndIndex)
-                .replace("\\u002F", "/")
-                .replace("\\\\\\\"", " ")
-                .replace("\\\"", "\"");
-
-        return Optional.of(json);
+        return endPatternIndex;
     }
 
     private String getRequestUrl(Search search) {
@@ -133,6 +148,14 @@ public class AllegroService extends SourceService {
         }
 
         return uriComponentsBuilder.build().toUriString();
+    }
+
+    private boolean containsAllKeywords(String text, String keyword) {
+        List<String> keywords = Arrays.asList(keyword.split(" "));
+        String normalizedText = text.replace(" ", "")
+                .replace("-", "")
+                .toLowerCase(Locale.ROOT);
+        return keywords.stream().allMatch(normalizedText::contains);
     }
 
     private void randomizeBrowser() {

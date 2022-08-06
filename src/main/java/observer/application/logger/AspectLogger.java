@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AspectLogger {
 
-    private static final String ITEM_SERVICES_POINTCUT =
+    private static final String SOURCE_SERVICE_POINTCUT =
             "execution(* observer.application.service.source.SourceService.fetchItems(..))";
 
     private static final String REST_INVOKER_POINTCUT =
@@ -21,7 +21,7 @@ public class AspectLogger {
     private static final String DOCUMENT_SERVICE_POINTCUT =
             "execution(* observer.application.service.source.olx.DocumentService.getDocument(..))";
 
-    @Around(ITEM_SERVICES_POINTCUT)
+    @Around(SOURCE_SERVICE_POINTCUT)
     public Object logSourceService(ProceedingJoinPoint joinPoint) throws Throwable {
         Search search = (Search) joinPoint.getArgs()[0];
         log.info(search.toString());

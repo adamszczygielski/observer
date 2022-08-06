@@ -9,24 +9,24 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 
-class TokenService {
+class AuthorizationService {
 
     private final RestInvoker restInvoker;
     private final ApplicationProperties applicationProperties;
 
-    private JwtToken jwtToken;
+    private AccessToken accessToken;
 
-    public TokenService(RestInvoker restInvoker, ApplicationProperties applicationProperties) {
+    public AuthorizationService(RestInvoker restInvoker, ApplicationProperties applicationProperties) {
         this.restInvoker = restInvoker;
         this.applicationProperties = applicationProperties;
     }
 
-    protected String fetchAccessToken() {
-        if (jwtToken != null && jwtToken.isValid(applicationProperties.getAllegroTokenJwtExpirationHours())) {
-            return jwtToken.getBearer();
+    protected String fetchBearerToken() {
+        if (accessToken != null && accessToken.isValid()) {
+            return accessToken.getBearer();
         }
-        jwtToken = restInvoker.post(createRequestUrl(), createHttpEntity(), JwtToken.class);
-        return jwtToken.getBearer();
+        accessToken = restInvoker.post(createRequestUrl(), createHttpEntity(), AccessToken.class);
+        return accessToken.getBearer();
     }
 
     private String createRequestUrl() {

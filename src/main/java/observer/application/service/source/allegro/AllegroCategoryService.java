@@ -18,11 +18,11 @@ import java.util.Optional;
 class AllegroCategoryService {
 
     private final RestInvoker restInvoker;
-    private final TokenService tokenService;
+    private final AuthorizationService authorizationService;
 
     public AllegroCategoryService(RestInvoker restInvoker, ApplicationProperties applicationProperties) {
         this.restInvoker = restInvoker;
-        this.tokenService = new TokenService(restInvoker, applicationProperties);
+        this.authorizationService = new AuthorizationService(restInvoker, applicationProperties);
     }
 
     protected List<CategoryDto> fetchCategories(String parentId) {
@@ -38,8 +38,7 @@ class AllegroCategoryService {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.set("Accept", "application/vnd.allegro.public.v1+json");
-        requestHeaders.add("Authorization", tokenService.fetchAccessToken());
-
+        requestHeaders.add("Authorization", authorizationService.fetchBearerToken());
         return new HttpEntity<>(requestHeaders);
     }
 
@@ -52,7 +51,6 @@ class AllegroCategoryService {
         if (!parentId.equals("0")) {
             uriComponentsBuilder.queryParam("parent.id", parentId);
         }
-
         return uriComponentsBuilder.build().toUriString();
     }
 

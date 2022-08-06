@@ -20,11 +20,11 @@ public class ItemService {
     private final SourceServiceResolver sourceServiceResolver;
 
     public List<Item> getActiveItems(Long searchId) {
-        return itemRepository.findActive(searchId).orElse(Collections.emptyList());
+        return itemRepository.findActive(searchId);
     }
 
     public List<Item> getActiveItems() {
-        return itemRepository.findActive().orElse(Collections.emptyList());
+        return itemRepository.findActive();
     }
 
     public List<Item> fetchItems(Long searchId) {

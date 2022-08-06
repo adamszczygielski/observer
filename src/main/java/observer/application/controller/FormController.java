@@ -28,7 +28,7 @@ public class FormController {
 
     @GetMapping(value = "/search/{id}")
     public String getForm(Model model, @PathVariable(name = "id") Long searchId) {
-        model.addAttribute("searchDto", searchMapper.toSearchDto(searchService.get(searchId)));
+        model.addAttribute("searchDto", searchMapper.toDto(searchService.get(searchId)));
         return "form";
     }
 }

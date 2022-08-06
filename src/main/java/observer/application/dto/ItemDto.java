@@ -9,7 +9,7 @@ import java.time.Instant;
 @Builder
 public class ItemDto {
 
-    private final Long itemId;
+    private final Long id;
     private final String originId;
     private final String title;
     private final Instant dateCreated;

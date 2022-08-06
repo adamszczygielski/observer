@@ -3,32 +3,31 @@ package observer.application.service;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.model.Status;
 
+import java.text.MessageFormat;
+
 @Slf4j
 abstract class SearchExecutionTemplate<S, I> {
 
     final void execute(S search) {
-        if (isAboveLimit(search)) {
-            return;
-        }
-
+        long startTimeMillis = System.currentTimeMillis();
         try {
             I items = fetchItems(search);
-            addNewItems(search, items);
-            removeOldItems(search, items);
-            updateStatusAndDate(search, Status.SUCCESS);
+            removeItems(search, items);
+            insertItems(search, items);
+            update(search, Status.SUCCESS);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            updateStatusAndDate(search, Status.FAILED);
+            update(search, Status.FAILED);
         }
+        log.info(MessageFormat.format("Execution time: {0}ms",
+                System.currentTimeMillis() - startTimeMillis));
     }
-
-    abstract boolean isAboveLimit(S search);
 
     abstract I fetchItems(S search);
 
-    abstract void addNewItems(S search, I items);
+    abstract void insertItems(S search, I items);
 
-    abstract void removeOldItems(S search, I items);
+    abstract void removeItems(S search, I items);
 
-    abstract void updateStatusAndDate(S search, Status status);
+    abstract void update(S search, Status status);
 }

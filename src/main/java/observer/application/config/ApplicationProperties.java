@@ -11,9 +11,6 @@ public class ApplicationProperties {
     @Value("${observer.allegro.token.private}")
     private String allegroTokenPrivate;
 
-    @Value("${observer.allegro.token.jwt.expiration.hours}")
-    private Integer allegroTokenJwtExpirationHours;
-
     @Value("${observer.allegro.delay.seconds}")
     private Long allegroDelaySeconds;
 
@@ -32,17 +29,8 @@ public class ApplicationProperties {
     @Value("${observer.onesignal.api.key}")
     private String onesignalApiKey;
 
-    @Value("${observer.search.unchecked-limit}")
-    private Integer searchUncheckedLimit;
-
-    @Value("${observer.item.remove.delay.days}")
-    private Integer itemRemoveDelayDays;
-
     @Value("${observer.notification.delay.seconds}")
     private Integer notificationDelaySeconds;
-
-    @Value("${observer.proxies}")
-    private String[] proxies;
 
     @Value("${observer.chromedriver.headless}")
     private Boolean chromedriverHeadless;

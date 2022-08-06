@@ -1,6 +1,7 @@
 package observer.application.config;
 
 import lombok.RequiredArgsConstructor;
+import observer.application.service.ItemNotificationService;
 import observer.application.service.RandomUtils;
 import observer.application.service.SearchExecutionService;
 import observer.application.service.source.SourceServiceResolver;
@@ -26,25 +27,45 @@ public class SchedulingConfig implements SchedulingConfigurer {
     private final int END_OF_NIGHTTIME_HOUR = 6;
 
     private final SearchExecutionService searchExecutionService;
+    private final ItemNotificationService itemNotificationService;
     private final SourceServiceResolver sourceServiceResolver;
 
     @Override
     public void configureTasks(@NonNull ScheduledTaskRegistrar taskRegistrar) {
+        addSearchTask(taskRegistrar);
+        addNotificationTask(taskRegistrar);
+    }
+
+    private void addSearchTask(ScheduledTaskRegistrar taskRegistrar) {
         sourceServiceResolver.getAll().forEach(sourceService -> {
             taskRegistrar.addTriggerTask(
                     () -> searchExecutionService.execute(sourceService.getSource()),
-                    createTrigger(sourceService.getDelaySeconds())
-            );
+                    createSearchTrigger(sourceService.getDelaySeconds()));
         });
     }
 
-    private Trigger createTrigger(long delaySeconds) {
+    private void addNotificationTask(ScheduledTaskRegistrar taskRegistrar) {
+        taskRegistrar.addTriggerTask(
+                itemNotificationService::execute,
+                createItemNotificationTrigger(itemNotificationService.getDelaySeconds()));
+    }
+
+    private Trigger createItemNotificationTrigger(long delaySeconds) {
+        return triggerContext -> {
+            Instant nextExecutionTime = Optional.ofNullable(triggerContext.lastCompletionTime())
+                    .orElseGet(Date::new)
+                    .toInstant()
+                    .plus(delaySeconds, ChronoUnit.SECONDS);
+            return Date.from(nextExecutionTime);
+        };
+    }
+
+    private Trigger createSearchTrigger(long delaySeconds) {
         return triggerContext -> {
             Instant nextExecutionTime = Optional.ofNullable(triggerContext.lastCompletionTime())
                     .orElseGet(Date::new)
                     .toInstant()
                     .plus(RandomUtils.randomize(delaySeconds, delaySeconds * 0.3), ChronoUnit.SECONDS);
-
             int nextExecutionHour = nextExecutionTime.atOffset(ZoneOffset.from(OffsetDateTime.now())).getHour();
             if (nextExecutionHour < END_OF_NIGHTTIME_HOUR) {
                 return Date.from(nextExecutionTime.plus(END_OF_NIGHTTIME_HOUR - nextExecutionHour, ChronoUnit.HOURS));

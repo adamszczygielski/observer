@@ -20,12 +20,16 @@ import java.time.Instant;
 @AllArgsConstructor
 public class SearchDto {
 
-    private Long searchId;
+    private Long id;
 
     @Size(min = 3, max = 20)
     @NotBlank
     private String keyword;
+
+    @Size(min = 1, max = 255)
     private String categoryId;
+
+    @Size(min = 1, max = 255)
     private String categoryName;
     private Instant dateUpdated;
 

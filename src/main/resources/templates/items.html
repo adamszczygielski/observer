@@ -33,7 +33,7 @@
             <tr th:each="item : ${items}">
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" name="id" th:value="${item.itemId}" type="checkbox">
+                        <input class="form-check-input" name="id" th:value="${item.id}" type="checkbox">
                     </div>
                 </td>
                 <td>
@@ -45,7 +45,7 @@
                 <td th:text="${#dates.format(item.dateCreated, 'HH:mm:ss')}"></td>
                 <td th:text="${item.price}"></td>
                 <td>
-                    <button class="btn btn-danger" name="id" th:value="${item.itemId}" type="submit">Delete</button>
+                    <button class="btn btn-danger" name="id" th:value="${item.id}" type="submit">Delete</button>
                 </td>
             </tr>
             </tbody>

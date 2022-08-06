@@ -12,13 +12,13 @@ import java.util.List;
 public class LogReader {
 
     private static final File LOG_FILE = new File("logs/observer.log");
-    private static final short MAX_SIZE = 100;
+    private static final short MAX_SIZE = 300;
 
-    public static String getLog() {
+    public String getLog() {
         List<String> logLines = new ArrayList<>();
         try (ReversedLinesFileReader reader = new ReversedLinesFileReader(LOG_FILE, StandardCharsets.UTF_8)) {
             short counter = 0;
-            String line = "";
+            String line;
             while ((line = reader.readLine()) != null && counter++ < MAX_SIZE) {
                 logLines.add(line);
             }
@@ -30,7 +30,7 @@ public class LogReader {
         return toString(logLines);
     }
 
-    private static String toString(List<String> logLines) {
+    private String toString(List<String> logLines) {
         StringBuilder stringBuilder = new StringBuilder();
         logLines.forEach(s -> stringBuilder.append(s).append("\n"));
         return stringBuilder.toString();

@@ -10,7 +10,6 @@ import observer.application.service.source.SourceService;
 import observer.application.service.source.ebay.mapper.EbayMapper;
 import observer.application.service.source.ebay.model.BaseFindingServiceResponse;
 import observer.application.service.source.ebay.model.FindItemsByKeywordsResponse;
-import observer.application.service.source.ebay.model.SearchItem;
 import observer.application.service.source.ebay.model.SearchResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -38,22 +37,19 @@ public class EbayService extends SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        return mapper.toItems(fetchSearchItems(search), search.getId());
-    }
-
-    @Override
-    public List<Category> fetchCategories(String parentId) {
-        return Collections.emptyList();
-    }
-
-    private List<SearchItem> fetchSearchItems(Search search) {
         FindItemsByKeywordsResponse findItemsByKeywordsResponse = restInvoker.get(
                 createListingRequestUrl(search), null, FindItemsByKeywordsResponse.class);
 
         return Optional.of(findItemsByKeywordsResponse)
                 .map(BaseFindingServiceResponse::getSearchResult)
                 .map(SearchResult::getItem)
+                .map(items -> mapper.toItems(items, search.getId()))
                 .orElse(Collections.emptyList());
+    }
+
+    @Override
+    public List<Category> fetchCategories(String parentId) {
+        return Collections.emptyList();
     }
 
     private String createListingRequestUrl(Search search) {

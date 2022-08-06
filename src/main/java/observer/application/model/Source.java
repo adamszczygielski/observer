@@ -28,7 +28,12 @@ public enum Source {
         ENUM_MAP = Collections.unmodifiableMap(map);
     }
 
+    public static String getLabel(int sourceId) {
+        return getSource(sourceId).getLabel();
+    }
+
     public static Source getSource(int sourceId) {
         return ENUM_MAP.get(sourceId);
     }
+
 }

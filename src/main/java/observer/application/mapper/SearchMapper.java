@@ -10,24 +10,9 @@ import java.util.Collections;
 
 public class SearchMapper {
 
-    public Search toSearch(SearchDto searchDto) {
-        return Search.builder()
-                .id(searchDto.getSearchId())
-                .keyword(normalize(searchDto.getKeyword()))
-                .categoryId(searchDto.getCategoryId())
-                .categoryName(searchDto.getCategoryName())
-                .sourceId(searchDto.getSource().getId())
-                .statusId(Status.PENDING.getId())
-                .timeInterval(searchDto.getInterval())
-                .itemList(Collections.emptyList())
-                .priceFrom(searchDto.getPriceFrom())
-                .priceTo(searchDto.getPriceTo())
-                .build();
-    }
-
-    public SearchDto toSearchDto(Search search) {
+    public SearchDto toDto(Search search) {
         return SearchDto.builder()
-                .searchId(search.getId())
+                .id(search.getId())
                 .keyword(search.getKeyword())
                 .categoryId(search.getCategoryId())
                 .categoryName(search.getCategoryName())
@@ -37,6 +22,21 @@ public class SearchMapper {
                 .priceTo(search.getPriceTo())
                 .source(Source.getSource(search.getSourceId()))
                 .status(Status.getStatus(search.getStatusId()))
+                .build();
+    }
+
+    public Search toSearch(SearchDto searchDto) {
+        return Search.builder()
+                .id(searchDto.getId())
+                .keyword(normalize(searchDto.getKeyword()))
+                .categoryId(searchDto.getCategoryId())
+                .categoryName(searchDto.getCategoryName())
+                .sourceId(searchDto.getSource().getId())
+                .statusId(Status.PENDING.getId())
+                .timeInterval(searchDto.getInterval())
+                .itemList(Collections.emptyList())
+                .priceFrom(searchDto.getPriceFrom())
+                .priceTo(searchDto.getPriceTo())
                 .build();
     }
 

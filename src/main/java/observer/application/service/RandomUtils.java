@@ -12,8 +12,8 @@ public class RandomUtils {
         return new Dimension(getInt(800, 1920), getInt(600, 1200));
     }
 
-    public static long randomize(long seconds, double delta) {
-        return getInt((int) (seconds - delta), (int) (seconds + delta));
+    public static long randomize(long val, double delta) {
+        return getInt((int) (val - delta), (int) (val + delta));
     }
 
     public static String randomizeCase(String string) {

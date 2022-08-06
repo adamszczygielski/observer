@@ -15,6 +15,8 @@ public class TechnicalController {
 
     public static final String API_PATH = "/";
 
+    private final LogReader logReader = new LogReader();
+
     @GetMapping
     public ModelAndView redirect() {
         return new ModelAndView("redirect:" + ItemController.API_PATH);
@@ -22,7 +24,7 @@ public class TechnicalController {
 
     @GetMapping(value = "/log")
     public String getLog(Model model) {
-        model.addAttribute("log", LogReader.getLog());
+        model.addAttribute("log", logReader.getLog());
         return "log";
     }
 

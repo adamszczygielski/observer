@@ -1,9 +1,12 @@
 package observer.application.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import observer.application.rest.JsonMapper;
+import observer.application.rest.JsonMapperImpl;
 import observer.application.rest.RestInvoker;
 import observer.application.rest.RestInvokerImpl;
 import org.apache.commons.exec.OS;
-import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -11,20 +14,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Array;
-
 @Configuration
 public class ApplicationConfig {
 
-    @Bean("restInvoker")
+    @Bean
     public RestInvoker getRestInvoker() {
         return new RestInvokerImpl(new RestTemplate());
     }
 
-    @Bean("webDriver")
-    public WebDriver getWebDriver(ApplicationProperties properties) {
+    @Bean
+    public JsonMapper getJsonMapper() {
+        return new JsonMapperImpl(new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+                false));
+    }
+
+    @Bean
+    public WebDriver getWebDriver(ApplicationProperties applicationProperties) {
         setWebDriverProperties();
-        return new ChromeDriver(createChromeOptions(properties));
+        return new ChromeDriver(createChromeOptions(applicationProperties));
     }
 
     private void setWebDriverProperties() {
@@ -35,22 +42,15 @@ public class ApplicationConfig {
         }
     }
 
-    private ChromeOptions createChromeOptions(ApplicationProperties properties) {
+    private ChromeOptions createChromeOptions(ApplicationProperties applicationProperties) {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--ignore-certificate-errors", "--disable-blink-features=AutomationControlled");
 
-        String[] proxies = properties.getProxies();
-        if (proxies.length > 0) {
-            Proxy proxy = new Proxy();
-            proxy.setSslProxy((String) Array.get(proxies, 0));
-            options.setProxy(proxy);
-        }
-
-        if (properties.getChromedriverHeadless()) {
+        if (applicationProperties.getChromedriverHeadless()) {
             options.addArguments("--headless");
         }
 
-        if (!properties.getChromedriverImages()) {
+        if (!applicationProperties.getChromedriverImages()) {
             options.addArguments("--blink-settings=imagesEnabled=false");
         }
 

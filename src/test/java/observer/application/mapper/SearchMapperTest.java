@@ -32,7 +32,7 @@ public class SearchMapperTest {
 
     private SearchDto createSearchDto() {
         return SearchDto.builder()
-                .searchId(1L)
+                .id(1L)
                 .keyword("keyword")
                 //.category("category")
                 .dateUpdated(null)

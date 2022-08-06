@@ -10,21 +10,19 @@ import observer.application.service.source.allegro.model.listing.Price;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class AllegroMapper {
 
-    public List<Category> toCategories(List<CategoryDto> dtoList) {
-        return dtoList.stream().map(categoryDto -> Category.builder()
+    public Category toCategory(CategoryDto categoryDto) {
+        return Category.builder()
                 .id(categoryDto.getId())
                 .name(categoryDto.getName())
                 .leaf(categoryDto.getLeaf())
-                .build()).collect(Collectors.toList());
+                .build();
     }
 
-    public List<Item> toItems(List<Element> elements, Long searchId) {
-        return elements.stream().map(element -> Item.builder()
+    public Item toItem(Element element, Long searchId) {
+        return Item.builder()
                 .originId(element.getId())
                 .searchId(searchId)
                 .dateCreated(Instant.now())
@@ -34,7 +32,7 @@ public class AllegroMapper {
                 .isActive(true)
                 .isNotified(false)
                 .sourceId(Source.ALLEGRO.getId())
-                .build()).collect(Collectors.toList());
+                .build();
     }
 
     private String toPrice(Price price) {

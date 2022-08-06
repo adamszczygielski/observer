@@ -26,7 +26,7 @@ public class CategoryController {
 
     @GetMapping
     public List<CategoryDto> getCategories(
-            @RequestParam(value = "sourceId") Integer sourceId,
+            @RequestParam(value = "sourceId") int sourceId,
             @RequestParam(value = "parentId", required = false, defaultValue = "0") String parentId) {
         List<Category> categories = itemService.getCategories(sourceId, parentId);
         return categoryMapper.toDtoList(categories);
