@@ -22,10 +22,10 @@ public class TechnicalController {
         return new ModelAndView("redirect:" + ItemController.API_PATH);
     }
 
-    @GetMapping(value = "/log")
-    public String getLog(Model model) {
-        model.addAttribute("log", logReader.getLog());
-        return "log";
+    @GetMapping(value = "/logs")
+    public String getLogs(Model model) {
+        model.addAttribute("logs", logReader.getLogs());
+        return "logs";
     }
 
 }

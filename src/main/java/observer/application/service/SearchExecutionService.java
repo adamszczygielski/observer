@@ -42,18 +42,18 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
     }
 
     @Override
-    void removeItems(Search search, List<Item> fetchedItems) {
+    void removeItems(Search search) {
         Predicate<Item> p1 = i -> !i.getIsActive();
         Predicate<Item> p2 = i -> i.getDateCreated().plus(ITEM_RETENTION_DAYS, ChronoUnit.DAYS).isBefore(Instant.now());
-        search.getItemList().removeIf(p1.and(p2));
+        search.getItems().removeIf(p1.and(p2));
     }
 
     @Override
     void insertItems(Search search, List<Item> fetchedItems) {
         List<Item> newItems = fetchedItems.stream()
-                .filter(fetchedItem -> !search.getItemList().contains(fetchedItem))
+                .filter(fetchedItem -> !search.getItems().contains(fetchedItem))
                 .collect(toList());
-        search.getItemList().addAll(newItems);
+        search.getItems().addAll(newItems);
         log.info(MessageFormat.format("Items found: {0}/{1}", newItems.size(), fetchedItems.size()));
     }
 

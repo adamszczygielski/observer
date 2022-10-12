@@ -32,7 +32,8 @@ public class AllegroService extends SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "__listing_StoreState\":\"";
     private static final String JSON_END_PATTERN = "\"}</script>";
-    private static final String FALLBACK_PATTERN = "first yellow information";
+    private static final List<String> FALLBACK_PATTERNS = Arrays.asList("first yellow information",
+            "Przykro nam, nie znale");
     private static final short STRICT_FILTER_THRESHOLD = 5;
 
     private final AllegroMapper mapper = new AllegroMapper();
@@ -54,7 +55,7 @@ public class AllegroService extends SourceService {
     public List<Item> fetchItems(Search search) {
         String url = getRequestUrl(search);
         String pageSource = fetchPageSource(url);
-        if (pageSource.contains(FALLBACK_PATTERN)) {
+        if (FALLBACK_PATTERNS.stream().anyMatch(pageSource::contains)) {
             return Collections.emptyList();
         }
 
@@ -92,6 +93,7 @@ public class AllegroService extends SourceService {
         return jsonMapper.toObject(listingResponseJson, ListingResponse.class)
                 .getItems().getElements().stream()
                 .filter(element -> element.getId() != null)
+                .filter(element -> !element.getType().equals("banner"))
                 .collect(Collectors.toList());
     }
 
@@ -150,12 +152,12 @@ public class AllegroService extends SourceService {
         return uriComponentsBuilder.build().toUriString();
     }
 
-    private boolean containsAllKeywords(String text, String keyword) {
+    private boolean containsAllKeywords(String title, String keyword) {
         List<String> keywords = Arrays.asList(keyword.split(" "));
-        String normalizedText = text.replace(" ", "")
+        String normalizedTitle = title.replace(" ", "")
                 .replace("-", "")
                 .toLowerCase(Locale.ROOT);
-        return keywords.stream().allMatch(normalizedText::contains);
+        return keywords.stream().allMatch(normalizedTitle::contains);
     }
 
     private void randomizeBrowser() {

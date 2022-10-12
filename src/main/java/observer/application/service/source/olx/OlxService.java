@@ -113,32 +113,25 @@ public class OlxService extends SourceService {
     }
 
     private String getRequestUrl(Search search) {
+        String category = Optional.ofNullable(search.getCategoryId()).orElse("oferty");
+        String keyword = "q-" + search.getKeyword().replaceAll(" ", "-");
         return UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("www.olx.pl")
                 .pathSegment("d")
-                .pathSegment(toCategory(search))
-                .pathSegment(toKeyword(search))
+                .pathSegment(category)
+                .pathSegment(keyword)
+                .path("/")
                 .toUriString();
     }
 
-    private boolean containsAllKeywords(String text, String keyword) {
+    private boolean containsAllKeywords(String title, String keyword) {
         List<String> keywords = Arrays.asList(keyword.split(" "));
-        String normalizedText = text
+        String normalizedText = title
                 .replace(" ", "")
                 .replace("-", "")
                 .toLowerCase(Locale.ROOT);
         return keywords.stream().allMatch(normalizedText::contains);
-    }
-
-    private String toKeyword(Search search) {
-        return "q-" + search.getKeyword().replaceAll(" ", "-");
-    }
-
-    private String toCategory(Search search) {
-        return Optional.ofNullable(search)
-                .map(Search::getCategoryId)
-                .orElse("oferty");
     }
 
 }

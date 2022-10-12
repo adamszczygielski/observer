@@ -34,7 +34,7 @@ public class SearchMapper {
                 .sourceId(searchDto.getSource().getId())
                 .statusId(Status.PENDING.getId())
                 .timeInterval(searchDto.getInterval())
-                .itemList(Collections.emptyList())
+                .items(Collections.emptyList())
                 .priceFrom(searchDto.getPriceFrom())
                 .priceTo(searchDto.getPriceTo())
                 .build();

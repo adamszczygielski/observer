@@ -36,6 +36,10 @@ public class Item {
     @EqualsAndHashCode.Include
     private String originId;
 
+    @Column(name = "SOURCE_ID")
+    @EqualsAndHashCode.Include
+    private Integer sourceId;
+
     @Column(name = "SEARCH_ID")
     private Long searchId;
 
@@ -57,8 +61,5 @@ public class Item {
     @Column(name = "IS_NOTIFIED")
     private Boolean isNotified;
 
-    @Column(name = "SOURCE_ID")
-    @EqualsAndHashCode.Include
-    private Integer sourceId;
 
 }

@@ -61,7 +61,7 @@ public class SearchServiceTest {
         Mockito.when(allegroService.fetchItems(any(Search.class))).thenReturn(getItems());
 
         Assertions.assertEquals(2,
-                searchRepository.findById(1L).orElseThrow(Exception::new).getItemList().size());
+                searchRepository.findById(1L).orElseThrow(Exception::new).getItems().size());
     }
 
     private List<Item> getItems() {

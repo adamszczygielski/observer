@@ -12,7 +12,7 @@ abstract class SearchExecutionTemplate<S, I> {
         long startTimeMillis = System.currentTimeMillis();
         try {
             I items = fetchItems(search);
-            removeItems(search, items);
+            removeItems(search);
             insertItems(search, items);
             update(search, Status.SUCCESS);
         } catch (Exception e) {
@@ -27,7 +27,7 @@ abstract class SearchExecutionTemplate<S, I> {
 
     abstract void insertItems(S search, I items);
 
-    abstract void removeItems(S search, I items);
+    abstract void removeItems(S search);
 
     abstract void update(S search, Status status);
 }

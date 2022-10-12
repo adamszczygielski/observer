@@ -68,7 +68,7 @@ public class Search {
 
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "SEARCH_ID")
-    private List<Item> itemList;
+    private List<Item> items;
 
     @Override
     public String toString() {
