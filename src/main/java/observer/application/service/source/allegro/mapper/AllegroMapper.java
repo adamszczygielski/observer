@@ -25,12 +25,12 @@ public class AllegroMapper {
         return Item.builder()
                 .originId(element.getId())
                 .searchId(searchId)
-                .dateCreated(Instant.now())
+                .createdDate(Instant.now())
                 .title(element.getTitle().getText())
                 .price(toPrice(element.getPrice()))
                 .url(toUrl(element))
-                .isActive(true)
-                .isNotified(false)
+                .isDeleted(false)
+                .isNotificationSent(false)
                 .sourceId(Source.ALLEGRO.getId())
                 .build();
     }

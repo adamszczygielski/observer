@@ -6,7 +6,7 @@ import observer.application.model.Source;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.repository.SearchRepository;
-import observer.application.service.source.SourceServiceResolver;
+import observer.application.service.source.SourceServiceFactory;
 import observer.application.service.source.allegro.AllegroService;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +47,7 @@ public class SearchServiceTest {
     private AllegroService allegroService;
 
     @Mock
-    private SourceServiceResolver sourceServiceResolver;
+    private SourceServiceFactory sourceServiceFactory;
 
     @Before
     public void init() {
@@ -57,7 +57,7 @@ public class SearchServiceTest {
     @Test
     @SneakyThrows
     public void shouldUpdateSearch() {
-        Mockito.when(sourceServiceResolver.get(Source.ALLEGRO.getId())).thenReturn(allegroService);
+        Mockito.when(sourceServiceFactory.get(Source.ALLEGRO.getId())).thenReturn(allegroService);
         Mockito.when(allegroService.fetchItems(any(Search.class))).thenReturn(getItems());
 
         Assertions.assertEquals(2,
@@ -68,12 +68,12 @@ public class SearchServiceTest {
         Item item = Item.builder()
                 .originId("2000")
                 .searchId(1L)
-                .dateCreated(null)
+                .createdDate(null)
                 .title("Title test 2")
                 .price("100.00 PLN")
                 .url("https://test.pl/i2000.html")
-                .isActive(true)
-                .isNotified(false)
+                .isDeleted(true)
+                .isNotificationSent(false)
                 .build();
 
         return Collections.singletonList(item);

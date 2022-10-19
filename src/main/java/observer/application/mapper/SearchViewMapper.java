@@ -21,8 +21,8 @@ public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
                 .priceTo(searchView.getPriceTo())
                 .source(Source.getLabel(searchView.getSourceId()))
                 .status(getCurrentStatus(searchView).getLabel())
-                .dateUpdated(searchView.getDateUpdated())
-                .timeInterval(searchView.getTimeInterval())
+                .updatedDate(searchView.getLastExecutionDate())
+                .intervalMinutes(searchView.getIntervalMinutes())
                 .count(searchView.getCount())
                 .build();
     }
@@ -39,8 +39,8 @@ public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
     }
 
     private boolean isOverdue(SearchView searchView) {
-        return searchView.getDateUpdated()
-                .plus(searchView.getTimeInterval(), ChronoUnit.MINUTES)
+        return searchView.getLastExecutionDate()
+                .plus(searchView.getIntervalMinutes(), ChronoUnit.MINUTES)
                 .isBefore(Instant.now());
     }
 

@@ -12,7 +12,7 @@ public class ItemDto {
     private final Long id;
     private final String originId;
     private final String title;
-    private final Instant dateCreated;
+    private final Instant createdDate;
     private final String price;
     private final String url;
     private final String source;

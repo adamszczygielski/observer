@@ -22,7 +22,7 @@ import java.time.Instant;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "ITEM")
+@Table(name = "ITEMS")
 @Entity
 public class Item {
 
@@ -43,8 +43,8 @@ public class Item {
     @Column(name = "SEARCH_ID")
     private Long searchId;
 
-    @Column(name = "DATE_CREATED")
-    private Instant dateCreated;
+    @Column(name = "CREATED_DATE")
+    private Instant createdDate;
 
     @Column(name = "TITLE")
     private String title;
@@ -55,11 +55,11 @@ public class Item {
     @Column(name = "URL")
     private String url;
 
-    @Column(name = "IS_ACTIVE")
-    private Boolean isActive;
+    @Column(name = "IS_DELETED")
+    private Boolean isDeleted;
 
-    @Column(name = "IS_NOTIFIED")
-    private Boolean isNotified;
+    @Column(name = "IS_NOTIFICATION_SENT")
+    private Boolean isNotificationSent;
 
 
 }

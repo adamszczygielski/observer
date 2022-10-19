@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.time.Instant;
 
 @Getter
-@Table(name = "SEARCH_V")
+@Table(name = "SEARCHES_V")
 @Entity
 @Immutable
 public class SearchView {
@@ -34,11 +34,11 @@ public class SearchView {
     @Column(name = "PRICE_TO")
     private Integer priceTo;
 
-    @Column(name = "DATE_UPDATED")
-    private Instant dateUpdated;
+    @Column(name = "LAST_EXECUTION_DATE")
+    private Instant lastExecutionDate;
 
-    @Column(name = "TIME_INTERVAL")
-    private Short timeInterval;
+    @Column(name = "INTERVAL_MINUTES")
+    private Short intervalMinutes;
 
     @Column(name = "SOURCE_ID")
     private Integer sourceId;

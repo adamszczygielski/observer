@@ -25,14 +25,14 @@ public class ItemController {
     private final ItemMapper itemMapper = new ItemMapper();
 
     @GetMapping
-    public String getActiveItems(Model model) {
-        model.addAttribute("items", itemMapper.toDtoList(itemService.getActiveItems()));
+    public String getItems(Model model) {
+        model.addAttribute("items", itemMapper.toDtoList(itemService.getItems()));
         return "items";
     }
 
     @GetMapping(value = "/{searchId}")
-    public String getActiveItems(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemMapper.toDtoList(itemService.getActiveItems(searchId)));
+    public String getItems(Model model, @PathVariable Long searchId) {
+        model.addAttribute("items", itemMapper.toDtoList(itemService.getItems(searchId)));
         return "items";
     }
 

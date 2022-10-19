@@ -42,7 +42,7 @@
                     </a>
                 </td>
                 <td th:text="${item.source}"></td>
-                <td th:text="${#dates.format(item.dateCreated, 'HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(item.createdDate, 'HH:mm:ss')}"></td>
                 <td th:text="${item.price}"></td>
                 <td>
                     <button class="btn btn-danger" name="id" th:value="${item.id}" type="submit">Delete</button>

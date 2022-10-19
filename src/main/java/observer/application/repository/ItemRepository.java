@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,23 +13,20 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    @Query("SELECT i FROM Item i WHERE i.searchId = :searchId AND i.isActive = true ORDER BY i.dateCreated DESC")
-    List<Item> findActive(@Param("searchId") Long searchId);
+    List<Item> findByIsDeletedFalseAndSearchIdOrderByCreatedDateDesc(Long searchId);
 
-    @Query("SELECT i FROM Item i WHERE i.isActive = true ORDER BY i.dateCreated DESC")
-    List<Item> findActive();
+    List<Item> findByIsDeletedFalseOrderByCreatedDateDesc();
 
-    @Query("SELECT i FROM Item i WHERE i.isActive = true AND i.isNotified = false ORDER BY i.dateCreated")
-    List<Item> findActiveAndNotNotified(Pageable pageable);
+    List<Item> findByIsDeletedFalseAndIsNotificationSentFalseOrderByCreatedDateDesc(Pageable pageable);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Item i SET i.isNotified = true WHERE i.id IN :itemIds")
-    void setNotified(@Param("itemIds") List<Long> itemIds);
+    @Query("UPDATE Item i SET i.isNotificationSent = true WHERE i.id IN :itemIds")
+    void setIsNotificationSentTrue(List<Long> itemIds);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Item i SET i.isActive = false WHERE i.id IN :itemIds")
-    void setInactive(@Param("itemIds") List<Long> itemIds);
+    @Query("UPDATE Item i SET i.isDeleted = true WHERE i.id IN :itemIds")
+    void setIsDeletedTrue(List<Long> itemIds);
 
 }

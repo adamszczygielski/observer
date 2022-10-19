@@ -11,7 +11,7 @@ public class ItemMapper implements BaseMapper<Item, ItemDto> {
         return ItemDto.builder()
                 .id(item.getId())
                 .originId(item.getOriginId())
-                .dateCreated(item.getDateCreated())
+                .createdDate(item.getCreatedDate())
                 .title(item.getTitle())
                 .url(item.getUrl())
                 .price(item.getPrice())

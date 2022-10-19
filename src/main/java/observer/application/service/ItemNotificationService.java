@@ -28,12 +28,13 @@ public class ItemNotificationService {
     private final ApplicationProperties applicationProperties;
 
     public void execute() {
-        List<Item> items = itemRepository.findActiveAndNotNotified(PAGE_REQUEST);
+        List<Item> items = itemRepository
+                .findByIsDeletedFalseAndIsNotificationSentFalseOrderByCreatedDateDesc(PAGE_REQUEST);
         if (!items.isEmpty()) {
             List<Long> itemIds = items.stream()
                     .map(Item::getId)
                     .collect(Collectors.toList());
-            itemRepository.setNotified(itemIds);
+            itemRepository.setIsNotificationSentTrue(itemIds);
             notificationService.sendNotification(createMessage(items));
         }
     }

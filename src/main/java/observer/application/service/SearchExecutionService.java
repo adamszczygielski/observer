@@ -7,7 +7,7 @@ import observer.application.model.Search;
 import observer.application.model.Source;
 import observer.application.model.Status;
 import observer.application.repository.SearchRepository;
-import observer.application.service.source.SourceServiceResolver;
+import observer.application.service.source.SourceServiceFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
     private static final short ITEM_RETENTION_DAYS = 30;
 
     private final SearchRepository searchRepository;
-    private final SourceServiceResolver sourceServiceResolver;
+    private final SourceServiceFactory sourceServiceFactory;
 
     @Transactional
     public void execute(Source source) {
@@ -38,13 +38,13 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
 
     @Override
     List<Item> fetchItems(Search search) {
-        return sourceServiceResolver.get(search.getSourceId()).fetchItems(search);
+        return sourceServiceFactory.get(search.getSourceId()).fetchItems(search);
     }
 
     @Override
     void removeItems(Search search) {
-        Predicate<Item> p1 = i -> !i.getIsActive();
-        Predicate<Item> p2 = i -> i.getDateCreated().plus(ITEM_RETENTION_DAYS, ChronoUnit.DAYS).isBefore(Instant.now());
+        Predicate<Item> p1 = Item::getIsDeleted;
+        Predicate<Item> p2 = i -> i.getCreatedDate().plus(ITEM_RETENTION_DAYS, ChronoUnit.DAYS).isBefore(Instant.now());
         search.getItems().removeIf(p1.and(p2));
     }
 
@@ -59,7 +59,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
 
     @Override
     void update(Search search, Status status) {
-        search.setDateUpdated(Instant.now());
+        search.setLastExecutionDate(Instant.now());
         search.setStatusId(status.getId());
     }
 

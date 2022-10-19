@@ -55,7 +55,7 @@ public class SearchService {
             s.setCategoryName(search.getCategoryName());
             s.setPriceFrom(search.getPriceFrom());
             s.setPriceTo(search.getPriceTo());
-            s.setTimeInterval(search.getTimeInterval());
+            s.setIntervalMinutes(search.getIntervalMinutes());
         });
     }
 

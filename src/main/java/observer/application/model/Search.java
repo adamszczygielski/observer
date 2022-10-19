@@ -27,7 +27,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "SEARCH")
+@Table(name = "SEARCHES")
 @Entity
 public class Search {
 
@@ -53,11 +53,11 @@ public class Search {
     @Column(name = "PRICE_TO")
     private Integer priceTo;
 
-    @Column(name = "DATE_UPDATED")
-    private Instant dateUpdated;
+    @Column(name = "LAST_EXECUTION_DATE")
+    private Instant lastExecutionDate;
 
-    @Column(name = "TIME_INTERVAL")
-    private Short timeInterval;
+    @Column(name = "INTERVAL_MINUTES")
+    private Short intervalMinutes;
 
     @Column(name = "SOURCE_ID")
     @EqualsAndHashCode.Include
@@ -79,8 +79,8 @@ public class Search {
                 ", categoryName='" + categoryName + '\'' +
                 ", priceFrom=" + priceFrom +
                 ", priceTo=" + priceTo +
-                ", dateUpdated=" + dateUpdated +
-                ", timeInterval=" + timeInterval +
+                ", lastExecutionDate=" + lastExecutionDate +
+                ", intervalMinutes=" + intervalMinutes +
                 ", sourceId=" + sourceId +
                 ", statusId=" + statusId +
                 '}';

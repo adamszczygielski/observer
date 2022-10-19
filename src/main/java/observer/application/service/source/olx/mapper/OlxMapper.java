@@ -14,12 +14,12 @@ public class OlxMapper {
         return Item.builder()
                 .originId(ad.getId())
                 .searchId(searchId)
-                .dateCreated(Instant.now())
+                .createdDate(Instant.now())
                 .title(ad.getTitle())
                 .price(toPrice(ad.getPrice()))
                 .url(ad.getUrl())
-                .isActive(true)
-                .isNotified(false)
+                .isDeleted(false)
+                .isNotificationSent(false)
                 .sourceId(Source.OLX.getId())
                 .build();
     }

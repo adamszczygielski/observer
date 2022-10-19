@@ -31,12 +31,12 @@ public class SearchDto {
 
     @Size(min = 1, max = 255)
     private String categoryName;
-    private Instant dateUpdated;
+    private Instant updatedDate;
 
     @NotNull
     @Min(5)
     @Max(360)
-    private Short interval;
+    private Short intervalMinutes;
 
     @NotNull
     private Source source;

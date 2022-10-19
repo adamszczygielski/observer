@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import observer.application.service.ItemNotificationService;
 import observer.application.service.RandomUtils;
 import observer.application.service.SearchExecutionService;
-import observer.application.service.source.SourceServiceResolver;
+import observer.application.service.source.SourceServiceFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.Trigger;
@@ -28,7 +28,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
 
     private final SearchExecutionService searchExecutionService;
     private final ItemNotificationService itemNotificationService;
-    private final SourceServiceResolver sourceServiceResolver;
+    private final SourceServiceFactory sourceServiceFactory;
 
     @Override
     public void configureTasks(@NonNull ScheduledTaskRegistrar taskRegistrar) {
@@ -37,7 +37,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
     }
 
     private void addSearchTask(ScheduledTaskRegistrar taskRegistrar) {
-        sourceServiceResolver.getAll().forEach(sourceService -> {
+        sourceServiceFactory.getAll().forEach(sourceService -> {
             taskRegistrar.addTriggerTask(
                     () -> searchExecutionService.execute(sourceService.getSource()),
                     createSearchTrigger(sourceService.getDelaySeconds()));

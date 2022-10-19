@@ -24,12 +24,12 @@ public class EbayMapper {
         return Item.builder()
                 .originId(searchItem.getItemId())
                 .searchId(searchId)
-                .dateCreated(Instant.now())
+                .createdDate(Instant.now())
                 .title(searchItem.getTitle())
                 .price(toPrice(searchItem.getSellingStatus()))
                 .url(searchItem.getViewItemURL())
-                .isActive(true)
-                .isNotified(false)
+                .isDeleted(false)
+                .isNotificationSent(false)
                 .sourceId(Source.EBAY.getId())
                 .build();
     }

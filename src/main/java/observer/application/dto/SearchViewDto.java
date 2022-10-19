@@ -15,10 +15,10 @@ public class SearchViewDto {
     private final String categoryName;
     private final Integer priceFrom;
     private final Integer priceTo;
-    private final Short timeInterval;
+    private final Short intervalMinutes;
     private final String source;
     private final Integer count;
-    private final Instant dateUpdated;
+    private final Instant updatedDate;
     private final String status;
 
 }
