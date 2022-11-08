@@ -2,11 +2,10 @@ package observer.application.service.source.allegro;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-class AccessToken implements Serializable {
+class AccessToken {
 
     private final String bearerToken;
     private final Instant expirationDate;

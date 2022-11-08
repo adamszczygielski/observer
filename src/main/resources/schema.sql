@@ -26,7 +26,7 @@ create table if not exists items
    is_notification_sent boolean not null,
    source_id smallint not null,
    primary key(id),
-   foreign key (search_id) references search(id) on delete cascade
+   foreign key (search_id) references searches(id) on delete cascade
 );
 
 create view if not exists searches_v as

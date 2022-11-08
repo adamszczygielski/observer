@@ -6,13 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class NotificationResponseDto implements Serializable {
+public class NotificationResponseDto {
 
     private String id;
     private Integer recipients;
