@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,6 +27,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 @Table(name = "SEARCHES")
 @Entity
 public class Search {
@@ -45,24 +47,8 @@ public class Search {
     @EqualsAndHashCode.Include
     private Integer sourceId;
     private Integer statusId;
+    @ToString.Exclude
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "searchId")
     private List<Item> items;
-
-    @Override
-    public String toString() {
-        return "Search{" +
-                "id=" + id +
-                ", keyword='" + keyword + '\'' +
-                ", categoryId='" + categoryId + '\'' +
-                ", categoryName='" + categoryName + '\'' +
-                ", priceFrom=" + priceFrom +
-                ", priceTo=" + priceTo +
-                ", lastExecutionDate=" + lastExecutionDate +
-                ", intervalMinutes=" + intervalMinutes +
-                ", sourceId=" + sourceId +
-                ", statusId=" + statusId +
-                '}';
-    }
-
 }
