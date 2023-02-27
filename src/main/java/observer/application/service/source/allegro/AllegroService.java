@@ -9,6 +9,7 @@ import observer.application.model.Search;
 import observer.application.model.Source;
 import observer.application.rest.JsonMapper;
 import observer.application.service.RandomUtils;
+import observer.application.webdriver.WebDriverFactory;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
 import observer.application.service.source.allegro.model.category.CategoryDto;
@@ -39,7 +40,7 @@ public class AllegroService extends SourceService {
     private final AllegroMapper mapper = new AllegroMapper();
     private final JsonMapper jsonMapper;
     private final LoadingCache<String, List<CategoryDto>> categoryDtoCache;
-    private final WebDriver webDriver;
+    private final WebDriverFactory webDriverFactory;
 
     @Override
     public Source getSource() {
@@ -81,8 +82,8 @@ public class AllegroService extends SourceService {
     }
 
     private String fetchPageSource(String url) {
-        //resetBrowser();
         log.info(url);
+        WebDriver webDriver = webDriverFactory.getOrCreate();
         webDriver.navigate().to(url);
         return webDriver.getPageSource();
     }
@@ -105,7 +106,6 @@ public class AllegroService extends SourceService {
     private int getJsonBeginIndex(String pageSource) {
         int beginPatternIndex = pageSource.indexOf(JSON_BEGIN_PATTERN);
         if (beginPatternIndex == -1) {
-            webDriver.manage().deleteAllCookies();
             throw new IllegalArgumentException("Json begin index has not been found!");
         }
         return beginPatternIndex + JSON_BEGIN_PATTERN.length();
@@ -114,7 +114,6 @@ public class AllegroService extends SourceService {
     private int getJsonEndIndex(String pageSource, int jsonBeginIndex) {
         int endPatternIndex = pageSource.indexOf(JSON_END_PATTERN, jsonBeginIndex);
         if (endPatternIndex == -1) {
-            webDriver.manage().deleteAllCookies();
             throw new IllegalArgumentException("Json end index has not been found!");
         }
         return endPatternIndex;
@@ -163,10 +162,4 @@ public class AllegroService extends SourceService {
                 RandomUtils.getInt(100_000_000, 200_000_000) / 100d :
                 priceTo + RandomUtils.getInt(0, 99) / 100d;
     }
-
-    private void resetBrowser() {
-        webDriver.navigate().to("about:blank");
-        webDriver.manage().deleteAllCookies();
-    }
-
 }
