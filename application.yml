@@ -1,0 +1,50 @@
+observer:
+  allegro:
+    delay-seconds: 20
+    token-private: change-me
+  olx:
+    delay-seconds: 10
+  ebay:
+    delay-seconds: 10
+    security-appname: change-me
+  onesignal:
+    app-id: change-me
+    api-key: change-me
+  notification:
+    delay-seconds: 20
+  chromedriver:
+    logging: true
+    arguments: change-me
+
+server:
+  port: 9130
+  servlet:
+    session:
+      timeout: 365d
+
+spring:
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  datasource:
+    url: jdbc:h2:./database/observer
+    driver-class-name: org.h2.Driver
+    username: change-me
+    password: change-me
+  jpa:
+    show-sql: false
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+  resources:
+    cache:
+      cachecontrol:
+        max-age: 7d
+  security:
+    user:
+      name: change-me
+      password: change-me
+  thymeleaf:
+    cache: true

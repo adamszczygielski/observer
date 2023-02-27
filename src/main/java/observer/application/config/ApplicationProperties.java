@@ -8,34 +8,34 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class ApplicationProperties {
 
-    @Value("${observer.allegro.token.private}")
+    @Value("${observer.allegro.token-private}")
     private String allegroTokenPrivate;
 
-    @Value("${observer.allegro.delay.seconds}")
+    @Value("${observer.allegro.delay-seconds}")
     private Long allegroDelaySeconds;
 
-    @Value("${observer.olx.delay.seconds}")
+    @Value("${observer.olx.delay-seconds}")
     private Long olxDelaySeconds;
 
-    @Value("${observer.ebay.delay.seconds}")
+    @Value("${observer.ebay.delay-seconds}")
     private Long ebayDelaySeconds;
 
-    @Value("${observer.ebay.security.appname}")
+    @Value("${observer.ebay.security-appname}")
     private String ebaySecurityAppname;
 
-    @Value("${observer.onesignal.app.id}")
+    @Value("${observer.onesignal.app-id}")
     private String onesignalAppId;
 
-    @Value("${observer.onesignal.api.key}")
+    @Value("${observer.onesignal.api-key}")
     private String onesignalApiKey;
 
-    @Value("${observer.notification.delay.seconds}")
+    @Value("${observer.notification.delay-seconds}")
     private Integer notificationDelaySeconds;
 
-    @Value("${observer.chromedriver.headless}")
-    private Boolean chromedriverHeadless;
+    @Value("${observer.chromedriver.logging}")
+    private Boolean chromedriverLogging;
 
-    @Value("${observer.chromedriver.images}")
-    private Boolean chromedriverImages;
+    @Value("#{'${observer.chromedriver.arguments}'.split(' ')}")
+    private String[] chromedriverArguments;
 
 }

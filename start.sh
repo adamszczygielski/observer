@@ -1,1 +1,0 @@
-java -jar observer.jar > /dev/null 2>&1 &

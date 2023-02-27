@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
+
 @Configuration
 public class ApplicationConfig {
 
@@ -30,30 +32,31 @@ public class ApplicationConfig {
 
     @Bean
     public WebDriver getWebDriver(ApplicationProperties applicationProperties) {
-        setWebDriverProperties();
-        return new ChromeDriver(createChromeOptions(applicationProperties));
+        setWebDriverProperties(applicationProperties);
+        ChromeDriver chromeDriver = new ChromeDriver(getChromeOptions(applicationProperties));
+        chromeDriver.executeScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})");
+        return chromeDriver;
     }
 
-    private void setWebDriverProperties() {
+    private void setWebDriverProperties(ApplicationProperties applicationProperties) {
         if (OS.isFamilyWindows()) {
-            System.setProperty("webdriver.chrome.driver", "driver-win/chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
         } else if (OS.isFamilyUnix()) {
-            System.setProperty("webdriver.chrome.driver", "driver-linux/chromedriver");
+            System.setProperty("webdriver.chrome.driver", "driver/chromedriver");
+        } else {
+            throw new IllegalStateException("Unsupported OS!");
+        }
+
+        if (applicationProperties.getChromedriverLogging()) {
+            System.setProperty("webdriver.chrome.logfile", "driver/chromedriver.log");
         }
     }
 
-    private ChromeOptions createChromeOptions(ApplicationProperties applicationProperties) {
+    private ChromeOptions getChromeOptions(ApplicationProperties applicationProperties) {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--ignore-certificate-errors", "--disable-blink-features=AutomationControlled");
-
-        if (applicationProperties.getChromedriverHeadless()) {
-            options.addArguments("--headless");
-        }
-
-        if (!applicationProperties.getChromedriverImages()) {
-            options.addArguments("--blink-settings=imagesEnabled=false");
-        }
-
+        options.addArguments(applicationProperties.getChromedriverArguments());
+        options.setExperimentalOption("mobileEmulation", Collections.singletonMap("deviceName", "Nexus 5"));
+        options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
         return options;
     }
 

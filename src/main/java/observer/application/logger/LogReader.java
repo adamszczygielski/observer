@@ -11,10 +11,10 @@ import java.util.List;
 
 public class LogReader {
 
-    private static final File LOG_FILE = new File("logs/observer.log");
+    private static final File LOG_FILE = new File("application.log");
     private static final short MAX_SIZE = 300;
 
-    public String getLogs() {
+    public String getApplicationLogs() {
         List<String> logLines = new ArrayList<>();
         try (ReversedLinesFileReader reader = new ReversedLinesFileReader(LOG_FILE, StandardCharsets.UTF_8)) {
             short counter = 0;

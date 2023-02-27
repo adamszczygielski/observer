@@ -1,0 +1,1 @@
+jre8-win\bin\java -jar observer.jar

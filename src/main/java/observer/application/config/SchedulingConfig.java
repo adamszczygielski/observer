@@ -65,7 +65,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
             Instant nextExecutionTime = Optional.ofNullable(triggerContext.lastCompletionTime())
                     .orElseGet(Date::new)
                     .toInstant()
-                    .plus(RandomUtils.randomize(delaySeconds, delaySeconds * 0.3), ChronoUnit.SECONDS);
+                    .plus(RandomUtils.randomizeValue(delaySeconds, delaySeconds * 0.3), ChronoUnit.SECONDS);
             int nextExecutionHour = nextExecutionTime.atOffset(ZoneOffset.from(OffsetDateTime.now())).getHour();
             if (nextExecutionHour < END_OF_NIGHTTIME_HOUR) {
                 return Date.from(nextExecutionTime.plus(END_OF_NIGHTTIME_HOUR - nextExecutionHour, ChronoUnit.HOURS));

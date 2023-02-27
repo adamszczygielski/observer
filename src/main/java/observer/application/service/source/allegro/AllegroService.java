@@ -81,12 +81,10 @@ public class AllegroService extends SourceService {
     }
 
     private String fetchPageSource(String url) {
+        //resetBrowser();
         log.info(url);
-        randomizeBrowser();
         webDriver.navigate().to(url);
-        String pageSource = webDriver.getPageSource();
-        webDriver.navigate().to("about:blank");
-        return pageSource;
+        return webDriver.getPageSource();
     }
 
     private List<Element> getElements(String listingResponseJson) {
@@ -107,6 +105,7 @@ public class AllegroService extends SourceService {
     private int getJsonBeginIndex(String pageSource) {
         int beginPatternIndex = pageSource.indexOf(JSON_BEGIN_PATTERN);
         if (beginPatternIndex == -1) {
+            webDriver.manage().deleteAllCookies();
             throw new IllegalArgumentException("Json begin index has not been found!");
         }
         return beginPatternIndex + JSON_BEGIN_PATTERN.length();
@@ -115,6 +114,7 @@ public class AllegroService extends SourceService {
     private int getJsonEndIndex(String pageSource, int jsonBeginIndex) {
         int endPatternIndex = pageSource.indexOf(JSON_END_PATTERN, jsonBeginIndex);
         if (endPatternIndex == -1) {
+            webDriver.manage().deleteAllCookies();
             throw new IllegalArgumentException("Json end index has not been found!");
         }
         return endPatternIndex;
@@ -133,21 +133,13 @@ public class AllegroService extends SourceService {
             uriComponentsBuilder.path("listing");
         }
 
-        uriComponentsBuilder.queryParam("string", RandomUtils.randomizeCase(search.getKeyword())
-                .replaceAll(" ", "%20"))
+        uriComponentsBuilder.queryParam("string",
+                        RandomUtils.randomizeCase(search.getKeyword()).replaceAll(" ", "%20"))
                 .queryParam("order", "n")
                 .queryParam("strategy", "NO_FALLBACK")
-                .queryParam("ref", "dym-redirect");
-
-        Integer priceFrom = search.getPriceFrom();
-        if (priceFrom != null) {
-            uriComponentsBuilder.queryParam("price_from", priceFrom);
-        }
-
-        Integer priceTo = search.getPriceTo();
-        if (priceTo != null) {
-            uriComponentsBuilder.queryParam("price_to", priceTo);
-        }
+                .queryParam("ref", "dym-redirect")
+                .queryParam("price_from", randomizePriceFrom(search.getPriceFrom()))
+                .queryParam("price_to", randomizePriceTo(search.getPriceTo()));
 
         return uriComponentsBuilder.build().toUriString();
     }
@@ -160,8 +152,21 @@ public class AllegroService extends SourceService {
         return keywords.stream().allMatch(normalizedTitle::contains);
     }
 
-    private void randomizeBrowser() {
-        webDriver.manage().window().setSize(RandomUtils.getDimension());
+    private static double randomizePriceFrom(Integer priceFrom) {
+        return priceFrom == null ?
+                RandomUtils.getInt(0, 99) / 100d :
+                priceFrom + RandomUtils.getInt(0, 99) / 100d;
+    }
+
+    private static double randomizePriceTo(Integer priceTo) {
+        return priceTo == null ?
+                RandomUtils.getInt(100_000_000, 200_000_000) / 100d :
+                priceTo + RandomUtils.getInt(0, 99) / 100d;
+    }
+
+    private void resetBrowser() {
+        webDriver.navigate().to("about:blank");
+        webDriver.manage().deleteAllCookies();
     }
 
 }

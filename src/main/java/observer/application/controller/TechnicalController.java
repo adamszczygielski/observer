@@ -23,8 +23,8 @@ public class TechnicalController {
     }
 
     @GetMapping(value = "/logs")
-    public String getLogs(Model model) {
-        model.addAttribute("logs", logReader.getLogs());
+    public String getApplicationLogs(Model model) {
+        model.addAttribute("logs", logReader.getApplicationLogs());
         return "logs";
     }
 

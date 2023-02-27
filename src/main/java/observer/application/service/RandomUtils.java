@@ -1,34 +1,24 @@
 package observer.application.service;
 
-import org.openqa.selenium.Dimension;
-
 import java.util.Random;
 
 public class RandomUtils {
 
     private static final Random RANDOM = new Random();
 
-    public static Dimension getDimension() {
-        return new Dimension(getInt(800, 1920), getInt(600, 1200));
-    }
-
-    public static long randomize(long val, double delta) {
+    public static long randomizeValue(long val, double delta) {
         return getInt((int) (val - delta), (int) (val + delta));
     }
 
     public static String randomizeCase(String string) {
         StringBuilder sb = new StringBuilder();
         for (char c : string.toCharArray()) {
-            if (RANDOM.nextBoolean()) {
-                sb.append(Character.toUpperCase(c));
-            } else {
-                sb.append(c);
-            }
+            sb.append(RANDOM.nextBoolean() ? Character.toUpperCase(c) : c);
         }
         return sb.toString();
     }
 
-    private static int getInt(int min, int max) {
+    public static int getInt(int min, int max) {
         return RANDOM.nextInt(max - min) + min;
     }
 

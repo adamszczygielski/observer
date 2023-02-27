@@ -24,11 +24,7 @@
 /nbdist/
 /.nb-gradle/
 
-### Runtime ###
-/logs/
+### Application ###
 /database/
-application.pid
-
-### Drivers ###
-/driver-win/
-/driver-linux/
+/driver/
+*.log
