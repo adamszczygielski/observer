@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ApplicationProperties;
 import org.apache.commons.exec.OS;
-import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class ChromeDriverFactory implements WebDriverFactory {
         } else {
             try {
                 chromeDriver.getTitle();
-            } catch (NoSuchWindowException e) {
+            } catch (WebDriverException e) {
                 recreate();
             }
         }
