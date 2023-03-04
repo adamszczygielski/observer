@@ -13,8 +13,6 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Optional;
@@ -23,8 +21,6 @@ import java.util.Optional;
 @EnableScheduling
 @RequiredArgsConstructor
 public class SchedulingConfig implements SchedulingConfigurer {
-
-    private final int END_OF_NIGHTTIME_HOUR = 6;
 
     private final SearchExecutionService searchExecutionService;
     private final ItemNotificationService itemNotificationService;
@@ -66,10 +62,6 @@ public class SchedulingConfig implements SchedulingConfigurer {
                     .orElseGet(Date::new)
                     .toInstant()
                     .plus(RandomUtils.randomizeValue(delaySeconds, delaySeconds * 0.3), ChronoUnit.SECONDS);
-            int nextExecutionHour = nextExecutionTime.atOffset(ZoneOffset.from(OffsetDateTime.now())).getHour();
-            if (nextExecutionHour < END_OF_NIGHTTIME_HOUR) {
-                return Date.from(nextExecutionTime.plus(END_OF_NIGHTTIME_HOUR - nextExecutionHour, ChronoUnit.HOURS));
-            }
             return Date.from(nextExecutionTime);
         };
     }
