@@ -1,20 +1,22 @@
 package observer.application.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@RequiredArgsConstructor
+@Component
 public class JsonMapperImpl implements JsonMapper {
 
-    private final ObjectMapper objectMapper;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     @Override
     public <R> R toObject(String content, Class<R> valueType) {
         try {
-            return objectMapper.readValue(content, valueType);
+            return OBJECT_MAPPER.readValue(content, valueType);
         } catch (IOException e) {
             throw new IllegalArgumentException("Could not deserialize object", e);
         }
@@ -23,7 +25,7 @@ public class JsonMapperImpl implements JsonMapper {
     @Override
     public String toJson(Object value) {
         try {
-            return objectMapper.writeValueAsString(value);
+            return OBJECT_MAPPER.writeValueAsString(value);
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Could not serialize object", e);
         }
