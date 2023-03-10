@@ -22,6 +22,10 @@ server:
     session:
       timeout: 365d
 
+logging:
+  level:
+    root: info
+
 spring:
   h2:
     console:
