@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -24,27 +25,35 @@ public class ChromeDriverFactory implements WebDriverFactory {
     @Override
     public WebDriver getOrCreate() {
         if (chromeDriver == null) {
-            create();
+            createChromeDriver();
         } else {
             try {
                 chromeDriver.getTitle();
             } catch (WebDriverException e) {
-                recreate();
+                createChromeDriver();
             }
         }
         return chromeDriver;
     }
 
-    private void create() {
+    private void createChromeDriver() {
+        stopChromeProcess();
         setWebDriverSystemProperties();
         chromeDriver = new ChromeDriver(getChromeOptions());
+        chromeDriver.manage().timeouts().pageLoadTimeout(5000, TimeUnit.MILLISECONDS);
         chromeDriver.executeScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})");
     }
 
-    private void recreate() {
-        stopChromeProcess();
-        chromeDriver = new ChromeDriver(getChromeOptions());
-        chromeDriver.executeScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})");
+    private void stopChromeProcess() {
+        try {
+            if (OS.isFamilyWindows()) {
+                Runtime.getRuntime().exec("taskkill /IM chrome.exe /F");
+            } else if (OS.isFamilyUnix()) {
+                Runtime.getRuntime().exec("pkill chrome");
+            }
+        } catch (IOException e) {
+            log.error("Could not stop chrome process!", e);
+        }
     }
 
     private void setWebDriverSystemProperties() {
@@ -58,18 +67,6 @@ public class ChromeDriverFactory implements WebDriverFactory {
 
         if (applicationProperties.getChromedriverLogging()) {
             System.setProperty("webdriver.chrome.logfile", "driver/chromedriver.log");
-        }
-    }
-
-    private void stopChromeProcess() {
-        try {
-            if (OS.isFamilyWindows()) {
-                Runtime.getRuntime().exec("taskkill /IM chrome.exe /F");
-            } else if (OS.isFamilyUnix()) {
-                Runtime.getRuntime().exec("pkill chrome");
-            }
-        } catch (IOException e) {
-            log.error("Could not stop chrome process!", e);
         }
     }
 
