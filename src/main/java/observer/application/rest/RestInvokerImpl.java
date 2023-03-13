@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class RestInvokerImpl implements RestInvoker {
 
-    private static final short TIME_OUT_MILLIS = 5000;
+    private static final short TIMEOUT_MILLIS = 5000;
     private final RestTemplate restTemplate = createRestTemplate();
 
     @Override
@@ -29,16 +29,10 @@ public class RestInvokerImpl implements RestInvoker {
     }
 
     private RestTemplate createRestTemplate() {
-        return new RestTemplateBuilder()
-                .requestFactory(this::createRequestFactory)
-                .build();
-    }
-
-    private HttpComponentsClientHttpRequestFactory createRequestFactory() {
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(TIME_OUT_MILLIS)
-                .setSocketTimeout(TIME_OUT_MILLIS)
-                .setConnectTimeout(TIME_OUT_MILLIS)
+                .setConnectionRequestTimeout(TIMEOUT_MILLIS)
+                .setSocketTimeout(TIMEOUT_MILLIS)
+                .setConnectTimeout(TIMEOUT_MILLIS)
                 .setCookieSpec(CookieSpecs.STANDARD)
                 .build();
 
@@ -51,6 +45,8 @@ public class RestInvokerImpl implements RestInvoker {
                 .setConnectionManager(connectionManager)
                 .build();
 
-        return new HttpComponentsClientHttpRequestFactory(httpClient);
+        return new RestTemplateBuilder()
+                .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(httpClient))
+                .build();
     }
 }

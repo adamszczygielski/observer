@@ -10,8 +10,10 @@ import java.io.IOException;
 @Service
 public class DocumentService {
 
+    private static final short TIMEOUT_MILLIS = 5000;
+
     Document getDocument(String url) {
-        Connection connection = Jsoup.connect(url);
+        Connection connection = Jsoup.connect(url).timeout(TIMEOUT_MILLIS);
         try {
             return connection.get();
         } catch (IOException e) {

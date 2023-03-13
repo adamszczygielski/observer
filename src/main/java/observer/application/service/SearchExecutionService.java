@@ -2,6 +2,7 @@ package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import observer.application.config.ApplicationProperties;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
@@ -26,10 +27,10 @@ import static java.util.stream.Collectors.toList;
 public class SearchExecutionService extends SearchExecutionTemplate<Search, List<Item>> {
 
     private static final PageRequest PAGE_REQUEST = PageRequest.of(0, 1);
-    private static final short ITEM_RETENTION_DAYS = 30;
 
     private final SearchRepository searchRepository;
     private final SourceServiceFactory sourceServiceFactory;
+    private final ApplicationProperties applicationProperties;
 
     @Transactional
     public void execute(Source source) {
@@ -44,7 +45,9 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
     @Override
     void removeItems(Search search) {
         Predicate<Item> p1 = Item::getIsDeleted;
-        Predicate<Item> p2 = i -> i.getCreatedDate().plus(ITEM_RETENTION_DAYS, ChronoUnit.DAYS).isBefore(Instant.now());
+        Predicate<Item> p2 = i -> i.getCreatedDate()
+                .plus(applicationProperties.getItemsRetentionDays(), ChronoUnit.DAYS)
+                .isBefore(Instant.now());
         search.getItems().removeIf(p1.and(p2));
     }
 

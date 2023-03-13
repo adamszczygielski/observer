@@ -1,4 +1,6 @@
 observer:
+  items:
+    retention-days: 90
   allegro:
     delay-seconds: 20
     token-private: change-me

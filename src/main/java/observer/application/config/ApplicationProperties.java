@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class ApplicationProperties {
 
+    @Value("${observer.items.retention-days}")
+    private Integer itemsRetentionDays;
+
     @Value("${observer.allegro.token-private}")
     private String allegroTokenPrivate;
 
