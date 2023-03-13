@@ -3,6 +3,7 @@ package observer.application.config;
 import lombok.RequiredArgsConstructor;
 import observer.application.service.ItemNotificationService;
 import observer.application.service.SearchExecutionService;
+import observer.application.service.source.SourceService;
 import observer.application.service.source.SourceServiceFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -26,25 +27,32 @@ public class SchedulingConfig implements SchedulingConfigurer {
 
     @Override
     public void configureTasks(@NonNull ScheduledTaskRegistrar taskRegistrar) {
-        addSearchTask(taskRegistrar);
+        addSearchTasks(taskRegistrar);
         addNotificationTask(taskRegistrar);
     }
 
-    private void addSearchTask(ScheduledTaskRegistrar taskRegistrar) {
+    private void addSearchTasks(ScheduledTaskRegistrar taskRegistrar) {
         sourceServiceFactory.getAll().forEach(sourceService ->
                 taskRegistrar.addTriggerTask(() -> searchExecutionService.execute(sourceService.getSource()),
-                        createTrigger(sourceService.getDelaySeconds())));
+                        createFixedDelayTrigger(sourceService.getDelaySeconds())));
     }
 
     private void addNotificationTask(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.addTriggerTask(itemNotificationService::execute,
-                createTrigger(itemNotificationService.getDelaySeconds()));
+                createFixedDelayTrigger(itemNotificationService.getDelaySeconds()));
     }
 
-    private Trigger createTrigger(long delaySeconds) {
+    private Trigger createFixedDelayTrigger(long seconds) {
         return triggerContext -> Date.from(Optional.ofNullable(triggerContext.lastCompletionTime())
                 .orElseGet(Date::new)
                 .toInstant()
-                .plus(delaySeconds, ChronoUnit.SECONDS));
+                .plus(seconds, ChronoUnit.SECONDS));
+    }
+
+    private Trigger createDynamicDelayTrigger(SourceService sourceService) {
+        return triggerContext -> Date.from(Optional.ofNullable(triggerContext.lastCompletionTime())
+                .orElseGet(Date::new)
+                .toInstant()
+                .plus(sourceService.getDelaySeconds(), ChronoUnit.SECONDS));
     }
 }

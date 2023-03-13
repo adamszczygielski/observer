@@ -49,8 +49,7 @@ public class AllegroService extends SourceService {
 
     @Override
     public long getDelaySeconds() {
-        Long seconds = applicationProperties.getAllegroDelaySeconds();
-        return RandomUtils.randomizeValue(seconds, seconds * 0.3);
+        return applicationProperties.getAllegroDelaySeconds();
     }
 
     @Override

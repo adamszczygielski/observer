@@ -1,6 +1,8 @@
 observer:
+  items:
+    retention-days: 90
   allegro:
-    delay-seconds: 20
+    delay-seconds: 15
     token-private: change-me
   olx:
     delay-seconds: 10
@@ -13,7 +15,7 @@ observer:
   notification:
     delay-seconds: 20
   chromedriver:
-    logging: true
+    logging: false
     arguments: change-me
 
 server:
