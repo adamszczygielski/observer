@@ -1,6 +1,7 @@
 package observer.application.service.source.allegro;
 
-import observer.application.config.ApplicationProperties;
+import lombok.RequiredArgsConstructor;
+import observer.application.config.ApplicationConfig;
 import observer.application.rest.RestInvoker;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,17 +10,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 
+@RequiredArgsConstructor
 class AuthorizationService {
 
     private final RestInvoker restInvoker;
-    private final ApplicationProperties applicationProperties;
+    private final ApplicationConfig applicationConfig;
 
     private AccessToken accessToken;
-
-    public AuthorizationService(RestInvoker restInvoker, ApplicationProperties applicationProperties) {
-        this.restInvoker = restInvoker;
-        this.applicationProperties = applicationProperties;
-    }
 
     protected String fetchBearerToken() {
         if (accessToken != null && accessToken.isValid()) {
@@ -42,7 +39,7 @@ class AuthorizationService {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        requestHeaders.add("Authorization", applicationProperties.getAllegroTokenPrivate());
+        requestHeaders.add("Authorization", applicationConfig.getAllegroTokenPrivate());
         return new HttpEntity<>(requestHeaders);
     }
 

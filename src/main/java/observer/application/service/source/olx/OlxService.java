@@ -44,7 +44,7 @@ public class OlxService extends SourceService {
 
     @Override
     public long getDelaySeconds() {
-        return applicationProperties.getOlxDelaySeconds();
+        return applicationConfig.getOlxDelaySeconds();
     }
 
     @Override

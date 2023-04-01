@@ -2,7 +2,7 @@ package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import observer.application.config.ApplicationProperties;
+import observer.application.config.ApplicationConfig;
 import observer.application.model.Item;
 import observer.application.model.Source;
 import observer.application.repository.ItemRepository;
@@ -25,7 +25,7 @@ public class ItemNotificationService {
 
     private final NotificationService notificationService;
     private final ItemRepository itemRepository;
-    private final ApplicationProperties applicationProperties;
+    private final ApplicationConfig applicationConfig;
 
     public void execute() {
         List<Item> items = itemRepository
@@ -40,7 +40,7 @@ public class ItemNotificationService {
     }
 
     public long getDelaySeconds() {
-        return applicationProperties.getNotificationDelaySeconds();
+        return applicationConfig.getNotificationDelaySeconds();
     }
 
     private String createMessage(List<Item> items) {

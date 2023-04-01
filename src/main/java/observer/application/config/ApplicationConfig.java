@@ -3,19 +3,27 @@ package observer.application.config;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
+@EnableAsync
 @Getter
-public class ApplicationProperties {
+public class ApplicationConfig {
 
     @Value("${observer.items.retention-days}")
     private Integer itemsRetentionDays;
+
+    @Value("${observer.searches.error.delay-minutes}")
+    private Integer searchesErrorDelayMinutes;
+
+    @Value("${observer.searches.error.threshold}")
+    private Integer searchesErrorThreshold;
 
     @Value("${observer.allegro.token-private}")
     private String allegroTokenPrivate;
 
     @Value("${observer.allegro.delay-seconds}")
-    private Long allegroDelaySeconds;
+    private Integer allegroDelaySeconds;
 
     @Value("${observer.olx.delay-seconds}")
     private Long olxDelaySeconds;

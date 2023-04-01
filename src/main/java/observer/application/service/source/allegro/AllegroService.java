@@ -9,14 +9,15 @@ import observer.application.model.Search;
 import observer.application.model.Source;
 import observer.application.rest.JsonMapper;
 import observer.application.service.RandomUtils;
-import observer.application.webdriver.WebDriverFactory;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
 import observer.application.service.source.allegro.model.category.CategoryDto;
 import observer.application.service.source.allegro.model.listing.Element;
 import observer.application.service.source.allegro.model.listing.ListingResponse;
+import observer.application.webdriver.WebDriverFactory;
 import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.WebDriver;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -49,7 +50,8 @@ public class AllegroService extends SourceService {
 
     @Override
     public long getDelaySeconds() {
-        return applicationProperties.getAllegroDelaySeconds();
+        Integer seconds = applicationConfig.getAllegroDelaySeconds();
+        return RandomUtils.getInt(seconds, seconds + 5);
     }
 
     @Override
@@ -84,6 +86,7 @@ public class AllegroService extends SourceService {
     private String fetchPageSource(String url) {
         log.info(url);
         WebDriver webDriver = webDriverFactory.getOrCreate();
+        webDriver.manage().deleteAllCookies();
         webDriver.navigate().to(url);
         return webDriver.getPageSource();
     }
@@ -132,13 +135,14 @@ public class AllegroService extends SourceService {
             uriComponentsBuilder.path("listing");
         }
 
-        uriComponentsBuilder.queryParam("string",
-                        RandomUtils.randomizeCase(search.getKeyword()).replaceAll(" ", "%20"))
-                .queryParam("order", "n")
-                .queryParam("strategy", "NO_FALLBACK")
-                .queryParam("ref", "dym-redirect")
+        uriComponentsBuilder.queryParam("order", "n")
                 .queryParam("price_from", randomizePriceFrom(search.getPriceFrom()))
-                .queryParam("price_to", randomizePriceTo(search.getPriceTo()));
+                .queryParam("price_to", randomizePriceTo(search.getPriceTo()))
+                .queryParam("string", RandomUtils.randomizeCase(search.getKeyword())
+                        .replaceAll(" ", "%20"))
+                .queryParam("fallback", "dym")
+                .queryParam("strategy", "NO_FALLBACK")
+                .queryParam("ref", "dym-redirect");
 
         return uriComponentsBuilder.build().toUriString();
     }
@@ -151,13 +155,13 @@ public class AllegroService extends SourceService {
         return keywords.stream().allMatch(normalizedTitle::contains);
     }
 
-    private static double randomizePriceFrom(Integer priceFrom) {
+    private static double randomizePriceFrom(@Nullable Integer priceFrom) {
         return priceFrom == null ?
                 RandomUtils.getInt(0, 99) / 100d :
                 priceFrom + RandomUtils.getInt(0, 99) / 100d;
     }
 
-    private static double randomizePriceTo(Integer priceTo) {
+    private static double randomizePriceTo(@Nullable Integer priceTo) {
         return priceTo == null ?
                 RandomUtils.getInt(100_000_000, 200_000_000) / 100d :
                 priceTo + RandomUtils.getInt(0, 99) / 100d;

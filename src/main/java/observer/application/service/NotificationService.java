@@ -2,7 +2,7 @@ package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import observer.application.config.ApplicationProperties;
+import observer.application.config.ApplicationConfig;
 import observer.application.dto.NotificationRequestDto;
 import observer.application.dto.NotificationResponseDto;
 import observer.application.rest.JsonMapper;
@@ -10,6 +10,7 @@ import observer.application.rest.RestInvoker;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,8 +24,9 @@ public class NotificationService {
 
     private final JsonMapper jsonMapper;
     private final RestInvoker restInvoker;
-    private final ApplicationProperties applicationProperties;
+    private final ApplicationConfig applicationConfig;
 
+    @Async
     public void sendNotification(String message) {
         NotificationRequestDto notificationRequest = getNotificationRequest(message);
         String requestBody = jsonMapper.toJson(notificationRequest);
@@ -38,7 +40,7 @@ public class NotificationService {
 
     private NotificationRequestDto getNotificationRequest(String message) {
         return NotificationRequestDto.builder()
-                .appId(applicationProperties.getOnesignalAppId())
+                .appId(applicationConfig.getOnesignalAppId())
                 .includedSegments(Collections.singletonList("All"))
                 .contents(new HashMap<String, String>() {{
                     put("en", message);
@@ -48,7 +50,7 @@ public class NotificationService {
     private HttpEntity<String> createHttpEntity(String requestBody) {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.add("Authorization", applicationProperties.getOnesignalApiKey());
+        requestHeaders.add("Authorization", applicationConfig.getOnesignalApiKey());
         return new HttpEntity<>(requestBody, requestHeaders);
     }
 

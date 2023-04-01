@@ -2,7 +2,7 @@ package observer.application.webdriver;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import observer.application.config.ApplicationProperties;
+import observer.application.config.ApplicationConfig;
 import org.apache.commons.exec.OS;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class ChromeDriverFactory implements WebDriverFactory {
 
-    private final ApplicationProperties applicationProperties;
+    private final ApplicationConfig applicationConfig;
     private ChromeDriver chromeDriver;
 
     @Override
@@ -65,14 +65,14 @@ public class ChromeDriverFactory implements WebDriverFactory {
             throw new IllegalStateException("Unsupported OS!");
         }
 
-        if (applicationProperties.getChromedriverLogging()) {
+        if (applicationConfig.getChromedriverLogging()) {
             System.setProperty("webdriver.chrome.logfile", "driver/chromedriver.log");
         }
     }
 
     private ChromeOptions getChromeOptions() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments(applicationProperties.getChromedriverArguments());
+        options.addArguments(applicationConfig.getChromedriverArguments());
         options.setExperimentalOption("mobileEmulation", Collections.singletonMap("deviceName", "Nexus 5"));
         options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
         return options;

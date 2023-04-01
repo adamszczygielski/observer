@@ -1,4 +1,8 @@
 observer:
+  searches:
+    error:
+      threshold: 2
+      delay-minutes: 15
   items:
     retention-days: 90
   allegro:

@@ -1,6 +1,6 @@
 package observer.application.service.source.allegro;
 
-import observer.application.config.ApplicationProperties;
+import observer.application.config.ApplicationConfig;
 import observer.application.rest.RestInvoker;
 import observer.application.service.source.allegro.model.category.CategoriesDto;
 import observer.application.service.source.allegro.model.category.CategoryDto;
@@ -20,9 +20,9 @@ class AllegroCategoryService {
     private final RestInvoker restInvoker;
     private final AuthorizationService authorizationService;
 
-    public AllegroCategoryService(RestInvoker restInvoker, ApplicationProperties applicationProperties) {
+    public AllegroCategoryService(RestInvoker restInvoker, ApplicationConfig applicationConfig) {
         this.restInvoker = restInvoker;
-        this.authorizationService = new AuthorizationService(restInvoker, applicationProperties);
+        this.authorizationService = new AuthorizationService(restInvoker, applicationConfig);
     }
 
     protected List<CategoryDto> fetchCategories(String parentId) {

@@ -2,7 +2,7 @@ package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import observer.application.config.ApplicationProperties;
+import observer.application.config.ApplicationConfig;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
@@ -16,25 +16,32 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.toList;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SearchExecutionService extends SearchExecutionTemplate<Search, List<Item>> {
 
     private static final PageRequest PAGE_REQUEST = PageRequest.of(0, 1);
 
+    private final Map<Integer, Integer> errorCounter = new HashMap<>();
     private final SearchRepository searchRepository;
     private final SourceServiceFactory sourceServiceFactory;
-    private final ApplicationProperties applicationProperties;
+    private final ApplicationConfig applicationConfig;
 
     @Transactional
     public void execute(Source source) {
         searchRepository.findOverdue(source.getId(), PAGE_REQUEST).forEach(this::execute);
+    }
+
+    public int getErrorCount(int sourceId) {
+        return errorCounter.getOrDefault(sourceId, 0);
     }
 
     @Override
@@ -46,7 +53,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
     void removeItems(Search search) {
         Predicate<Item> p1 = Item::getIsDeleted;
         Predicate<Item> p2 = i -> i.getCreatedDate()
-                .plus(applicationProperties.getItemsRetentionDays(), ChronoUnit.DAYS)
+                .plus(applicationConfig.getItemsRetentionDays(), ChronoUnit.DAYS)
                 .isBefore(Instant.now());
         search.getItems().removeIf(p1.and(p2));
     }
@@ -66,4 +73,13 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
         search.setStatusId(status.getId());
     }
 
+    @Override
+    void incrementErrorCounter(Search search) {
+        errorCounter.merge(search.getSourceId(), 1, Integer::sum);
+    }
+
+    @Override
+    void resetErrorCounter(Search search) {
+        errorCounter.put(search.getSourceId(), 0);
+    }
 }

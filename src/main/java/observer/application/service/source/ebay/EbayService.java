@@ -32,7 +32,7 @@ public class EbayService extends SourceService {
 
     @Override
     public long getDelaySeconds() {
-        return applicationProperties.getEbayDelaySeconds();
+        return applicationConfig.getEbayDelaySeconds();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class EbayService extends SourceService {
                 .pathSegment("v1")
                 .queryParam("OPERATION-NAME", "findItemsByKeywords")
                 .queryParam("SERVICE-VERSION", "1.13.0")
-                .queryParam("SECURITY-APPNAME", applicationProperties.getEbaySecurityAppname())
+                .queryParam("SECURITY-APPNAME", applicationConfig.getEbaySecurityAppname())
                 .queryParam("RESPONSE-DATA-FORMAT", "XML")
                 .queryParam("keywords", search.getKeyword().replaceAll(" ", "+"))
                 .queryParam("sortOrder", "StartTimeNewest")

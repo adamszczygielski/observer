@@ -8,15 +8,17 @@ import java.text.MessageFormat;
 @Slf4j
 abstract class SearchExecutionTemplate<S, I> {
 
-    final void execute(S search) {
+    void execute(S search) {
         long startTimeMillis = System.currentTimeMillis();
         try {
             I items = fetchItems(search);
             removeItems(search);
             insertItems(search, items);
             update(search, Status.SUCCESS);
+            resetErrorCounter(search);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+            incrementErrorCounter(search);
             update(search, Status.FAILED);
         }
         log.info(MessageFormat.format("Execution time: {0}ms",
@@ -30,4 +32,8 @@ abstract class SearchExecutionTemplate<S, I> {
     abstract void removeItems(S search);
 
     abstract void update(S search, Status status);
+
+    abstract void incrementErrorCounter(S search);
+
+    abstract void resetErrorCounter(S search);
 }
