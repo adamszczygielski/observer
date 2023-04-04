@@ -118,11 +118,11 @@ public class OlxService extends SourceService {
         return UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("www.olx.pl")
-                .pathSegment("d")
                 .pathSegment(category)
                 .pathSegment(keyword)
-                .path("/")
-                .toUriString();
+                .build()
+                .toUri()
+                .toString();
     }
 
     private boolean containsAllKeywords(String title, String keyword) {

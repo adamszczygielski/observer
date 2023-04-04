@@ -50,7 +50,7 @@ public class AllegroService extends SourceService {
 
     @Override
     public long getDelaySeconds() {
-        Integer seconds = applicationConfig.getAllegroDelaySeconds();
+        int seconds = applicationConfig.getAllegroDelaySeconds();
         return RandomUtils.getInt(seconds, seconds + 5);
     }
 
@@ -135,16 +135,16 @@ public class AllegroService extends SourceService {
             uriComponentsBuilder.path("listing");
         }
 
-        uriComponentsBuilder.queryParam("order", "n")
+        return uriComponentsBuilder.queryParam("order", "n")
                 .queryParam("price_from", randomizePriceFrom(search.getPriceFrom()))
                 .queryParam("price_to", randomizePriceTo(search.getPriceTo()))
-                .queryParam("string", RandomUtils.randomizeCase(search.getKeyword())
-                        .replaceAll(" ", "%20"))
+                .queryParam("string", RandomUtils.randomizeCase(search.getKeyword()))
                 .queryParam("fallback", "dym")
                 .queryParam("strategy", "NO_FALLBACK")
-                .queryParam("ref", "dym-redirect");
-
-        return uriComponentsBuilder.build().toUriString();
+                .queryParam("ref", "dym-redirect")
+                .build()
+                .toUri()
+                .toString();
     }
 
     private boolean containsAllKeywords(String title, String keyword) {

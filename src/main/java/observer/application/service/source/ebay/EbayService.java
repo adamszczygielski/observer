@@ -84,6 +84,8 @@ public class EbayService extends SourceService {
             uriComponentsBuilder.queryParam("itemFilter(1).paramValue", "PLN");
         }
 
-        return uriComponentsBuilder.build().toUriString();
+        return uriComponentsBuilder.build()
+                .toUri()
+                .toString();
     }
 }
