@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -23,8 +24,8 @@ public class TechnicalController {
     }
 
     @GetMapping(value = "/logs")
-    public String getApplicationLogs(Model model) {
-        model.addAttribute("logs", logReader.getApplicationLogs());
+    public String getApplicationLogs(Model model, @RequestParam(value = "limit", defaultValue = "100") int limit) {
+        model.addAttribute("logs", logReader.getApplicationLogs(limit));
         return "logs";
     }
 

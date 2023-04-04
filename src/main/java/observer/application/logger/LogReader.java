@@ -12,14 +12,13 @@ import java.util.List;
 public class LogReader {
 
     private static final File LOG_FILE = new File("application.log");
-    private static final short MAX_SIZE = 300;
 
-    public String getApplicationLogs() {
+    public String getApplicationLogs(int limit) {
         List<String> logLines = new ArrayList<>();
         try (ReversedLinesFileReader reader = new ReversedLinesFileReader(LOG_FILE, StandardCharsets.UTF_8)) {
             short counter = 0;
             String line;
-            while ((line = reader.readLine()) != null && counter++ < MAX_SIZE) {
+            while ((line = reader.readLine()) != null && counter++ < limit) {
                 logLines.add(line);
             }
         } catch (IOException e) {
