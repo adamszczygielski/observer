@@ -14,9 +14,9 @@ public class LogReader {
     private static final File LOG_FILE = new File("application.log");
 
     public String getApplicationLogs(int limit) {
-        List<String> logLines = new ArrayList<>();
+        List<String> logLines = new ArrayList<>(limit);
         try (ReversedLinesFileReader reader = new ReversedLinesFileReader(LOG_FILE, StandardCharsets.UTF_8)) {
-            short counter = 0;
+            int counter = 0;
             String line;
             while ((line = reader.readLine()) != null && counter++ < limit) {
                 logLines.add(line);

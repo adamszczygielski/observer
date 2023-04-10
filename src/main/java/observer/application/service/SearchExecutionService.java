@@ -7,9 +7,7 @@ import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
 import observer.application.model.Status;
-import observer.application.repository.SearchRepository;
 import observer.application.service.source.SourceServiceFactory;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.toList;
@@ -28,25 +27,19 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class SearchExecutionService extends SearchExecutionTemplate<Search, List<Item>> {
 
-    private static final PageRequest PAGE_REQUEST = PageRequest.of(0, 1);
-
     private final Map<Integer, Integer> errorCounter = new HashMap<>();
-    private final SearchRepository searchRepository;
+    private final SearchService searchService;
+    private final ItemService itemService;
     private final SourceServiceFactory sourceServiceFactory;
     private final ApplicationConfig applicationConfig;
 
     @Transactional
     public void execute(Source source) {
-        searchRepository.findOverdue(source.getId(), PAGE_REQUEST).forEach(this::execute);
+        searchService.getOverdue(source.getId()).ifPresent(this::execute);
     }
 
     public int getErrorCount(int sourceId) {
         return errorCounter.getOrDefault(sourceId, 0);
-    }
-
-    @Override
-    List<Item> fetchItems(Search search) {
-        return sourceServiceFactory.get(search.getSourceId()).fetchItems(search);
     }
 
     @Override
@@ -59,12 +52,22 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
     }
 
     @Override
+    List<Item> fetchItems(Search search) {
+        return sourceServiceFactory.get(search.getSourceId()).fetchItems(search);
+    }
+
+    @Override
     void insertItems(Search search, List<Item> fetchedItems) {
-        List<Item> newItems = fetchedItems.stream()
-                .filter(fetchedItem -> !search.getItems().contains(fetchedItem))
-                .collect(toList());
-        search.getItems().addAll(newItems);
-        log.info(MessageFormat.format("Items found: {0}/{1}", newItems.size(), fetchedItems.size()));
+        if (fetchedItems.isEmpty()) {
+            log.info(MessageFormat.format("Items found: {0}/{1}", 0, 0));
+        } else {
+            Set<String> originIds = itemService.getOriginIds(search.getSourceId());
+            List<Item> newItems = fetchedItems.stream()
+                    .filter(fetchedItem -> !originIds.contains(fetchedItem.getOriginId()))
+                    .collect(toList());
+            search.getItems().addAll(newItems);
+            log.info(MessageFormat.format("Items found: {0}/{1}", newItems.size(), fetchedItems.size()));
+        }
     }
 
     @Override

@@ -19,7 +19,5 @@ public interface SearchRepository extends JpaRepository<Search, Long> {
     List<Search> findOverdue(Integer sourceId, Pageable pageable);
 
     @Modifying
-    @Query("DELETE FROM Search s WHERE s.id IN :searchIds")
-    void deleteByIds(List<Long> searchIds);
-
+    void deleteByIdIn(List<Long> ids);
 }

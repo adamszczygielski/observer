@@ -1,7 +1,6 @@
 package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.repository.ItemRepository;
 import observer.application.repository.SearchRepository;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +27,10 @@ public class ItemService {
         return itemRepository.findByIsDeletedFalseOrderByCreatedDateDesc();
     }
 
+    public Set<String> getOriginIds(Integer sourceId) {
+        return itemRepository.findOriginIds(sourceId);
+    }
+
     public List<Item> fetchItems(Long searchId) {
         return searchRepository.findById(searchId)
                 .map(s -> sourceServiceFactory.get(s.getSourceId()).fetchItems(s))
@@ -35,10 +39,6 @@ public class ItemService {
 
     public void deleteItems(List<Long> itemIds) {
         itemRepository.setIsDeletedTrue(itemIds);
-    }
-
-    public List<Category> getCategories(int sourceId, String parentId) {
-        return sourceServiceFactory.get(sourceId).fetchCategories(parentId);
     }
 
 }

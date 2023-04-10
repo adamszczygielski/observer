@@ -5,15 +5,19 @@ import observer.application.model.Search;
 import observer.application.model.SearchView;
 import observer.application.repository.SearchRepository;
 import observer.application.repository.SearchViewRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class SearchService {
+
+    private static final PageRequest PAGE_REQUEST = PageRequest.of(0, 1);
 
     private final SearchViewRepository searchViewRepository;
     private final SearchRepository searchRepository;
@@ -22,14 +26,19 @@ public class SearchService {
         return searchViewRepository.findAll();
     }
 
-    public Search get(Long searchId) {
+    public Search getOrThrow(long searchId) {
         return searchRepository.findById(searchId).orElseThrow(() -> new IllegalArgumentException(
                 MessageFormat.format("SearchId {0} does not exist", searchId)));
     }
 
+    public Optional<Search> getOverdue(int sourceId) {
+        List<Search> overdueSearches = searchRepository.findOverdue(sourceId, PAGE_REQUEST);
+        return overdueSearches.isEmpty() ? Optional.empty() : Optional.of(overdueSearches.get(0));
+    }
+
     @Transactional
     public void delete(List<Long> searchIds) {
-        searchRepository.deleteByIds(searchIds);
+        searchRepository.deleteByIdIn(searchIds);
     }
 
     @Transactional

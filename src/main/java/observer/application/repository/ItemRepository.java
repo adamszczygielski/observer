@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
@@ -18,6 +19,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findByIsDeletedFalseOrderByCreatedDateDesc();
 
     List<Item> findByIsDeletedFalseAndIsNotificationSentFalseOrderByCreatedDateDesc(Pageable pageable);
+
+    @Query("SELECT i.originId FROM Item i WHERE i.sourceId = :sourceId")
+    Set<String> findOriginIds(Integer sourceId);
 
     @Modifying
     @Transactional
