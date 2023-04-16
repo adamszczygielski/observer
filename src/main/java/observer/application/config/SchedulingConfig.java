@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Optional;
@@ -27,7 +28,7 @@ import java.util.function.Supplier;
 public class SchedulingConfig implements SchedulingConfigurer {
 
     private static final String ERROR_MESSAGE_PATTERN =
-            "Error threshold for {0} exceeded. Next execution attempt in {1} minutes";
+            "Error threshold for {0} exceeded. Next execution attempt in {1}s";
 
     private final SearchExecutionService searchExecutionService;
     private final ItemNotificationService itemNotificationService;
@@ -45,32 +46,35 @@ public class SchedulingConfig implements SchedulingConfigurer {
         sourceServiceFactory.getAll().forEach(sourceService ->
                 taskRegistrar.addTriggerTask(
                         () -> searchExecutionService.execute(sourceService.getSource()),
-                        createTrigger(() -> estimateDelaySeconds(sourceService.getSource()))));
+                        createTrigger(() -> estimateDelay(sourceService.getSource()))));
     }
 
     private void addNotificationTask(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.addTriggerTask(itemNotificationService::execute,
-                createTrigger(itemNotificationService::getDelaySeconds));
+                createTrigger(itemNotificationService::getDelay));
     }
 
-    private Trigger createTrigger(Supplier<Long> delay) {
+    private Trigger createTrigger(Supplier<Duration> durationSupplier) {
         return triggerContext -> Date.from(Optional.ofNullable(triggerContext.lastCompletionTime())
                 .orElseGet(Date::new)
                 .toInstant()
-                .plus(delay.get(), ChronoUnit.SECONDS));
+                .plus(durationSupplier.get()));
     }
 
-    private long estimateDelaySeconds(Source source) {
+    private Duration estimateDelay(Source source) {
         int errorCount = searchExecutionService.getErrorCount(source.getId());
         int threshold = applicationConfig.getSearchesErrorThreshold();
 
         if (errorCount <= threshold) {
-            return sourceServiceFactory.get(source).getDelaySeconds();
+            return sourceServiceFactory.get(source).getDelay();
         }
-        int delayMinutes = applicationConfig.getSearchesErrorDelayMinutes() * (errorCount - threshold);
-        String errorMessage = MessageFormat.format(ERROR_MESSAGE_PATTERN, source.getLabel(), delayMinutes);
+        Duration afterErrorDelay = applicationConfig.getSearchesErrorDelay();
+        Duration estimatedDelay = afterErrorDelay.plus(
+                afterErrorDelay.toMillis() * (errorCount - threshold), ChronoUnit.MILLIS);
+
+        String errorMessage = MessageFormat.format(ERROR_MESSAGE_PATTERN, source.getLabel(), estimatedDelay.getSeconds());
         log.error(errorMessage);
         notificationService.sendNotification(errorMessage);
-        return delayMinutes * 60L;
+        return estimatedDelay;
     }
 }

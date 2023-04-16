@@ -2,22 +2,21 @@ observer:
   searches:
     error:
       threshold: 2
-      delay-minutes: 15
+      delay: 20m
   items:
-    retention-days: 90
+    retention: 90d
+    notification-delay: 20s
   allegro:
-    delay-seconds: 15
+    delay: 40s
     token-private: change-me
   olx:
-    delay-seconds: 10
+    delay: 10s
   ebay:
-    delay-seconds: 10
+    delay: 10s
     security-appname: change-me
   onesignal:
     app-id: change-me
     api-key: change-me
-  notification:
-    delay-seconds: 20
   chromedriver:
     logging: false
     arguments: change-me
@@ -26,7 +25,7 @@ server:
   port: 9130
   servlet:
     session:
-      timeout: 365d
+      timeout: 7d
 
 logging:
   level:

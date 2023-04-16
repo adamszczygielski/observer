@@ -18,6 +18,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -43,8 +44,8 @@ public class OlxService extends SourceService {
     }
 
     @Override
-    public long getDelaySeconds() {
-        return applicationConfig.getOlxDelaySeconds();
+    public Duration getDelay() {
+        return applicationConfig.getOlxDelay();
     }
 
     @Override

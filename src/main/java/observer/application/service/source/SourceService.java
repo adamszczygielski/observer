@@ -7,6 +7,7 @@ import observer.application.model.Search;
 import observer.application.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Duration;
 import java.util.List;
 
 public abstract class SourceService {
@@ -16,7 +17,7 @@ public abstract class SourceService {
 
     public abstract Source getSource();
 
-    public abstract long getDelaySeconds();
+    public abstract Duration getDelay();
 
     public abstract List<Item> fetchItems(Search search);
 

@@ -14,6 +14,7 @@ import observer.application.service.source.ebay.model.SearchResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +32,8 @@ public class EbayService extends SourceService {
     }
 
     @Override
-    public long getDelaySeconds() {
-        return applicationConfig.getEbayDelaySeconds();
+    public Duration getDelay() {
+        return applicationConfig.getEbayDelay();
     }
 
     @Override

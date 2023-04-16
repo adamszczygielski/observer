@@ -5,16 +5,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import java.time.Duration;
+
 @Configuration
 @EnableAsync
 @Getter
 public class ApplicationConfig {
 
-    @Value("${observer.items.retention-days}")
-    private Integer itemsRetentionDays;
+    @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.items.retention}')}")
+    private Duration itemsRetention;
 
-    @Value("${observer.searches.error.delay-minutes}")
-    private Integer searchesErrorDelayMinutes;
+    @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.items.notification-delay}')}")
+    private Duration itemsNotificationDelay;
+
+    @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.searches.error.delay}')}")
+    private Duration searchesErrorDelay;
 
     @Value("${observer.searches.error.threshold}")
     private Integer searchesErrorThreshold;
@@ -22,14 +27,14 @@ public class ApplicationConfig {
     @Value("${observer.allegro.token-private}")
     private String allegroTokenPrivate;
 
-    @Value("${observer.allegro.delay-seconds}")
-    private Integer allegroDelaySeconds;
+    @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.allegro.delay}')}")
+    private Duration allegroDelay;
 
-    @Value("${observer.olx.delay-seconds}")
-    private Long olxDelaySeconds;
+    @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.olx.delay}')}")
+    private Duration olxDelay;
 
-    @Value("${observer.ebay.delay-seconds}")
-    private Long ebayDelaySeconds;
+    @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.ebay.delay}')}")
+    private Duration ebayDelay;
 
     @Value("${observer.ebay.security-appname}")
     private String ebaySecurityAppname;
@@ -39,9 +44,6 @@ public class ApplicationConfig {
 
     @Value("${observer.onesignal.api-key}")
     private String onesignalApiKey;
-
-    @Value("${observer.notification.delay-seconds}")
-    private Integer notificationDelaySeconds;
 
     @Value("${observer.chromedriver.logging}")
     private Boolean chromedriverLogging;

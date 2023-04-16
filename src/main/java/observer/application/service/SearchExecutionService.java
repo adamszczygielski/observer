@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
     void removeItems(Search search) {
         Predicate<Item> p1 = Item::getIsDeleted;
         Predicate<Item> p2 = i -> i.getCreatedDate()
-                .plus(applicationConfig.getItemsRetentionDays(), ChronoUnit.DAYS)
+                .plus(applicationConfig.getItemsRetention())
                 .isBefore(Instant.now());
         search.getItems().removeIf(p1.and(p2));
     }

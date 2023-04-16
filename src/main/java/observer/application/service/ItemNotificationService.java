@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,8 +40,8 @@ public class ItemNotificationService {
         }
     }
 
-    public long getDelaySeconds() {
-        return applicationConfig.getNotificationDelaySeconds();
+    public Duration getDelay() {
+        return applicationConfig.getItemsNotificationDelay();
     }
 
     private String createMessage(List<Item> items) {

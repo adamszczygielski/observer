@@ -21,6 +21,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -49,9 +51,9 @@ public class AllegroService extends SourceService {
     }
 
     @Override
-    public long getDelaySeconds() {
-        int seconds = applicationConfig.getAllegroDelaySeconds();
-        return RandomUtils.getInt(seconds, seconds + 5);
+    public Duration getDelay() {
+        return applicationConfig.getAllegroDelay()
+                .plus(RandomUtils.getInt(0, 5), ChronoUnit.SECONDS);
     }
 
     @Override
