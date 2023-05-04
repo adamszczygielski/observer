@@ -51,7 +51,7 @@ public class SearchService {
     }
 
     private void create(Search search) {
-        List<Search> searches = searchRepository.findAll();
+        List<Search> searches = searchRepository.findBySourceId(search.getSourceId());
         if (!searches.contains(search)) {
             searchRepository.save(search);
         }

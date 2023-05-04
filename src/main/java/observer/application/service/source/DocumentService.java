@@ -1,4 +1,4 @@
-package observer.application.service.source.olx;
+package observer.application.service.source;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -12,7 +12,7 @@ public class DocumentService {
 
     private static final short TIMEOUT_MILLIS = 5000;
 
-    Document getDocument(String url) {
+    public Document getDocument(String url) {
         Connection connection = Jsoup.connect(url).timeout(TIMEOUT_MILLIS);
         try {
             return connection.get();

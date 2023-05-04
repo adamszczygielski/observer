@@ -30,6 +30,9 @@ public class ApplicationConfig {
     @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.allegro.delay}')}")
     private Duration allegroDelay;
 
+    @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.allegrolokalnie.delay}')}")
+    private Duration allegroLokalnieDelay;
+
     @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.olx.delay}')}")
     private Duration olxDelay;
 

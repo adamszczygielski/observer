@@ -18,6 +18,8 @@ public interface SearchRepository extends JpaRepository<Search, Long> {
             "ORDER BY s.lastExecutionDate")
     List<Search> findOverdue(Integer sourceId, Pageable pageable);
 
+    List<Search> findBySourceId(Integer sourceId);
+
     @Modifying
     void deleteByIdIn(List<Long> ids);
 }

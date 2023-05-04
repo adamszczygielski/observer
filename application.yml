@@ -7,8 +7,10 @@ observer:
     retention: 90d
     notification-delay: 20s
   allegro:
-    delay: 40s
+    delay: 2m
     token-private: change-me
+  allegro-lokalnie:
+    delay: 10s
   olx:
     delay: 10s
   ebay:

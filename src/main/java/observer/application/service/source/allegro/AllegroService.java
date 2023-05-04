@@ -129,10 +129,9 @@ public class AllegroService extends SourceService {
                 .scheme("https")
                 .host("allegro.pl");
 
-        String categoryId = search.getCategoryId();
-        if (categoryId != null) {
+        if (search.getCategoryId() != null) {
             uriComponentsBuilder.pathSegment("kategoria");
-            uriComponentsBuilder.path(categoryId);
+            uriComponentsBuilder.path(search.getCategoryId());
         } else {
             uriComponentsBuilder.path("listing");
         }

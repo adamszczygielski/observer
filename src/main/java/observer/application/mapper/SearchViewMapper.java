@@ -21,7 +21,7 @@ public class SearchViewMapper implements BaseMapper<SearchView, SearchViewDto> {
                 .priceTo(searchView.getPriceTo())
                 .source(Source.getLabel(searchView.getSourceId()))
                 .status(getCurrentStatus(searchView).getLabel())
-                .updatedDate(searchView.getLastExecutionDate())
+                .lastExecutionDate(searchView.getLastExecutionDate())
                 .intervalMinutes(searchView.getIntervalMinutes())
                 .count(searchView.getCount())
                 .build();

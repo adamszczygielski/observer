@@ -18,7 +18,7 @@ public class SearchViewDto {
     private final Short intervalMinutes;
     private final String source;
     private final Integer count;
-    private final Instant updatedDate;
+    private final Instant lastExecutionDate;
     private final String status;
 
 }

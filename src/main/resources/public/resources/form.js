@@ -1,28 +1,54 @@
+function onPageLoad() {
+    populateCategorySelector();
+    setComponentsAccess();
+}
+
 function onSourceChange() {
-    var sourceSelector = document.getElementById("inputSource");
+    clearCategorySection();
+    populateCategorySelector();
+    setComponentsAccess();
+}
+
+function setComponentsAccess() {
+    var inputCategoryName = document.getElementById("inputCategoryName");
+    var inputCategoryId = document.getElementById("inputCategoryId");
     var categorySelector = document.getElementById("categorySelector");
     var button = document.getElementById("selectCategoryButton");
-    clearCategory();
 
-    switch (sourceSelector.value) {
-        case 'EBAY':
-            button.disabled = true;
-            categorySelector.disabled = true;
-            break;
-        default:
-            button.disabled = false;
+    switch (document.getElementById("inputSource").value) {
+        case 'ALLEGRO':
+            inputCategoryName.disabled = true;
+            inputCategoryId.disabled = true;
             categorySelector.disabled = false;
+            button.disabled = false;
+            break;
+        case 'ALLEGRO_LOKALNIE':
+            inputCategoryName.disabled = false;
+            inputCategoryId.disabled = false;
+            categorySelector.disabled = true;
+            button.disabled = true;
+            break;
+        case 'OLX':
+            inputCategoryName.disabled = true;
+            inputCategoryId.disabled = true;
+            categorySelector.disabled = false;
+            button.disabled = false;
+            break
+        default:
+            inputCategoryName.disabled = true;
+            inputCategoryId.disabled = true;
+            categorySelector.disabled = true;
+            button.disabled = true;
     }
 }
 
-function clearCategory() {
+function clearCategorySection() {
     document.getElementById("inputCategoryName").value = null;
     document.getElementById("inputCategoryId").value = null;
     document.getElementById("categorySelector").length = 0;
-    getCategories();
 }
 
-function getCategories() {
+function populateCategorySelector() {
     var sourceSelector = document.getElementById("inputSource");
     var sourceId = sourceSelector.options[document.getElementById("inputSource").selectedIndex].id;
     var categorySelector = document.getElementById("categorySelector");
