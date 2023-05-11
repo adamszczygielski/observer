@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
-@RequestMapping(value = CategoryController.API_PATH)
+@RequestMapping(CategoryController.API_PATH)
+@CrossOrigin
 @RequiredArgsConstructor
 public class CategoryController {
 

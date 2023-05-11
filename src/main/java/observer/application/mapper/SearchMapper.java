@@ -16,7 +16,7 @@ public class SearchMapper {
                 .keyword(search.getKeyword())
                 .categoryId(search.getCategoryId())
                 .categoryName(search.getCategoryName())
-                .updatedDate(search.getLastExecutionDate())
+                .lastExecutionDate(search.getLastExecutionDate())
                 .intervalMinutes(search.getIntervalMinutes())
                 .priceFrom(search.getPriceFrom())
                 .priceTo(search.getPriceTo())

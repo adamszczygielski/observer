@@ -24,15 +24,7 @@ public class LogReader {
         } catch (IOException e) {
             return "Error reading log file!";
         }
-
         Collections.reverse(logLines);
-        return toString(logLines);
+        return String.join("\n", logLines);
     }
-
-    private String toString(List<String> logLines) {
-        StringBuilder stringBuilder = new StringBuilder();
-        logLines.forEach(s -> stringBuilder.append(s).append("\n"));
-        return stringBuilder.toString();
-    }
-
 }

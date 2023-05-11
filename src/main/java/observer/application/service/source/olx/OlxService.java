@@ -1,6 +1,5 @@
 package observer.application.service.source.olx;
 
-import com.google.common.cache.LoadingCache;
 import lombok.RequiredArgsConstructor;
 import observer.application.model.Category;
 import observer.application.model.Item;
@@ -35,8 +34,8 @@ public class OlxService extends SourceService {
 
     private final OlxMapper olxMapper = new OlxMapper();
     private final JsonMapper jsonMapper;
-    private final LoadingCache<String, List<Category>> categoryCache;
     private final RestInvoker restInvoker;
+    private final OlxCategoryService olxCategoryService;
 
     @Override
     public Source getSource() {
@@ -50,7 +49,7 @@ public class OlxService extends SourceService {
 
     @Override
     public List<Category> fetchCategories(String parentId) {
-        return categoryCache.getUnchecked(parentId);
+        return olxCategoryService.fetchCategories(parentId);
     }
 
     @Override

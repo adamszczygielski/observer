@@ -1,11 +1,11 @@
 function onPageLoad() {
-    populateCategorySelector();
+    fillCategorySection();
     setComponentsAccess();
 }
 
 function onSourceChange() {
     clearCategorySection();
-    populateCategorySelector();
+    fillCategorySection();
     setComponentsAccess();
 }
 
@@ -33,7 +33,7 @@ function setComponentsAccess() {
             inputCategoryId.disabled = true;
             categorySelector.disabled = false;
             button.disabled = false;
-            break
+            break;
         default:
             inputCategoryName.disabled = true;
             inputCategoryId.disabled = true;
@@ -46,9 +46,10 @@ function clearCategorySection() {
     document.getElementById("inputCategoryName").value = null;
     document.getElementById("inputCategoryId").value = null;
     document.getElementById("categorySelector").length = 0;
+    fillCategorySection();
 }
 
-function populateCategorySelector() {
+function fillCategorySection() {
     var sourceSelector = document.getElementById("inputSource");
     var sourceId = sourceSelector.options[document.getElementById("inputSource").selectedIndex].id;
     var categorySelector = document.getElementById("categorySelector");
@@ -57,8 +58,8 @@ function populateCategorySelector() {
     var index = categorySelector.selectedIndex;
     if (index > -1) {
         categoryId = categorySelector.options[index].value;
-        document.getElementById("inputCategoryId").value = categorySelector.options[index].value;
         document.getElementById("inputCategoryName").value = categorySelector.options[index].text;
+        document.getElementById("inputCategoryId").value = categorySelector.options[index].value;
     }
 
     var url = createRequestUrl(sourceId, categoryId);
@@ -66,21 +67,22 @@ function populateCategorySelector() {
     xhr.open('GET', url, true);
 
     xhr.onload = function() {
-        var data = JSON.parse(this.response);
-        if (Object.keys(data).length == 0) {
-            return;
+        var categories = JSON.parse(this.response);
+        if (Object.keys(categories).length >= 1) {
+            populateCategorySelector(categorySelector, categories);
         }
-
-        categorySelector.options.length = 0;
-
-        data.forEach((category) => {
-            var el = document.createElement("option");
-            el.textContent = category.name;
-            el.value = category.id;
-            categorySelector.appendChild(el);
-        })
     }
     xhr.send();
+}
+
+function populateCategorySelector(categorySelector, categories) {
+    categorySelector.options.length = 0;
+    categories.forEach((category) => {
+        var el = document.createElement("option");
+        el.textContent = category.name;
+        el.value = category.id;
+        categorySelector.appendChild(el);
+    })
 }
 
 function createRequestUrl(sourceId, parentId) {

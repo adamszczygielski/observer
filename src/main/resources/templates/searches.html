@@ -50,7 +50,7 @@
                 <td th:text="${searchViewDto.priceFrom}"></td>
                 <td th:text="${searchViewDto.priceTo}"></td>
                 <td th:text="${searchViewDto.intervalMinutes}"></td>
-                <td th:text="${#dates.format(searchViewDto.updatedDate, 'HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(searchViewDto.lastExecutionDate, 'HH:mm:ss')}"></td>
                 <td th:text="${searchViewDto.status}"></td>
                 <td>
                     <span th:unless="${searchViewDto.count} == '0'">

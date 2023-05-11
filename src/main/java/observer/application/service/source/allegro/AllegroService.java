@@ -1,6 +1,5 @@
 package observer.application.service.source.allegro;
 
-import com.google.common.cache.LoadingCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.model.Category;
@@ -11,7 +10,6 @@ import observer.application.rest.JsonMapper;
 import observer.application.service.RandomUtils;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
-import observer.application.service.source.allegro.model.category.CategoryDto;
 import observer.application.service.source.allegro.model.listing.Element;
 import observer.application.service.source.allegro.model.listing.ListingResponse;
 import observer.application.webdriver.WebDriverFactory;
@@ -42,7 +40,7 @@ public class AllegroService extends SourceService {
 
     private final AllegroMapper mapper = new AllegroMapper();
     private final JsonMapper jsonMapper;
-    private final LoadingCache<String, List<CategoryDto>> categoryDtoCache;
+    private final AllegroCategoryService allegroCategoryService;
     private final WebDriverFactory webDriverFactory;
 
     @Override
@@ -80,7 +78,7 @@ public class AllegroService extends SourceService {
 
     @Override
     public List<Category> fetchCategories(String parentId) {
-        return categoryDtoCache.getUnchecked(parentId).stream()
+        return allegroCategoryService.fetchCategories(parentId).stream()
                 .map(mapper::toCategory)
                 .collect(Collectors.toList());
     }

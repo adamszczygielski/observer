@@ -4,6 +4,7 @@ import observer.application.config.ApplicationConfig;
 import observer.application.rest.RestInvoker;
 import observer.application.service.source.allegro.model.category.CategoriesDto;
 import observer.application.service.source.allegro.model.category.CategoryDto;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,6 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static observer.application.config.CacheConfig.ALLEGRO_CATEGORY_CACHE;
 
 @Service
 class AllegroCategoryService {
@@ -25,7 +28,8 @@ class AllegroCategoryService {
         this.authorizationService = new AuthorizationService(restInvoker, applicationConfig);
     }
 
-    protected List<CategoryDto> fetchCategories(String parentId) {
+    @Cacheable(ALLEGRO_CATEGORY_CACHE)
+    public List<CategoryDto> fetchCategories(String parentId) {
         CategoriesDto categoriesDto = restInvoker.get(
                 createCategoryRequestUrl(parentId), createHttpEntity(), CategoriesDto.class);
 

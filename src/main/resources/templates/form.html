@@ -20,7 +20,7 @@
             </div>
             <div class="form-group col-md-4">
                 <label for="inputSearchId">Last execution</label>
-                <input class="form-control" disabled id="inputLastUpdate" th:field="*{lastExecutionDate}" type="text">
+                <input class="form-control" id="inputLastUpdate" th:field="*{lastExecutionDate}" type="text" disabled>
             </div>
         </div>
         <div class="form-row">
@@ -44,21 +44,21 @@
             <div class="form-group col-md-4">
                 <label for="inputCategoryName">Category name</label>
                 <input class="form-control" id="inputCategoryName" name="inputCategoryName"
-                       th:field="*{categoryName}" type="text">
+                       th:field="*{categoryName}" type="text" disabled>
             </div>
             <div class="form-group col-md-4">
                 <label for="inputCategoryName">Category ID</label>
                 <input class="form-control" id="inputCategoryId" name="inputCategoryId"
-                       th:field="*{categoryId}" type="text">
+                       th:field="*{categoryId}" type="text" disabled>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="categorySelector">Categories</label>
-                <select class="form-control" id="categorySelector"></select>
+                <select class="form-control" id="categorySelector" disabled></select>
             </div>
         </div>
-        <button class="btn btn-primary" id="selectCategoryButton" onclick="populateCategorySelector()" type="button">Select
+        <button class="btn btn-primary" id="selectCategoryButton" onclick="fillCategorySection()" type="button" disabled>Select
         </button>
         <button class="btn btn-primary" onclick="clearCategorySection()" type="button">Cancel</button>
         <div class="form-row pt-4">

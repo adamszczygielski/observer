@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = FormController.API_PATH)
+@RequestMapping(FormController.API_PATH)
 @RequiredArgsConstructor
 public class FormController {
 

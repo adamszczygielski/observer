@@ -31,7 +31,7 @@ public class SearchDto {
 
     @Size(min = 1, max = 255)
     private String categoryName;
-    private Instant updatedDate;
+    private Instant lastExecutionDate;
 
     @NotNull
     @Min(5)

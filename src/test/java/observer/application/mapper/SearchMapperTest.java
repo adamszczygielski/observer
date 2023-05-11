@@ -1,8 +1,8 @@
 package observer.application.mapper;
 
 import observer.application.dto.SearchDto;
-import observer.application.model.Source;
 import observer.application.model.Search;
+import observer.application.model.Source;
 import org.junit.jupiter.api.Test;
 
 public class SearchMapperTest {
@@ -35,7 +35,7 @@ public class SearchMapperTest {
                 .id(1L)
                 .keyword("keyword")
                 //.category("category")
-                .updatedDate(null)
+                .lastExecutionDate(null)
                 .intervalMinutes(new Short("5"))
                 .source(Source.ALLEGRO)
                 .priceFrom(100)
