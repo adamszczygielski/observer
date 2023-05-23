@@ -1,6 +1,6 @@
 package observer.application.service.source.olx;
 
-import lombok.RequiredArgsConstructor;
+import observer.application.config.ApplicationConfig;
 import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
@@ -15,7 +15,6 @@ import observer.application.service.source.olx.model.Price;
 import observer.application.service.source.olx.model.RegularPrice;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -25,7 +24,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class OlxService extends SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "window.__PRERENDERED_STATE__= \"";
@@ -36,6 +34,14 @@ public class OlxService extends SourceService {
     private final JsonMapper jsonMapper;
     private final RestInvoker restInvoker;
     private final OlxCategoryService olxCategoryService;
+
+    public OlxService(ApplicationConfig applicationConfig, JsonMapper jsonMapper, RestInvoker restInvoker,
+                      OlxCategoryService olxCategoryService) {
+        super(applicationConfig);
+        this.jsonMapper = jsonMapper;
+        this.restInvoker = restInvoker;
+        this.olxCategoryService = olxCategoryService;
+    }
 
     @Override
     public Source getSource() {
@@ -54,7 +60,7 @@ public class OlxService extends SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        String url = getRequestUrl(search);
+        String url = olxMapper.toUrl(search);
         String pageSource = restInvoker.get(url, null, String.class);
         String listingResponseJson = getListingResponseJson(pageSource);
         List<Ad> ads = getAds(listingResponseJson);
@@ -112,19 +118,6 @@ public class OlxService extends SourceService {
         return endPatternIndex + JSON_END_PATTERN.length();
     }
 
-    private String getRequestUrl(Search search) {
-        String category = Optional.ofNullable(search.getCategoryId()).orElse("oferty");
-        String keyword = "q-" + search.getKeyword().replaceAll(" ", "-");
-        return UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("www.olx.pl")
-                .pathSegment(category)
-                .pathSegment(keyword)
-                .build()
-                .toUri()
-                .toString();
-    }
-
     private boolean containsAllKeywords(String title, String keyword) {
         List<String> keywords = Arrays.asList(keyword.split(" "));
         String normalizedText = title
@@ -133,5 +126,4 @@ public class OlxService extends SourceService {
                 .toLowerCase(Locale.ROOT);
         return keywords.stream().allMatch(normalizedText::contains);
     }
-
 }

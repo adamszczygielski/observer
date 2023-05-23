@@ -1,7 +1,7 @@
 package observer.application.service.source.allegro;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import observer.application.config.ApplicationConfig;
 import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
@@ -15,9 +15,7 @@ import observer.application.service.source.allegro.model.listing.ListingResponse
 import observer.application.webdriver.WebDriverFactory;
 import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.WebDriver;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -29,7 +27,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class AllegroService extends SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "__listing_StoreState\":\"";
@@ -43,6 +40,14 @@ public class AllegroService extends SourceService {
     private final AllegroCategoryService allegroCategoryService;
     private final WebDriverFactory webDriverFactory;
 
+    public AllegroService(ApplicationConfig applicationConfig, JsonMapper jsonMapper,
+                          AllegroCategoryService allegroCategoryService, WebDriverFactory webDriverFactory) {
+        super(applicationConfig);
+        this.jsonMapper = jsonMapper;
+        this.allegroCategoryService = allegroCategoryService;
+        this.webDriverFactory = webDriverFactory;
+    }
+
     @Override
     public Source getSource() {
         return Source.ALLEGRO;
@@ -50,13 +55,12 @@ public class AllegroService extends SourceService {
 
     @Override
     public Duration getDelay() {
-        return applicationConfig.getAllegroDelay()
-                .plus(RandomUtils.getInt(0, 5), ChronoUnit.SECONDS);
+        return applicationConfig.getAllegroDelay().plus(RandomUtils.getInt(0, 5), ChronoUnit.SECONDS);
     }
 
     @Override
     public List<Item> fetchItems(Search search) {
-        String url = getRequestUrl(search);
+        String url = mapper.toUrl(search);
         String pageSource = fetchPageSource(url);
         if (FALLBACK_PATTERNS.stream().anyMatch(pageSource::contains)) {
             return Collections.emptyList();
@@ -122,47 +126,11 @@ public class AllegroService extends SourceService {
         return endPatternIndex;
     }
 
-    private String getRequestUrl(Search search) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("allegro.pl");
-
-        if (search.getCategoryId() != null) {
-            uriComponentsBuilder.pathSegment("kategoria");
-            uriComponentsBuilder.path(search.getCategoryId());
-        } else {
-            uriComponentsBuilder.path("listing");
-        }
-
-        return uriComponentsBuilder.queryParam("order", "n")
-                .queryParam("price_from", randomizePriceFrom(search.getPriceFrom()))
-                .queryParam("price_to", randomizePriceTo(search.getPriceTo()))
-                .queryParam("string", RandomUtils.randomizeCase(search.getKeyword()))
-                .queryParam("fallback", "dym")
-                .queryParam("strategy", "NO_FALLBACK")
-                .queryParam("ref", "dym-redirect")
-                .build()
-                .toUri()
-                .toString();
-    }
-
     private boolean containsAllKeywords(String title, String keyword) {
         List<String> keywords = Arrays.asList(keyword.split(" "));
         String normalizedTitle = title.replace(" ", "")
                 .replace("-", "")
                 .toLowerCase(Locale.ROOT);
         return keywords.stream().allMatch(normalizedTitle::contains);
-    }
-
-    private static double randomizePriceFrom(@Nullable Integer priceFrom) {
-        return priceFrom == null ?
-                RandomUtils.getInt(0, 99) / 100d :
-                priceFrom + RandomUtils.getInt(0, 99) / 100d;
-    }
-
-    private static double randomizePriceTo(@Nullable Integer priceTo) {
-        return priceTo == null ?
-                RandomUtils.getInt(100_000_000, 200_000_000) / 100d :
-                priceTo + RandomUtils.getInt(0, 99) / 100d;
     }
 }

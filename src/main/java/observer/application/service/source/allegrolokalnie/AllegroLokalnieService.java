@@ -1,15 +1,15 @@
 package observer.application.service.source.allegrolokalnie;
 
-import lombok.RequiredArgsConstructor;
+import observer.application.config.ApplicationConfig;
 import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
 import observer.application.service.source.DocumentService;
 import observer.application.service.source.SourceService;
+import observer.application.service.source.allegrolokalnie.mapper.AllegroLokalnieMapper;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -19,10 +19,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class AllegroLokalnieService extends SourceService {
 
     private final DocumentService documentService;
+    private final AllegroLokalnieMapper allegroLokalnieMapper = new AllegroLokalnieMapper();
+
+    public AllegroLokalnieService(ApplicationConfig applicationConfig, DocumentService documentService) {
+        super(applicationConfig);
+        this.documentService = documentService;
+    }
 
     @Override
     public Source getSource() {
@@ -36,7 +41,7 @@ public class AllegroLokalnieService extends SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        Document document = documentService.getDocument(getRequestUrl(search));
+        Document document = documentService.getDocument(allegroLokalnieMapper.toUrl(search));
 
         if (!document.title().toLowerCase().contains(search.getKeyword())) {
             throw new IllegalStateException("Bad request");
@@ -77,39 +82,11 @@ public class AllegroLokalnieService extends SourceService {
                     .sourceId(Source.ALLEGRO_LOKALNIE.getId())
                     .build());
         }
-
         return items;
     }
 
     @Override
     public List<Category> fetchCategories(String parentId) {
         return Collections.emptyList();
-    }
-
-    private String getRequestUrl(Search search) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("allegrolokalnie.pl")
-                .pathSegment("oferty");
-
-        if (search.getCategoryId() != null) {
-            uriComponentsBuilder.path(search.getCategoryId());
-        }
-
-        uriComponentsBuilder.pathSegment("q")
-                .path(search.getKeyword());
-
-        if (search.getPriceFrom() != null) {
-            uriComponentsBuilder.queryParam("price_from", search.getPriceFrom());
-        }
-
-        if (search.getPriceTo() != null) {
-            uriComponentsBuilder.queryParam("price_to", search.getPriceTo());
-        }
-
-        return uriComponentsBuilder.queryParam("dont_suggest_phrase", "true")
-                .build()
-                .toUri()
-                .toString();
     }
 }

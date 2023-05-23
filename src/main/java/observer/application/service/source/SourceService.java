@@ -1,19 +1,19 @@
 package observer.application.service.source;
 
+import lombok.RequiredArgsConstructor;
 import observer.application.config.ApplicationConfig;
 import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.util.List;
 
+@RequiredArgsConstructor
 public abstract class SourceService {
 
-    @Autowired
-    protected ApplicationConfig applicationConfig;
+    protected final ApplicationConfig applicationConfig;
 
     public abstract Source getSource();
 
@@ -22,5 +22,4 @@ public abstract class SourceService {
     public abstract List<Item> fetchItems(Search search);
 
     public abstract List<Category> fetchCategories(String parentId);
-
 }
