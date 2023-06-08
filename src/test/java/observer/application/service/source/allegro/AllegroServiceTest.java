@@ -12,7 +12,6 @@ import java.util.List;
 
 public class AllegroServiceTest extends SourceServiceTest {
 
-    private final String CONTENT_PATH = "F:/observer/allegro/";
     private final MockDriverFactory mockDriverFactory = new MockDriverFactory();
     private final AllegroService allegroService = new AllegroService(mockConfig, new JsonMapperImpl(),
             null, mockDriverFactory);
@@ -20,7 +19,7 @@ public class AllegroServiceTest extends SourceServiceTest {
     @Test
     void shouldReturnItems() {
         //given
-        mockDriverFactory.setPageSource(createPageSource(CONTENT_PATH + "content.html"));
+        mockDriverFactory.setPageSource(createPageSource(allegroService.getSource(), "content.html"));
         Search search = Search.builder()
                 .keyword("ev3")
                 .build();

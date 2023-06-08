@@ -19,7 +19,7 @@ public class AspectLogger {
             "execution(* observer.application.rest.RestInvokerImpl.*(..))";
 
     private static final String DOCUMENT_SERVICE_POINTCUT =
-            "execution(* observer.application.service.source.DocumentService.getDocument(..))";
+            "execution(* observer.application.service.DocumentService.getDocument(..))";
 
     @Around(SOURCE_SERVICE_POINTCUT)
     public Object logSourceService(ProceedingJoinPoint joinPoint) throws Throwable {

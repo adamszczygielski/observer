@@ -1,5 +1,6 @@
 package observer.application.service.source;
 
+import observer.application.service.DocumentService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

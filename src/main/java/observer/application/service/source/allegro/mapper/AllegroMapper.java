@@ -28,8 +28,7 @@ public class AllegroMapper {
             uriComponentsBuilder.path("listing");
         }
 
-        return uriComponentsBuilder.queryParam("order", "n")
-                .queryParam("price_from", randomizePriceFrom(search.getPriceFrom()))
+        return uriComponentsBuilder.queryParam("price_from", randomizePriceFrom(search.getPriceFrom()))
                 .queryParam("price_to", randomizePriceTo(search.getPriceTo()))
                 .queryParam("string", RandomUtils.randomizeCase(search.getKeyword()))
                 .queryParam("fallback", "dym")

@@ -5,15 +5,13 @@ import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
-import observer.application.service.source.DocumentService;
+import observer.application.service.DocumentService;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegrolokalnie.mapper.AllegroLokalnieMapper;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +40,6 @@ public class AllegroLokalnieService extends SourceService {
     @Override
     public List<Item> fetchItems(Search search) {
         Document document = documentService.getDocument(allegroLokalnieMapper.toUrl(search));
-
         if (!document.title().toLowerCase().contains(search.getKeyword())) {
             throw new IllegalStateException("Bad request");
         }
@@ -55,34 +52,16 @@ public class AllegroLokalnieService extends SourceService {
                 .map(e -> e.childNode(0).toString().replace(" ", "") + " PLN")
                 .collect(Collectors.toList());
 
-        List<String> relativeUrls = document.getElementsByClass("mlc-card mlc-itembox").stream()
+        List<String> urls = document.getElementsByClass("mlc-card mlc-itembox").stream()
                 .map(e -> e.attr("href"))
+                .map(s -> "https://allegrolokalnie.pl" + s)
                 .collect(Collectors.toList());
 
-        List<String> urls = relativeUrls.stream()
-                .map(e -> "https://allegrolokalnie.pl" + e)
+        List<String> originIds = document.getElementsByClass("mlc-card mlc-itembox").stream()
+                .map(e -> e.attr("data-card-analytics-click"))
                 .collect(Collectors.toList());
 
-        List<String> originIds = relativeUrls.stream()
-                .map(e -> e.replace("/oferta/", ""))
-                .collect(Collectors.toList());
-
-        List<Item> items = new ArrayList<>(prices.size());
-
-        for (int i = 0; i < prices.size(); i++) {
-            items.add(Item.builder()
-                    .originId(originIds.get(i))
-                    .searchId(search.getId())
-                    .createdDate(Instant.now())
-                    .title(titles.get(i))
-                    .price(prices.get(i))
-                    .url(urls.get(i))
-                    .isDeleted(false)
-                    .isNotificationSent(false)
-                    .sourceId(Source.ALLEGRO_LOKALNIE.getId())
-                    .build());
-        }
-        return items;
+        return allegroLokalnieMapper.toItems(originIds, titles, prices, urls, search.getId());
     }
 
     @Override

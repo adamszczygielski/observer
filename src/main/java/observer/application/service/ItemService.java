@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import observer.application.model.Item;
 import observer.application.repository.ItemRepository;
 import observer.application.repository.SearchRepository;
-import observer.application.service.source.SourceServiceFactory;
+import observer.application.service.source.SourceServiceSolver;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -17,7 +17,7 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final SearchRepository searchRepository;
-    private final SourceServiceFactory sourceServiceFactory;
+    private final SourceServiceSolver sourceServiceSolver;
 
     public List<Item> getItems(Long searchId) {
         return itemRepository.findByIsDeletedFalseAndSearchIdOrderByCreatedDateDesc(searchId);
@@ -33,7 +33,7 @@ public class ItemService {
 
     public List<Item> fetchItems(Long searchId) {
         return searchRepository.findById(searchId)
-                .map(s -> sourceServiceFactory.get(s.getSourceId()).fetchItems(s))
+                .map(s -> sourceServiceSolver.get(s.getSourceId()).fetchItems(s))
                 .orElse(Collections.emptyList());
     }
 

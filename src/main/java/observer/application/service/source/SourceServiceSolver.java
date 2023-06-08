@@ -10,11 +10,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class SourceServiceFactory {
+public class SourceServiceSolver {
 
     private final EnumMap<Source, SourceService> sourceServiceEnumMap;
 
-    public SourceServiceFactory(List<SourceService> sourceServices) {
+    public SourceServiceSolver(List<SourceService> sourceServices) {
         sourceServiceEnumMap = sourceServices.stream()
                 .collect(Collectors.toMap(
                         SourceService::getSource,

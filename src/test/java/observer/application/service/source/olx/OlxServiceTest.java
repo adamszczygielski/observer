@@ -12,7 +12,6 @@ import java.util.List;
 
 public class OlxServiceTest extends SourceServiceTest {
 
-    private final String CONTENT_DIRECTORY = "F:/observer/olx/";
     private final MockRestInvoker mockRestInvoker = new MockRestInvoker();
     private final OlxService olxService = new OlxService(mockConfig, new JsonMapperImpl(), mockRestInvoker,
             null);
@@ -20,9 +19,11 @@ public class OlxServiceTest extends SourceServiceTest {
     @Test
     void shouldReturnItems() {
         //given
-        mockRestInvoker.setBody(createPageSource(CONTENT_DIRECTORY + "content.html"));
+        mockRestInvoker.setBody(createPageSource(olxService.getSource(), "content.html"));
         Search search = Search.builder()
                 .keyword("ev3")
+                .priceFrom(1)
+                .priceTo(9999)
                 .build();
 
         //when

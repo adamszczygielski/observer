@@ -25,8 +25,8 @@ public class AllegroMapperTest {
         return Search.builder()
                 .categoryId("categoryId")
                 .categoryName("categoryName")
-                .priceFrom(123)
-                .priceTo(456)
+                .priceFrom(1)
+                .priceTo(9999)
                 .keyword("keyword")
                 .build();
     }

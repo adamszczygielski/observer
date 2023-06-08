@@ -6,7 +6,7 @@ import observer.application.model.Source;
 import observer.application.service.ItemNotificationService;
 import observer.application.service.NotificationService;
 import observer.application.service.SearchExecutionService;
-import observer.application.service.source.SourceServiceFactory;
+import observer.application.service.source.SourceServiceSolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.Trigger;
@@ -33,7 +33,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
     private final SearchExecutionService searchExecutionService;
     private final ItemNotificationService itemNotificationService;
     private final NotificationService notificationService;
-    private final SourceServiceFactory sourceServiceFactory;
+    private final SourceServiceSolver sourceServiceSolver;
     private final ApplicationConfig applicationConfig;
 
     @Override
@@ -43,7 +43,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
     }
 
     private void addSearchTasks(ScheduledTaskRegistrar taskRegistrar) {
-        sourceServiceFactory.getAll().forEach(sourceService ->
+        sourceServiceSolver.getAll().forEach(sourceService ->
                 taskRegistrar.addTriggerTask(
                         () -> searchExecutionService.execute(sourceService.getSource()),
                         createTrigger(() -> estimateDelay(sourceService.getSource()))));
@@ -66,7 +66,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
         int threshold = applicationConfig.getSearchesErrorThreshold();
 
         if (errorCount <= threshold) {
-            return sourceServiceFactory.get(source).getDelay();
+            return sourceServiceSolver.get(source).getDelay();
         }
         Duration afterErrorDelay = applicationConfig.getSearchesErrorDelay();
         Duration estimatedDelay = afterErrorDelay.plus(

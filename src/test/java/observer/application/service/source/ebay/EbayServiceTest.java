@@ -11,15 +11,16 @@ import java.util.List;
 
 public class EbayServiceTest extends SourceServiceTest {
 
-    private final String CONTENT_DIRECTORY = "F:/observer/ebay/";
     private final MockRestInvoker mockRestInvoker = new MockRestInvoker();
     private final EbayService ebayService = new EbayService(mockConfig, mockRestInvoker);
 
     @Test
     void shouldReturnItems() {
         //given
-        mockRestInvoker.setBody(createPageSource(CONTENT_DIRECTORY + "content.json"));
-        Search search = Search.builder().build();
+        mockRestInvoker.setBody(createPageSource(ebayService.getSource(), "content.xml"));
+        Search search = Search.builder()
+                .keyword("ev3")
+                .build();
 
         //when
         List<Item> items = ebayService.fetchItems(search);

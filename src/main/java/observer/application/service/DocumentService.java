@@ -1,4 +1,4 @@
-package observer.application.service.source;
+package observer.application.service;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

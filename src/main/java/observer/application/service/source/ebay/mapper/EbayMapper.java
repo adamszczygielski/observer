@@ -29,6 +29,7 @@ public class EbayMapper {
                 .queryParam("SERVICE-VERSION", "1.13.0")
                 .queryParam("SECURITY-APPNAME", ebaySecurityAppname)
                 .queryParam("RESPONSE-DATA-FORMAT", "XML")
+                .queryParam("GLOBAL-ID", "EBAY-PL")
                 .queryParam("keywords", search.getKeyword().replaceAll(" ", "+"))
                 .queryParam("sortOrder", "StartTimeNewest")
                 .queryParam("paginationInput.entriesPerPage", "30");

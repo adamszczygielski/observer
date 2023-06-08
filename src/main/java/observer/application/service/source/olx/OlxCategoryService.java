@@ -2,7 +2,7 @@ package observer.application.service.source.olx;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.model.Category;
-import observer.application.service.source.DocumentService;
+import observer.application.service.DocumentService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

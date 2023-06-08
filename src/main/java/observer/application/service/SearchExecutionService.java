@@ -7,7 +7,7 @@ import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
 import observer.application.model.Status;
-import observer.application.service.source.SourceServiceFactory;
+import observer.application.service.source.SourceServiceSolver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +29,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
     private final Map<Integer, Integer> errorCounter = new HashMap<>();
     private final SearchService searchService;
     private final ItemService itemService;
-    private final SourceServiceFactory sourceServiceFactory;
+    private final SourceServiceSolver sourceServiceSolver;
     private final ApplicationConfig applicationConfig;
 
     @Transactional
@@ -52,7 +52,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
 
     @Override
     List<Item> fetchItems(Search search) {
-        return sourceServiceFactory.get(search.getSourceId()).fetchItems(search);
+        return sourceServiceSolver.get(search.getSourceId()).fetchItems(search);
     }
 
     @Override

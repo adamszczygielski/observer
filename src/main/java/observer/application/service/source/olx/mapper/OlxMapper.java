@@ -13,13 +13,28 @@ import java.util.Optional;
 public class OlxMapper {
 
     public String toUrl(Search search) {
-        String category = Optional.ofNullable(search.getCategoryId()).orElse("oferty");
-        String keyword = "q-" + search.getKeyword().replaceAll(" ", "-");
-        return UriComponentsBuilder.newInstance()
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
                 .scheme("https")
-                .host("www.olx.pl")
-                .pathSegment(category)
-                .pathSegment(keyword)
+                .host("www.olx.pl");
+
+        if (search.getCategoryId() != null) {
+            uriComponentsBuilder.pathSegment(search.getCategoryId());
+        } else {
+            uriComponentsBuilder.pathSegment("oferty");
+        }
+
+        uriComponentsBuilder.pathSegment("q-" + search.getKeyword().replaceAll(" ", "-"));
+
+        if (search.getPriceFrom() != null) {
+            uriComponentsBuilder.queryParam("search[filter_float_price:from]", search.getPriceFrom());
+        }
+
+        if (search.getPriceTo() != null) {
+            uriComponentsBuilder.queryParam("search[filter_float_price:to]", search.getPriceTo());
+        }
+
+        return uriComponentsBuilder
+                .queryParam("search[order]", "created_at:desc")
                 .build()
                 .toUri()
                 .toString();
