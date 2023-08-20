@@ -1,21 +1,17 @@
 package observer.application.service.source.ebay.mapper;
 
+import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.model.Source;
-import observer.application.model.Item;
-import observer.application.service.source.ebay.model.Amount;
-import observer.application.service.source.ebay.model.SearchItem;
-import observer.application.service.source.ebay.model.SellingStatus;
+import observer.application.service.source.ebay.model.ConvertedCurrentPrice;
+import observer.application.service.source.ebay.model.EbayItem;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class EbayMapper {
-
-    private static final DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     public String toUrl(Search search, String ebaySecurityAppname) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance()
@@ -34,18 +30,16 @@ public class EbayMapper {
                 .queryParam("sortOrder", "StartTimeNewest")
                 .queryParam("paginationInput.entriesPerPage", "30");
 
-        Integer priceFrom = search.getPriceFrom();
-        if (priceFrom != null) {
+        if (search.getPriceFrom() != null) {
             uriComponentsBuilder.queryParam("itemFilter(0).name", "MinPrice");
-            uriComponentsBuilder.queryParam("itemFilter(0).value", priceFrom);
+            uriComponentsBuilder.queryParam("itemFilter(0).value", search.getPriceFrom());
             uriComponentsBuilder.queryParam("itemFilter(0).paramName", "Currency");
             uriComponentsBuilder.queryParam("itemFilter(0).paramValue", "PLN");
         }
 
-        Integer priceTo = search.getPriceTo();
-        if (priceTo != null) {
+        if (search.getPriceTo() != null) {
             uriComponentsBuilder.queryParam("itemFilter(1).name", "MaxPrice");
-            uriComponentsBuilder.queryParam("itemFilter(1).value", priceTo);
+            uriComponentsBuilder.queryParam("itemFilter(1).value", search.getPriceTo());
             uriComponentsBuilder.queryParam("itemFilter(1).paramName", "Currency");
             uriComponentsBuilder.queryParam("itemFilter(1).paramValue", "PLN");
         }
@@ -55,27 +49,26 @@ public class EbayMapper {
                 .toString();
     }
 
-    public List<Item> toItems(List<SearchItem> searchItemList, Long searchId) {
-        return searchItemList.stream().map(searchItem -> toItem(searchItem, searchId))
+    public List<Item> toItems(List<EbayItem> ebayItems, Long searchId) {
+        return ebayItems.stream().map(ebayItem -> toItem(ebayItem, searchId))
                 .collect(Collectors.toList());
     }
 
-    private Item toItem(SearchItem searchItem, Long searchId) {
+    private Item toItem(EbayItem ebayItem, Long searchId) {
         return Item.builder()
-                .originId(searchItem.getItemId())
+                .originId(ebayItem.getItemId())
                 .searchId(searchId)
                 .createdDate(Instant.now())
-                .title(searchItem.getTitle())
-                .price(toPrice(searchItem.getSellingStatus()))
-                .url(searchItem.getViewItemURL())
+                .title(ebayItem.getTitle())
+                .price(toPrice(ebayItem.getSellingStatus().getConvertedCurrentPrice()))
+                .url(ebayItem.getViewItemURL())
                 .isDeleted(false)
                 .isNotificationSent(false)
                 .sourceId(Source.EBAY.getId())
                 .build();
     }
 
-    private String toPrice(SellingStatus sellingStatus) {
-        Amount amount = sellingStatus.getCurrentPrice();
-        return decimalFormat.format(amount.getValue()) + " " + amount.getCurrencyId();
+    private String toPrice(ConvertedCurrentPrice convertedCurrentPrice) {
+        return convertedCurrentPrice.getPrice() + " " + convertedCurrentPrice.getCurrencyId();
     }
 }

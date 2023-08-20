@@ -1,5 +1,6 @@
 package observer.application.service.source.olx;
 
+import lombok.RequiredArgsConstructor;
 import observer.application.config.ApplicationConfig;
 import observer.application.model.Category;
 import observer.application.model.Item;
@@ -24,24 +25,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class OlxService extends SourceService {
+@RequiredArgsConstructor
+public class OlxService implements SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "window.__PRERENDERED_STATE__= \"";
     private static final String JSON_END_PATTERN = "\\\"cookies\\\":{}}";
     private static final short STRICT_FILTER_THRESHOLD = 5;
 
-    private final OlxMapper olxMapper = new OlxMapper();
+    private final ApplicationConfig applicationConfig;
     private final JsonMapper jsonMapper;
     private final RestInvoker restInvoker;
     private final OlxCategoryService olxCategoryService;
-
-    public OlxService(ApplicationConfig applicationConfig, JsonMapper jsonMapper, RestInvoker restInvoker,
-                      OlxCategoryService olxCategoryService) {
-        super(applicationConfig);
-        this.jsonMapper = jsonMapper;
-        this.restInvoker = restInvoker;
-        this.olxCategoryService = olxCategoryService;
-    }
+    private final OlxMapper olxMapper = new OlxMapper();
 
     @Override
     public Source getSource() {
@@ -63,27 +58,24 @@ public class OlxService extends SourceService {
         String url = olxMapper.toUrl(search);
         String pageSource = restInvoker.get(url, null, String.class);
         String listingResponseJson = getListingResponseJson(pageSource);
-        List<Ad> ads = getAds(listingResponseJson);
+        List<Ad> ads = jsonMapper.toObject(listingResponseJson, ListingResponse.class)
+                .getListing()
+                .getListingDetails()
+                .getAds()
+                .stream()
+                .filter(ad -> isWithinPriceRange(search.getPriceFrom(), search.getPriceTo(), ad))
+                .collect(Collectors.toList());
 
         if (ads.size() > STRICT_FILTER_THRESHOLD) {
             return ads.stream()
                     .filter(ad -> containsAllKeywords(ad.getTitle(), search.getKeyword()))
-                    .filter(ad -> isWithinPriceRange(search.getPriceFrom(), search.getPriceTo(), ad))
                     .map(ad -> olxMapper.toItem(ad, search.getId()))
                     .collect(Collectors.toList());
         } else {
             return ads.stream()
-                    .filter(ad -> isWithinPriceRange(search.getPriceFrom(), search.getPriceTo(), ad))
                     .map(ad -> olxMapper.toItem(ad, search.getId()))
                     .collect(Collectors.toList());
         }
-    }
-
-    private List<Ad> getAds(String listingResponseJson) {
-        return jsonMapper.toObject(listingResponseJson, ListingResponse.class)
-                .getListing()
-                .getListing()
-                .getAds();
     }
 
     private boolean isWithinPriceRange(Integer min, Integer max, Ad ad) {

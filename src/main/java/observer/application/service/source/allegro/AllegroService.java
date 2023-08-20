@@ -1,5 +1,6 @@
 package observer.application.service.source.allegro;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ApplicationConfig;
 import observer.application.model.Category;
@@ -27,7 +28,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class AllegroService extends SourceService {
+@RequiredArgsConstructor
+public class AllegroService implements SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "__listing_StoreState\":\"";
     private static final String JSON_END_PATTERN = "\"}</script>";
@@ -35,18 +37,11 @@ public class AllegroService extends SourceService {
             "Przykro nam, nie znale");
     private static final short STRICT_FILTER_THRESHOLD = 5;
 
-    private final AllegroMapper mapper = new AllegroMapper();
+    private final ApplicationConfig applicationConfig;
     private final JsonMapper jsonMapper;
     private final AllegroCategoryService allegroCategoryService;
     private final WebDriverFactory webDriverFactory;
-
-    public AllegroService(ApplicationConfig applicationConfig, JsonMapper jsonMapper,
-                          AllegroCategoryService allegroCategoryService, WebDriverFactory webDriverFactory) {
-        super(applicationConfig);
-        this.jsonMapper = jsonMapper;
-        this.allegroCategoryService = allegroCategoryService;
-        this.webDriverFactory = webDriverFactory;
-    }
+    private final AllegroMapper mapper = new AllegroMapper();
 
     @Override
     public Source getSource() {

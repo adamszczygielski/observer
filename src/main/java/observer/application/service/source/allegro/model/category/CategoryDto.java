@@ -13,8 +13,6 @@
 
 package observer.application.service.source.allegro.model.category;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Objects;
 
 /**
@@ -22,24 +20,14 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-09-16T16:12:46.567+02:00[Europe/Belgrade]")
 public class CategoryDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
   private String id;
 
-  public static final String SERIALIZED_NAME_LEAF = "leaf";
-  @SerializedName(SERIALIZED_NAME_LEAF)
   private Boolean leaf;
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
   private String name;
 
-  public static final String SERIALIZED_NAME_OPTIONS = "options";
-  @SerializedName(SERIALIZED_NAME_OPTIONS)
   private CategoryOptionsDto options;
 
-  public static final String SERIALIZED_NAME_PARENT = "parent";
-  @SerializedName(SERIALIZED_NAME_PARENT)
   private CategoryDtoParent parent;
 
 

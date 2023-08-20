@@ -13,8 +13,6 @@
 
 package observer.application.service.source.allegro.model.category;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Objects;
 
 /**
@@ -22,28 +20,17 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2019-09-16T16:12:46.567+02:00[Europe/Belgrade]")
 public class CategoryOptionsDto {
-  public static final String SERIALIZED_NAME_ADVERTISEMENT = "advertisement";
-  @SerializedName(SERIALIZED_NAME_ADVERTISEMENT)
+
   private Boolean advertisement;
 
-  public static final String SERIALIZED_NAME_ADVERTISEMENT_PRICE_OPTIONAL = "advertisementPriceOptional";
-  @SerializedName(SERIALIZED_NAME_ADVERTISEMENT_PRICE_OPTIONAL)
   private Boolean advertisementPriceOptional;
 
-  public static final String SERIALIZED_NAME_VARIANTS_BY_COLOR_PATTERN_ALLOWED = "variantsByColorPatternAllowed";
-  @SerializedName(SERIALIZED_NAME_VARIANTS_BY_COLOR_PATTERN_ALLOWED)
   private Boolean variantsByColorPatternAllowed;
 
-  public static final String SERIALIZED_NAME_OFFERS_WITH_PRODUCT_PUBLICATION_ENABLED = "offersWithProductPublicationEnabled";
-  @SerializedName(SERIALIZED_NAME_OFFERS_WITH_PRODUCT_PUBLICATION_ENABLED)
   private Boolean offersWithProductPublicationEnabled;
 
-  public static final String SERIALIZED_NAME_PRODUCT_CREATION_ENABLED = "productCreationEnabled";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_CREATION_ENABLED)
   private Boolean productCreationEnabled;
 
-  public static final String SERIALIZED_NAME_PRODUCT_E_A_N_REQUIRED = "productEANRequired";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_E_A_N_REQUIRED)
   private Boolean productEANRequired;
 
 

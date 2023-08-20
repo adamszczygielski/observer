@@ -23,17 +23,8 @@ public class OlxMapper {
             uriComponentsBuilder.pathSegment("oferty");
         }
 
-        uriComponentsBuilder.pathSegment("q-" + search.getKeyword().replaceAll(" ", "-"));
-
-        if (search.getPriceFrom() != null) {
-            uriComponentsBuilder.queryParam("search[filter_float_price:from]", search.getPriceFrom());
-        }
-
-        if (search.getPriceTo() != null) {
-            uriComponentsBuilder.queryParam("search[filter_float_price:to]", search.getPriceTo());
-        }
-
         return uriComponentsBuilder
+                .pathSegment("q-" + search.getKeyword().replaceAll(" ", "-"))
                 .queryParam("search[order]", "created_at:desc")
                 .build()
                 .toUri()

@@ -1,10 +1,13 @@
 package observer.application.rest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContexts;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -12,7 +15,12 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
+import java.security.cert.X509Certificate;
+import java.util.Optional;
+
 @Component
+@Slf4j
 public class RestInvokerImpl implements RestInvoker {
 
     private static final short TIMEOUT_MILLIS = 5000;
@@ -33,20 +41,34 @@ public class RestInvokerImpl implements RestInvoker {
                 .setConnectionRequestTimeout(TIMEOUT_MILLIS)
                 .setSocketTimeout(TIMEOUT_MILLIS)
                 .setConnectTimeout(TIMEOUT_MILLIS)
-                .setCookieSpec(CookieSpecs.STANDARD)
+                .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
                 .build();
 
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setMaxTotal(5);
         connectionManager.setDefaultMaxPerRoute(5);
 
-        CloseableHttpClient httpClient = HttpClientBuilder.create()
+        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
                 .setDefaultRequestConfig(requestConfig)
-                .setConnectionManager(connectionManager)
-                .build();
+                .setConnectionManager(connectionManager);
+        createSSLConnectionSocketFactory().ifPresent(httpClientBuilder::setSSLSocketFactory);
+        CloseableHttpClient httpClient = httpClientBuilder.build();
 
         return new RestTemplateBuilder()
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(httpClient))
                 .build();
+    }
+
+    private Optional<SSLConnectionSocketFactory> createSSLConnectionSocketFactory() {
+        try {
+            SSLContext sslContext = SSLContexts.custom()
+                    .loadTrustMaterial(null, (X509Certificate[] chain, String authType) -> true)
+                    .build();
+
+            return Optional.of(new SSLConnectionSocketFactory(sslContext));
+        } catch (Exception e) {
+            log.error("Error creating SSL", e);
+            return Optional.empty();
+        }
     }
 }

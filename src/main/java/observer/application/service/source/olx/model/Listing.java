@@ -19,18 +19,18 @@ import java.util.Map;
 public class Listing {
 
     @JsonProperty("listing")
-    private ListingDetails listing;
+    private ListingDetails listingDetails;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("listing")
-    public ListingDetails getListing() {
-        return listing;
+    public ListingDetails getListingDetails() {
+        return listingDetails;
     }
 
     @JsonProperty("listing")
-    public void setListing(ListingDetails listing) {
-        this.listing = listing;
+    public void setListingDetails(ListingDetails listingDetails) {
+        this.listingDetails = listingDetails;
     }
 
     @JsonAnyGetter

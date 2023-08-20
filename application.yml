@@ -1,4 +1,5 @@
 observer:
+  secured: false
   searches:
     error:
       threshold: 2

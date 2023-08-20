@@ -1,5 +1,6 @@
 package observer.application.service.source.allegrolokalnie;
 
+import lombok.RequiredArgsConstructor;
 import observer.application.config.ApplicationConfig;
 import observer.application.model.Category;
 import observer.application.model.Item;
@@ -17,15 +18,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AllegroLokalnieService extends SourceService {
+@RequiredArgsConstructor
+public class AllegroLokalnieService implements SourceService {
 
+    private final ApplicationConfig applicationConfig;
     private final DocumentService documentService;
     private final AllegroLokalnieMapper allegroLokalnieMapper = new AllegroLokalnieMapper();
-
-    public AllegroLokalnieService(ApplicationConfig applicationConfig, DocumentService documentService) {
-        super(applicationConfig);
-        this.documentService = documentService;
-    }
 
     @Override
     public Source getSource() {
@@ -40,8 +38,8 @@ public class AllegroLokalnieService extends SourceService {
     @Override
     public List<Item> fetchItems(Search search) {
         Document document = documentService.getDocument(allegroLokalnieMapper.toUrl(search));
-        if (!document.title().toLowerCase().contains(search.getKeyword())) {
-            throw new IllegalStateException("Bad request");
+        if (document.body().getElementsByClass("mlc-no-offers-to-show").first() != null) {
+            return List.of();
         }
 
         List<String> titles = document.getElementsByClass("mlc-itembox__title").stream()

@@ -17,26 +17,26 @@ function setComponentsAccess() {
 
     switch (document.getElementById("inputSource").value) {
         case 'ALLEGRO':
-            inputCategoryName.disabled = true;
-            inputCategoryId.disabled = true;
+            inputCategoryName.readOnly = true;
+            inputCategoryId.readOnly = true;
             categorySelector.disabled = false;
             button.disabled = false;
             break;
         case 'ALLEGRO_LOKALNIE':
-            inputCategoryName.disabled = false;
-            inputCategoryId.disabled = false;
+            inputCategoryName.readOnly = false;
+            inputCategoryId.readOnly = false;
             categorySelector.disabled = true;
             button.disabled = true;
             break;
         case 'OLX':
-            inputCategoryName.disabled = true;
-            inputCategoryId.disabled = true;
+            inputCategoryName.readOnly = true;
+            inputCategoryId.readOnly = true;
             categorySelector.disabled = false;
             button.disabled = false;
             break;
         default:
-            inputCategoryName.disabled = true;
-            inputCategoryId.disabled = true;
+            inputCategoryName.readOnly = true;
+            inputCategoryId.readOnly = true;
             categorySelector.disabled = true;
             button.disabled = true;
     }
