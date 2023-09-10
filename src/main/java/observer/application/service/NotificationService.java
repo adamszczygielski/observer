@@ -42,9 +42,8 @@ public class NotificationService {
         return NotificationRequestDto.builder()
                 .appId(applicationConfig.getOnesignalAppId())
                 .includedSegments(Collections.singletonList("All"))
-                .contents(new HashMap<String, String>() {{
-                    put("en", message);
-                }}).build();
+                .contents(new HashMap<>() {{put("en", message);}})
+                .build();
     }
 
     private HttpEntity<String> createHttpEntity(String requestBody) {
@@ -61,5 +60,4 @@ public class NotificationService {
                 .pathSegment("api", "v1", "notifications")
                 .build().toUriString();
     }
-
 }

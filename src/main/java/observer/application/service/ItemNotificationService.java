@@ -3,13 +3,20 @@ package observer.application.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ApplicationConfig;
+import observer.application.mapper.ItemMapper;
 import observer.application.model.Item;
 import observer.application.model.Source;
 import observer.application.repository.ItemRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,23 +32,47 @@ public class ItemNotificationService {
     private static final short ITEMS_DISPLAY_LIMIT = 5;
 
     private final NotificationService notificationService;
+    private final FtpService ftpService;
     private final ItemRepository itemRepository;
     private final ApplicationConfig applicationConfig;
+    private final ItemMapper itemMapper = new ItemMapper();
 
     public void execute() {
-        List<Item> items = itemRepository
-                .findByIsDeletedFalseAndIsNotificationSentFalseOrderByCreatedDateDesc(PAGE_REQUEST);
-        if (!items.isEmpty()) {
-            List<Long> itemIds = items.stream()
-                    .map(Item::getId)
-                    .collect(Collectors.toList());
-            itemRepository.setIsNotificationSentTrue(itemIds);
-            notificationService.sendNotification(createMessage(items));
+        if (sendPushNotification()) {
+            uploadItemListFile();
         }
     }
 
     public Duration getDelay() {
         return applicationConfig.getItemsNotificationDelay();
+    }
+
+    private boolean sendPushNotification() {
+        List<Item> items = itemRepository.findByIsDeletedFalseAndIsNotificationSentFalseOrderByCreatedDateDesc(PAGE_REQUEST);
+        if (!items.isEmpty()) {
+            itemRepository.setIsNotificationSentTrue(items.stream().map(Item::getId).collect(Collectors.toList()));
+            notificationService.sendNotification(createMessage(items));
+            return true;
+        }
+        return false;
+    }
+
+    private void uploadItemListFile() {
+        String html = generateHtml(itemRepository.findByIsDeletedFalseOrderByCreatedDateDesc());
+        ftpService.uploadFile(new ByteArrayInputStream(html.getBytes()));
+    }
+
+    private String generateHtml(List<Item> items) {
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+
+        TemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+
+        Context context = new Context();
+        context.setVariable("items", itemMapper.toDtoList(items));
+        return templateEngine.process("templates/items-min.html", context);
     }
 
     private String createMessage(List<Item> items) {
@@ -72,5 +103,4 @@ public class ItemNotificationService {
             stringBuilder.append("\n").append(String.format(MESSAGE_FOOTER, itemsCount - ITEMS_DISPLAY_LIMIT));
         }
     }
-
 }

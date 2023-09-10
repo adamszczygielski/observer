@@ -55,4 +55,16 @@ public class ApplicationConfig {
 
     @Value("#{'${observer.chromedriver.arguments}'.split(' ')}")
     private String[] chromedriverArguments;
+
+    @Value("${observer.ftp.hostname}")
+    private String ftpHostname;
+
+    @Value("${observer.ftp.username}")
+    private String ftpUsername;
+
+    @Value("${observer.ftp.password}")
+    private String ftpPassword;
+
+    @Value("${observer.ftp.filepath}")
+    private String ftpFilepath;
 }

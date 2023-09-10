@@ -19,6 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
         <commons-text.version>1.10.0</commons-text.version>
+        <commons-net.version>3.9.0</commons-net.version>
         <lombok.version>1.18.26</lombok.version>
         <jsoup.version>1.12.1</jsoup.version>
         <jackson-dataformat-xml.version>2.9.7</jackson-dataformat-xml.version>
@@ -50,6 +51,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>${commons-text.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>${commons-net.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
