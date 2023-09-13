@@ -21,7 +21,7 @@
         <commons-text.version>1.10.0</commons-text.version>
         <commons-net.version>3.9.0</commons-net.version>
         <lombok.version>1.18.26</lombok.version>
-        <jsoup.version>1.12.1</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <jackson-dataformat-xml.version>2.9.7</jackson-dataformat-xml.version>
     </properties>
 
