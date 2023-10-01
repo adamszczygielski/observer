@@ -16,22 +16,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable()
+                .headers().frameOptions().disable();
+
         if (secured) {
             httpSecurity.authorizeRequests()
-                    .antMatchers("/resources/**").permitAll()
-                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/resources/**", "/h2-console/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().loginPage("/login").permitAll()
                     .defaultSuccessUrl(ItemController.API_PATH, true)
                     .and()
-                    .logout().permitAll()
-                    .and()
-                    .csrf().disable()
-                    .headers().frameOptions().disable();
+                    .logout().permitAll();
         } else {
-            httpSecurity.csrf().disable()
-                    .authorizeRequests().anyRequest().anonymous()
+            httpSecurity.authorizeRequests()
+                    .anyRequest().anonymous()
                     .and()
                     .httpBasic().disable();
         }
