@@ -1,5 +1,6 @@
 observer:
   secured: false
+  error-notification: false
   ftp:
     hostname: change-me
     username: change-me

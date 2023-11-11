@@ -14,7 +14,8 @@ public enum Source {
     ALLEGRO(1, "Allegro"),
     OLX(2, "OLX"),
     EBAY(3, "eBay"),
-    ALLEGRO_LOKALNIE(4, "Allegro Lokalnie");
+    ALLEGRO_LOKALNIE(4, "Allegro Lokalnie"),
+    LOOMBARD(5, "Loombard");
 
     private static final Map<Integer, Source> ENUM_MAP;
 

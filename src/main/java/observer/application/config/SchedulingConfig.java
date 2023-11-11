@@ -74,7 +74,10 @@ public class SchedulingConfig implements SchedulingConfigurer {
 
         String errorMessage = MessageFormat.format(ERROR_MESSAGE_PATTERN, source.getLabel(), estimatedDelay.getSeconds());
         log.error(errorMessage);
-        notificationService.sendNotification(errorMessage);
+
+        if (applicationConfig.getErrorNotification()) {
+            notificationService.sendNotification(errorMessage);
+        }
         return estimatedDelay;
     }
 }

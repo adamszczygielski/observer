@@ -11,12 +11,15 @@ import org.apache.http.ssl.SSLContexts;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
 import java.security.cert.X509Certificate;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -54,9 +57,18 @@ public class RestInvokerImpl implements RestInvoker {
         createSSLConnectionSocketFactory().ifPresent(httpClientBuilder::setSSLSocketFactory);
         CloseableHttpClient httpClient = httpClientBuilder.build();
 
-        return new RestTemplateBuilder()
+        RestTemplate rt = new RestTemplateBuilder()
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(httpClient))
                 .build();
+
+        rt.getMessageConverters().add(createMappingJackson2HttpMessageConverter());
+        return rt;
+    }
+
+    private MappingJackson2HttpMessageConverter createMappingJackson2HttpMessageConverter() {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(List.of(MediaType.TEXT_HTML));
+        return converter;
     }
 
     private Optional<SSLConnectionSocketFactory> createSSLConnectionSocketFactory() {

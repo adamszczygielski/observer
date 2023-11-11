@@ -71,6 +71,7 @@ public class AllegroService implements SourceService {
         } else {
             return elements.stream()
                     .map(element -> mapper.toItem(element, search.getId()))
+                    .distinct()
                     .collect(Collectors.toList());
         }
     }

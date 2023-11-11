@@ -67,4 +67,7 @@ public class ApplicationConfig {
 
     @Value("${observer.ftp.filepath}")
     private String ftpFilepath;
+
+    @Value(("${observer.error-notification}"))
+    private Boolean errorNotification;
 }
