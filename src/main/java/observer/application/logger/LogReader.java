@@ -1,5 +1,7 @@
 package observer.application.logger;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 
 import java.io.File;
@@ -9,9 +11,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LogReader {
 
     private static final File LOG_FILE = new File("application.log");
+    private static final LogReader INSTANCE = new LogReader();
+
+    public static LogReader getInstance() {
+        return INSTANCE;
+    }
 
     public String getApplicationLogs(int limit) {
         List<String> logLines = new ArrayList<>(limit);

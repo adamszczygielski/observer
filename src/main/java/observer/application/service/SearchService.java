@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +33,9 @@ public class SearchService {
     }
 
     public Optional<Search> getOverdue(int sourceId) {
-        List<Search> overdueSearches = searchRepository.findOverdue(sourceId, PAGE_REQUEST);
-        return overdueSearches.isEmpty() ? Optional.empty() : Optional.of(overdueSearches.get(0));
+        return searchRepository.findOverdue(sourceId, Instant.now(), PAGE_REQUEST)
+                .stream()
+                .findFirst();
     }
 
     @Transactional
@@ -67,5 +69,4 @@ public class SearchService {
             s.setIntervalMinutes(search.getIntervalMinutes());
         });
     }
-
 }

@@ -16,8 +16,6 @@ public class TechnicalController {
 
     public static final String API_PATH = "/";
 
-    private final LogReader logReader = new LogReader();
-
     @GetMapping
     public ModelAndView redirect() {
         return new ModelAndView("redirect:" + ItemController.API_PATH);
@@ -25,8 +23,7 @@ public class TechnicalController {
 
     @GetMapping(value = "/logs")
     public String getApplicationLogs(Model model, @RequestParam(value = "limit", defaultValue = "100") int limit) {
-        model.addAttribute("logs", logReader.getApplicationLogs(limit));
+        model.addAttribute("logs", LogReader.getInstance().getApplicationLogs(limit));
         return "logs";
     }
-
 }
