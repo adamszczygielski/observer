@@ -1,10 +1,11 @@
 
 package observer.application.service.source.allegro.model.listing;
 
+import com.fasterxml.jackson.annotation.*;
+
 import javax.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -27,6 +28,8 @@ public class CategoryDatum {
     private Integer count;
     @JsonProperty("hasChildren")
     private Boolean hasChildren;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -100,6 +103,16 @@ public class CategoryDatum {
     @JsonProperty("hasChildren")
     public void setHasChildren(Boolean hasChildren) {
         this.hasChildren = hasChildren;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
 }

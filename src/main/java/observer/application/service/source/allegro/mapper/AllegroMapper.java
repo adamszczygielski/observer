@@ -7,7 +7,6 @@ import observer.application.model.Source;
 import observer.application.service.RandomUtils;
 import observer.application.service.source.allegro.model.category.CategoryDto;
 import observer.application.service.source.allegro.model.listing.Element;
-import observer.application.service.source.allegro.model.listing.Normal;
 import observer.application.service.source.allegro.model.listing.Price;
 import org.springframework.lang.Nullable;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -62,8 +61,7 @@ public class AllegroMapper {
     }
 
     private String toPrice(Price price) {
-        Normal normal = price.getNormal();
-        return String.join(" ", normal.getAmount(), normal.getCurrency());
+        return String.join(" ", price.getMain().getAmount(), price.getMain().getCurrency());
     }
 
     private String toUrl(Element element) {

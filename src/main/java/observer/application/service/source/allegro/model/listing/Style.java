@@ -13,16 +13,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "textAttributes"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Style {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("textAttributes")
+    private TextAttributes textAttributes;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +27,26 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Style() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param textAttributes
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Style(TextAttributes textAttributes) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.textAttributes = textAttributes;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("textAttributes")
+    public TextAttributes getTextAttributes() {
+        return textAttributes;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
-    }
-
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
-    }
-
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("textAttributes")
+    public void setTextAttributes(TextAttributes textAttributes) {
+        this.textAttributes = textAttributes;
     }
 
     @JsonAnyGetter

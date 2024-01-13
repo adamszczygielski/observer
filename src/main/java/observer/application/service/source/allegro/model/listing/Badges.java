@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "installments",
+    "logistics"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Badges {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("installments")
+    private Installments installments;
+    @JsonProperty("logistics")
+    private Logistics logistics;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Badges() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param installments
+     * @param logistics
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Badges(Installments installments, Logistics logistics) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.installments = installments;
+        this.logistics = logistics;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("installments")
+    public Installments getInstallments() {
+        return installments;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("installments")
+    public void setInstallments(Installments installments) {
+        this.installments = installments;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("logistics")
+    public Logistics getLogistics() {
+        return logistics;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("logistics")
+    public void setLogistics(Logistics logistics) {
+        this.logistics = logistics;
     }
 
     @JsonAnyGetter

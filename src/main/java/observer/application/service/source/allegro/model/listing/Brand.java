@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "logo",
+    "name"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Brand {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("logo")
+    private String logo;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Brand() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param name
+     * @param logo
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Brand(String logo, String name) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.logo = logo;
+        this.name = name;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("logo")
+    public String getLogo() {
+        return logo;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("logo")
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonAnyGetter

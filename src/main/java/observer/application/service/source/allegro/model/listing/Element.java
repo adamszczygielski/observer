@@ -1,11 +1,13 @@
 
 package observer.application.service.source.allegro.model.listing;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.*;
+
 import javax.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -16,25 +18,34 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "vendor",
     "location",
     "title",
+    "alt",
     "highlight",
     "mainThumbnail",
     "photos",
-    "categoryPath",
+    "isAddToCartHidden",
+    "isBestPriceGuarantee",
+    "isEnded",
+    "assortmentCategory",
+    "navigationCategory",
     "quantity",
     "cartAvailable",
     "isSponsored",
     "openInNewTab",
     "labels",
+    "position",
+    "context",
+    "brand",
     "parameters",
     "timingInfo",
     "availabilityInfo",
     "price",
     "deliveryInfo",
-    "position",
     "seller",
-    "productReview",
-    "seoUrl",
-    "shipping"
+    "badges",
+    "seoProductInfo",
+    "productId",
+    "shipping",
+    "analytics"
 })
 @Generated("jsonschema2pojo")
 public class Element {
@@ -53,14 +64,24 @@ public class Element {
     private Location location;
     @JsonProperty("title")
     private Title title;
+    @JsonProperty("alt")
+    private String alt;
     @JsonProperty("highlight")
     private Boolean highlight;
     @JsonProperty("mainThumbnail")
     private String mainThumbnail;
     @JsonProperty("photos")
-    private List<Photo> photos = null;
-    @JsonProperty("categoryPath")
-    private List<String> categoryPath = null;
+    private List<Photo> photos = new ArrayList<Photo>();
+    @JsonProperty("isAddToCartHidden")
+    private Boolean isAddToCartHidden;
+    @JsonProperty("isBestPriceGuarantee")
+    private Boolean isBestPriceGuarantee;
+    @JsonProperty("isEnded")
+    private Boolean isEnded;
+    @JsonProperty("assortmentCategory")
+    private AssortmentCategory assortmentCategory;
+    @JsonProperty("navigationCategory")
+    private NavigationCategory navigationCategory;
     @JsonProperty("quantity")
     private Integer quantity;
     @JsonProperty("cartAvailable")
@@ -71,8 +92,14 @@ public class Element {
     private Boolean openInNewTab;
     @JsonProperty("labels")
     private Labels labels;
+    @JsonProperty("position")
+    private Integer position;
+    @JsonProperty("context")
+    private String context;
+    @JsonProperty("brand")
+    private Brand brand;
     @JsonProperty("parameters")
-    private List<Object> parameters = null;
+    private List<Parameter> parameters = new ArrayList<Parameter>();
     @JsonProperty("timingInfo")
     private TimingInfo timingInfo;
     @JsonProperty("availabilityInfo")
@@ -80,17 +107,21 @@ public class Element {
     @JsonProperty("price")
     private Price price;
     @JsonProperty("deliveryInfo")
-    private DeliveryInfo deliveryInfo;
-    @JsonProperty("position")
-    private Integer position;
+    private Object deliveryInfo;
     @JsonProperty("seller")
     private Seller seller;
-    @JsonProperty("productReview")
-    private ProductReview productReview;
-    @JsonProperty("seoUrl")
-    private String seoUrl;
+    @JsonProperty("badges")
+    private Badges badges;
+    @JsonProperty("seoProductInfo")
+    private SeoProductInfo seoProductInfo;
+    @JsonProperty("productId")
+    private String productId;
     @JsonProperty("shipping")
     private Shipping shipping;
+    @JsonProperty("analytics")
+    private Analytics analytics;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -108,27 +139,36 @@ public class Element {
      * @param type
      * @param title
      * @param photos
-     * @param productReview
+     * @param analytics
      * @param highlight
-     * @param seoUrl
      * @param shipping
      * @param vendor
      * @param price
+     * @param context
      * @param text
      * @param id
+     * @param isEnded
+     * @param brand
+     * @param assortmentCategory
      * @param deliveryInfo
+     * @param navigationCategory
      * @param quantity
-     * @param categoryPath
+     * @param productId
+     * @param alt
+     * @param isBestPriceGuarantee
      * @param url
      * @param labels
+     * @param badges
      * @param timingInfo
+     * @param seoProductInfo
      * @param location
      * @param position
+     * @param isAddToCartHidden
      * @param parameters
      * @param openInNewTab
      * @param isSponsored
      */
-    public Element(String type, String text, String id, String url, String vendor, Location location, Title title, Boolean highlight, String mainThumbnail, List<Photo> photos, List<String> categoryPath, Integer quantity, Boolean cartAvailable, Boolean isSponsored, Boolean openInNewTab, Labels labels, List<Object> parameters, TimingInfo timingInfo, AvailabilityInfo availabilityInfo, Price price, DeliveryInfo deliveryInfo, Integer position, Seller seller, ProductReview productReview, String seoUrl, Shipping shipping) {
+    public Element(String type, String text, String id, String url, String vendor, Location location, Title title, String alt, Boolean highlight, String mainThumbnail, List<Photo> photos, Boolean isAddToCartHidden, Boolean isBestPriceGuarantee, Boolean isEnded, AssortmentCategory assortmentCategory, NavigationCategory navigationCategory, Integer quantity, Boolean cartAvailable, Boolean isSponsored, Boolean openInNewTab, Labels labels, Integer position, String context, Brand brand, List<Parameter> parameters, TimingInfo timingInfo, AvailabilityInfo availabilityInfo, Price price, Object deliveryInfo, Seller seller, Badges badges, SeoProductInfo seoProductInfo, String productId, Shipping shipping, Analytics analytics) {
         super();
         this.type = type;
         this.text = text;
@@ -137,25 +177,34 @@ public class Element {
         this.vendor = vendor;
         this.location = location;
         this.title = title;
+        this.alt = alt;
         this.highlight = highlight;
         this.mainThumbnail = mainThumbnail;
         this.photos = photos;
-        this.categoryPath = categoryPath;
+        this.isAddToCartHidden = isAddToCartHidden;
+        this.isBestPriceGuarantee = isBestPriceGuarantee;
+        this.isEnded = isEnded;
+        this.assortmentCategory = assortmentCategory;
+        this.navigationCategory = navigationCategory;
         this.quantity = quantity;
         this.cartAvailable = cartAvailable;
         this.isSponsored = isSponsored;
         this.openInNewTab = openInNewTab;
         this.labels = labels;
+        this.position = position;
+        this.context = context;
+        this.brand = brand;
         this.parameters = parameters;
         this.timingInfo = timingInfo;
         this.availabilityInfo = availabilityInfo;
         this.price = price;
         this.deliveryInfo = deliveryInfo;
-        this.position = position;
         this.seller = seller;
-        this.productReview = productReview;
-        this.seoUrl = seoUrl;
+        this.badges = badges;
+        this.seoProductInfo = seoProductInfo;
+        this.productId = productId;
         this.shipping = shipping;
+        this.analytics = analytics;
     }
 
     @JsonProperty("type")
@@ -228,6 +277,16 @@ public class Element {
         this.title = title;
     }
 
+    @JsonProperty("alt")
+    public String getAlt() {
+        return alt;
+    }
+
+    @JsonProperty("alt")
+    public void setAlt(String alt) {
+        this.alt = alt;
+    }
+
     @JsonProperty("highlight")
     public Boolean getHighlight() {
         return highlight;
@@ -258,14 +317,54 @@ public class Element {
         this.photos = photos;
     }
 
-    @JsonProperty("categoryPath")
-    public List<String> getCategoryPath() {
-        return categoryPath;
+    @JsonProperty("isAddToCartHidden")
+    public Boolean getIsAddToCartHidden() {
+        return isAddToCartHidden;
     }
 
-    @JsonProperty("categoryPath")
-    public void setCategoryPath(List<String> categoryPath) {
-        this.categoryPath = categoryPath;
+    @JsonProperty("isAddToCartHidden")
+    public void setIsAddToCartHidden(Boolean isAddToCartHidden) {
+        this.isAddToCartHidden = isAddToCartHidden;
+    }
+
+    @JsonProperty("isBestPriceGuarantee")
+    public Boolean getIsBestPriceGuarantee() {
+        return isBestPriceGuarantee;
+    }
+
+    @JsonProperty("isBestPriceGuarantee")
+    public void setIsBestPriceGuarantee(Boolean isBestPriceGuarantee) {
+        this.isBestPriceGuarantee = isBestPriceGuarantee;
+    }
+
+    @JsonProperty("isEnded")
+    public Boolean getIsEnded() {
+        return isEnded;
+    }
+
+    @JsonProperty("isEnded")
+    public void setIsEnded(Boolean isEnded) {
+        this.isEnded = isEnded;
+    }
+
+    @JsonProperty("assortmentCategory")
+    public AssortmentCategory getAssortmentCategory() {
+        return assortmentCategory;
+    }
+
+    @JsonProperty("assortmentCategory")
+    public void setAssortmentCategory(AssortmentCategory assortmentCategory) {
+        this.assortmentCategory = assortmentCategory;
+    }
+
+    @JsonProperty("navigationCategory")
+    public NavigationCategory getNavigationCategory() {
+        return navigationCategory;
+    }
+
+    @JsonProperty("navigationCategory")
+    public void setNavigationCategory(NavigationCategory navigationCategory) {
+        this.navigationCategory = navigationCategory;
     }
 
     @JsonProperty("quantity")
@@ -318,13 +417,43 @@ public class Element {
         this.labels = labels;
     }
 
+    @JsonProperty("position")
+    public Integer getPosition() {
+        return position;
+    }
+
+    @JsonProperty("position")
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    @JsonProperty("context")
+    public String getContext() {
+        return context;
+    }
+
+    @JsonProperty("context")
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    @JsonProperty("brand")
+    public Brand getBrand() {
+        return brand;
+    }
+
+    @JsonProperty("brand")
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
     @JsonProperty("parameters")
-    public List<Object> getParameters() {
+    public List<Parameter> getParameters() {
         return parameters;
     }
 
     @JsonProperty("parameters")
-    public void setParameters(List<Object> parameters) {
+    public void setParameters(List<Parameter> parameters) {
         this.parameters = parameters;
     }
 
@@ -359,23 +488,13 @@ public class Element {
     }
 
     @JsonProperty("deliveryInfo")
-    public DeliveryInfo getDeliveryInfo() {
+    public Object getDeliveryInfo() {
         return deliveryInfo;
     }
 
     @JsonProperty("deliveryInfo")
-    public void setDeliveryInfo(DeliveryInfo deliveryInfo) {
+    public void setDeliveryInfo(Object deliveryInfo) {
         this.deliveryInfo = deliveryInfo;
-    }
-
-    @JsonProperty("position")
-    public Integer getPosition() {
-        return position;
-    }
-
-    @JsonProperty("position")
-    public void setPosition(Integer position) {
-        this.position = position;
     }
 
     @JsonProperty("seller")
@@ -388,24 +507,34 @@ public class Element {
         this.seller = seller;
     }
 
-    @JsonProperty("productReview")
-    public ProductReview getProductReview() {
-        return productReview;
+    @JsonProperty("badges")
+    public Badges getBadges() {
+        return badges;
     }
 
-    @JsonProperty("productReview")
-    public void setProductReview(ProductReview productReview) {
-        this.productReview = productReview;
+    @JsonProperty("badges")
+    public void setBadges(Badges badges) {
+        this.badges = badges;
     }
 
-    @JsonProperty("seoUrl")
-    public String getSeoUrl() {
-        return seoUrl;
+    @JsonProperty("seoProductInfo")
+    public SeoProductInfo getSeoProductInfo() {
+        return seoProductInfo;
     }
 
-    @JsonProperty("seoUrl")
-    public void setSeoUrl(String seoUrl) {
-        this.seoUrl = seoUrl;
+    @JsonProperty("seoProductInfo")
+    public void setSeoProductInfo(SeoProductInfo seoProductInfo) {
+        this.seoProductInfo = seoProductInfo;
+    }
+
+    @JsonProperty("productId")
+    public String getProductId() {
+        return productId;
+    }
+
+    @JsonProperty("productId")
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     @JsonProperty("shipping")
@@ -416,6 +545,26 @@ public class Element {
     @JsonProperty("shipping")
     public void setShipping(Shipping shipping) {
         this.shipping = shipping;
+    }
+
+    @JsonProperty("analytics")
+    public Analytics getAnalytics() {
+        return analytics;
+    }
+
+    @JsonProperty("analytics")
+    public void setAnalytics(Analytics analytics) {
+        this.analytics = analytics;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
 }

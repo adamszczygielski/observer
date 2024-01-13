@@ -13,19 +13,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "text",
-    "bold",
-    "superSeller"
+    "position",
+    "content",
+    "visible"
 })
 @Generated("jsonschema2pojo")
-public class Title {
+public class InterlinesAtTheEnd {
 
-    @JsonProperty("text")
-    private String text;
-    @JsonProperty("bold")
-    private Boolean bold;
-    @JsonProperty("superSeller")
-    private Boolean superSeller;
+    @JsonProperty("position")
+    private Integer position;
+    @JsonProperty("content")
+    private String content;
+    @JsonProperty("visible")
+    private Boolean visible;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -33,50 +33,50 @@ public class Title {
      * No args constructor for use in serialization
      * 
      */
-    public Title() {
+    public InterlinesAtTheEnd() {
     }
 
     /**
      * 
-     * @param superSeller
-     * @param text
-     * @param bold
+     * @param visible
+     * @param position
+     * @param content
      */
-    public Title(String text, Boolean bold, Boolean superSeller) {
+    public InterlinesAtTheEnd(Integer position, String content, Boolean visible) {
         super();
-        this.text = text;
-        this.bold = bold;
-        this.superSeller = superSeller;
+        this.position = position;
+        this.content = content;
+        this.visible = visible;
     }
 
-    @JsonProperty("text")
-    public String getText() {
-        return text;
+    @JsonProperty("position")
+    public Integer getPosition() {
+        return position;
     }
 
-    @JsonProperty("text")
-    public void setText(String text) {
-        this.text = text;
+    @JsonProperty("position")
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
-    @JsonProperty("bold")
-    public Boolean getBold() {
-        return bold;
+    @JsonProperty("content")
+    public String getContent() {
+        return content;
     }
 
-    @JsonProperty("bold")
-    public void setBold(Boolean bold) {
-        this.bold = bold;
+    @JsonProperty("content")
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    @JsonProperty("superSeller")
-    public Boolean getSuperSeller() {
-        return superSeller;
+    @JsonProperty("visible")
+    public Boolean getVisible() {
+        return visible;
     }
 
-    @JsonProperty("superSeller")
-    public void setSuperSeller(Boolean superSeller) {
-        this.superSeller = superSeller;
+    @JsonProperty("visible")
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
     }
 
     @JsonAnyGetter

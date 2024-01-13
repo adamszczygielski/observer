@@ -1,7 +1,9 @@
 
 package observer.application.service.source.allegro.model.listing;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,16 +15,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "itemView"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Analytics {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("itemView")
+    private List<ItemView> itemView = new ArrayList<ItemView>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +29,26 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Analytics() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param itemView
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Analytics(List<ItemView> itemView) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.itemView = itemView;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("itemView")
+    public List<ItemView> getItemView() {
+        return itemView;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
-    }
-
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
-    }
-
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("itemView")
+    public void setItemView(List<ItemView> itemView) {
+        this.itemView = itemView;
     }
 
     @JsonAnyGetter

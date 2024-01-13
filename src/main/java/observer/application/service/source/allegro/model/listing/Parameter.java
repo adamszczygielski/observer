@@ -15,13 +15,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "labels"
+    "name",
+    "values",
+    "highlight"
 })
 @Generated("jsonschema2pojo")
-public class Summary {
+public class Parameter {
 
-    @JsonProperty("labels")
-    private List<Label__3> labels = new ArrayList<Label__3>();
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("values")
+    private List<String> values = new ArrayList<String>();
+    @JsonProperty("highlight")
+    private Boolean highlight;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -29,26 +35,50 @@ public class Summary {
      * No args constructor for use in serialization
      * 
      */
-    public Summary() {
+    public Parameter() {
     }
 
     /**
      * 
-     * @param labels
+     * @param highlight
+     * @param values
+     * @param name
      */
-    public Summary(List<Label__3> labels) {
+    public Parameter(String name, List<String> values, Boolean highlight) {
         super();
-        this.labels = labels;
+        this.name = name;
+        this.values = values;
+        this.highlight = highlight;
     }
 
-    @JsonProperty("labels")
-    public List<Label__3> getLabels() {
-        return labels;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("labels")
-    public void setLabels(List<Label__3> labels) {
-        this.labels = labels;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("values")
+    public List<String> getValues() {
+        return values;
+    }
+
+    @JsonProperty("values")
+    public void setValues(List<String> values) {
+        this.values = values;
+    }
+
+    @JsonProperty("highlight")
+    public Boolean getHighlight() {
+        return highlight;
+    }
+
+    @JsonProperty("highlight")
+    public void setHighlight(Boolean highlight) {
+        this.highlight = highlight;
     }
 
     @JsonAnyGetter

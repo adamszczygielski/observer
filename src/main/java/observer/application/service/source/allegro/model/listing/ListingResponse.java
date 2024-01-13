@@ -1,36 +1,26 @@
 
 package observer.application.service.source.allegro.model.listing;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.annotation.Generated;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "aboveTheFoldCount",
-    "items",
-    "observed",
-    "sendPageViewEvent",
-    "shouldSendPerformanceMetrics",
-    "userData"
+    "listingType",
+    "__listing_StoreState"
 })
 @Generated("jsonschema2pojo")
 public class ListingResponse {
 
-    @JsonProperty("aboveTheFoldCount")
-    private Integer aboveTheFoldCount;
-    @JsonProperty("items")
-    private Items items;
-    @JsonProperty("observed")
-    private Observed observed;
-    @JsonProperty("sendPageViewEvent")
-    private Boolean sendPageViewEvent;
-    @JsonProperty("shouldSendPerformanceMetrics")
-    private Boolean shouldSendPerformanceMetrics;
-    @JsonProperty("userData")
-    private UserData userData;
+    @JsonProperty("listingType")
+    private String listingType;
+    @JsonProperty("__listing_StoreState")
+    private ListingStoreState listingStoreState;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -41,81 +31,43 @@ public class ListingResponse {
 
     /**
      * 
-     * @param userData
-     * @param aboveTheFoldCount
-     * @param sendPageViewEvent
-     * @param items
-     * @param shouldSendPerformanceMetrics
-     * @param observed
+     * @param listingStoreState
+     * @param listingType
      */
-    public ListingResponse(Integer aboveTheFoldCount, Items items, Observed observed, Boolean sendPageViewEvent, Boolean shouldSendPerformanceMetrics, UserData userData) {
+    public ListingResponse(String listingType, ListingStoreState listingStoreState) {
         super();
-        this.aboveTheFoldCount = aboveTheFoldCount;
-        this.items = items;
-        this.observed = observed;
-        this.sendPageViewEvent = sendPageViewEvent;
-        this.shouldSendPerformanceMetrics = shouldSendPerformanceMetrics;
-        this.userData = userData;
+        this.listingType = listingType;
+        this.listingStoreState = listingStoreState;
     }
 
-    @JsonProperty("aboveTheFoldCount")
-    public Integer getAboveTheFoldCount() {
-        return aboveTheFoldCount;
+    @JsonProperty("listingType")
+    public String getListingType() {
+        return listingType;
     }
 
-    @JsonProperty("aboveTheFoldCount")
-    public void setAboveTheFoldCount(Integer aboveTheFoldCount) {
-        this.aboveTheFoldCount = aboveTheFoldCount;
+    @JsonProperty("listingType")
+    public void setListingType(String listingType) {
+        this.listingType = listingType;
     }
 
-    @JsonProperty("items")
-    public Items getItems() {
-        return items;
+    @JsonProperty("__listing_StoreState")
+    public ListingStoreState getListingStoreState() {
+        return listingStoreState;
     }
 
-    @JsonProperty("items")
-    public void setItems(Items items) {
-        this.items = items;
+    @JsonProperty("__listing_StoreState")
+    public void setListingStoreState(ListingStoreState listingStoreState) {
+        this.listingStoreState = listingStoreState;
     }
 
-    @JsonProperty("observed")
-    public Observed getObserved() {
-        return observed;
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
-    @JsonProperty("observed")
-    public void setObserved(Observed observed) {
-        this.observed = observed;
-    }
-
-    @JsonProperty("sendPageViewEvent")
-    public Boolean getSendPageViewEvent() {
-        return sendPageViewEvent;
-    }
-
-    @JsonProperty("sendPageViewEvent")
-    public void setSendPageViewEvent(Boolean sendPageViewEvent) {
-        this.sendPageViewEvent = sendPageViewEvent;
-    }
-
-    @JsonProperty("shouldSendPerformanceMetrics")
-    public Boolean getShouldSendPerformanceMetrics() {
-        return shouldSendPerformanceMetrics;
-    }
-
-    @JsonProperty("shouldSendPerformanceMetrics")
-    public void setShouldSendPerformanceMetrics(Boolean shouldSendPerformanceMetrics) {
-        this.shouldSendPerformanceMetrics = shouldSendPerformanceMetrics;
-    }
-
-    @JsonProperty("userData")
-    public UserData getUserData() {
-        return userData;
-    }
-
-    @JsonProperty("userData")
-    public void setUserData(UserData userData) {
-        this.userData = userData;
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
 }

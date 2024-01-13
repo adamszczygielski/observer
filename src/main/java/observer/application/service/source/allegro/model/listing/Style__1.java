@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "themes",
+    "badge"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Style__1 {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("themes")
+    private Themes themes;
+    @JsonProperty("badge")
+    private Boolean badge;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Style__1() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param themes
+     * @param badge
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Style__1(Themes themes, Boolean badge) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.themes = themes;
+        this.badge = badge;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("themes")
+    public Themes getThemes() {
+        return themes;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("themes")
+    public void setThemes(Themes themes) {
+        this.themes = themes;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("badge")
+    public Boolean getBadge() {
+        return badge;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("badge")
+    public void setBadge(Boolean badge) {
+        this.badge = badge;
     }
 
     @JsonAnyGetter

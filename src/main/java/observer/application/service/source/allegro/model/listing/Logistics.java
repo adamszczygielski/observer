@@ -1,7 +1,9 @@
 
 package observer.application.service.source.allegro.model.listing;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,16 +15,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "additionalInfo",
+    "labels"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Logistics {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("additionalInfo")
+    private AdditionalInfo additionalInfo;
+    @JsonProperty("labels")
+    private List<Label__2> labels = new ArrayList<Label__2>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +32,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Logistics() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param additionalInfo
+     * @param labels
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Logistics(AdditionalInfo additionalInfo, List<Label__2> labels) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.additionalInfo = additionalInfo;
+        this.labels = labels;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("additionalInfo")
+    public AdditionalInfo getAdditionalInfo() {
+        return additionalInfo;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("additionalInfo")
+    public void setAdditionalInfo(AdditionalInfo additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("labels")
+    public List<Label__2> getLabels() {
+        return labels;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("labels")
+    public void setLabels(List<Label__2> labels) {
+        this.labels = labels;
     }
 
     @JsonAnyGetter

@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "amount",
+    "currency"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Main {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("amount")
+    private String amount;
+    @JsonProperty("currency")
+    private String currency;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Main() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param amount
+     * @param currency
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Main(String amount, String currency) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.amount = amount;
+        this.currency = currency;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("amount")
+    public String getAmount() {
+        return amount;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("amount")
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("currency")
+    public String getCurrency() {
+        return currency;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("currency")
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     @JsonAnyGetter

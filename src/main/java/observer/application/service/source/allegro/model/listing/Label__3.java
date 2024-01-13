@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "text",
+    "bold"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Label__3 {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("text")
+    private String text;
+    @JsonProperty("bold")
+    private Boolean bold;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Label__3() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param text
+     * @param bold
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Label__3(String text, Boolean bold) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.text = text;
+        this.bold = bold;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("text")
+    public String getText() {
+        return text;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("text")
+    public void setText(String text) {
+        this.text = text;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("bold")
+    public Boolean getBold() {
+        return bold;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("bold")
+    public void setBold(Boolean bold) {
+        this.bold = bold;
     }
 
     @JsonAnyGetter

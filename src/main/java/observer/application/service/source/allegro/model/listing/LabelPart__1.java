@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "text",
+    "style"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class LabelPart__1 {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("text")
+    private String text;
+    @JsonProperty("style")
+    private Style__2 style;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public LabelPart__1() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param style
+     * @param text
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public LabelPart__1(String text, Style__2 style) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.text = text;
+        this.style = style;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("text")
+    public String getText() {
+        return text;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("text")
+    public void setText(String text) {
+        this.text = text;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("style")
+    public Style__2 getStyle() {
+        return style;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("style")
+    public void setStyle(Style__2 style) {
+        this.style = style;
     }
 
     @JsonAnyGetter

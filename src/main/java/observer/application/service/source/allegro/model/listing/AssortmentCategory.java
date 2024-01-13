@@ -1,7 +1,9 @@
 
 package observer.application.service.source.allegro.model.listing;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,16 +15,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "id",
+    "path"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class AssortmentCategory {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("path")
+    private List<String> path = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +32,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public AssortmentCategory() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param path
+     * @param id
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public AssortmentCategory(String id, List<String> path) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.id = id;
+        this.path = path;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("path")
+    public List<String> getPath() {
+        return path;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("path")
+    public void setPath(List<String> path) {
+        this.path = path;
     }
 
     @JsonAnyGetter

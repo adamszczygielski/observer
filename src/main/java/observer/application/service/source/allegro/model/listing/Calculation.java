@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "price",
+    "period"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Calculation {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("price")
+    private String price;
+    @JsonProperty("period")
+    private Integer period;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Calculation() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param period
+     * @param price
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Calculation(String price, Integer period) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.price = price;
+        this.period = period;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("price")
+    public String getPrice() {
+        return price;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("price")
+    public void setPrice(String price) {
+        this.price = price;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("period")
+    public Integer getPeriod() {
+        return period;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("period")
+    public void setPeriod(Integer period) {
+        this.period = period;
     }
 
     @JsonAnyGetter

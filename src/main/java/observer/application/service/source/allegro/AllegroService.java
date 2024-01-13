@@ -14,7 +14,6 @@ import observer.application.service.source.allegro.mapper.AllegroMapper;
 import observer.application.service.source.allegro.model.listing.Element;
 import observer.application.service.source.allegro.model.listing.ListingResponse;
 import observer.application.webdriver.WebDriverFactory;
-import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +30,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AllegroService implements SourceService {
 
-    private static final String JSON_BEGIN_PATTERN = "__listing_StoreState\":\"";
-    private static final String JSON_END_PATTERN = "\"}</script>";
+    private static final String JSON_BEGIN_PATTERN = "{\"listingType\":\"base-mobile\",\"__listing_StoreState";
+    private static final String JSON_END_PATTERN = "</script>";
     private static final List<String> FALLBACK_PATTERNS = Arrays.asList("first yellow information",
             "Przykro nam, nie znale");
     private static final short STRICT_FILTER_THRESHOLD = 5;
@@ -92,8 +91,9 @@ public class AllegroService implements SourceService {
     }
 
     private List<Element> getElements(String listingResponseJson) {
-        return jsonMapper.toObject(listingResponseJson, ListingResponse.class)
-                .getItems().getElements().stream()
+        ListingResponse listingResponse = jsonMapper.toObject(listingResponseJson, ListingResponse.class);
+
+        return listingResponse.getListingStoreState().getItems().getElements().stream()
                 .filter(element -> element.getId() != null)
                 .filter(element -> !element.getType().equals("banner"))
                 .collect(Collectors.toList());
@@ -102,8 +102,7 @@ public class AllegroService implements SourceService {
     private String getListingResponseJson(String pageSource) {
         int jsonBeginIndex = getJsonBeginIndex(pageSource);
         int jsonEndIndex = getJsonEndIndex(pageSource, jsonBeginIndex);
-        String unescapedJson = pageSource.substring(jsonBeginIndex, jsonEndIndex);
-        return StringEscapeUtils.unescapeJson(unescapedJson);
+        return pageSource.substring(jsonBeginIndex, jsonEndIndex);
     }
 
     private int getJsonBeginIndex(String pageSource) {
@@ -111,7 +110,7 @@ public class AllegroService implements SourceService {
         if (beginPatternIndex == -1) {
             throw new IllegalArgumentException("Json begin index has not been found!");
         }
-        return beginPatternIndex + JSON_BEGIN_PATTERN.length();
+        return beginPatternIndex;
     }
 
     private int getJsonEndIndex(String pageSource, int jsonBeginIndex) {

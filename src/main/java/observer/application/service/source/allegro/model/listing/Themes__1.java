@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "light",
+    "dark"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Themes__1 {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("light")
+    private Light__1 light;
+    @JsonProperty("dark")
+    private Dark__1 dark;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Themes__1() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param light
+     * @param dark
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Themes__1(Light__1 light, Dark__1 dark) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.light = light;
+        this.dark = dark;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("light")
+    public Light__1 getLight() {
+        return light;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("light")
+    public void setLight(Light__1 light) {
+        this.light = light;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("dark")
+    public Dark__1 getDark() {
+        return dark;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("dark")
+    public void setDark(Dark__1 dark) {
+        this.dark = dark;
     }
 
     @JsonAnyGetter

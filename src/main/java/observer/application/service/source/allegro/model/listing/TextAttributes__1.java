@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "bold",
+    "strikethrough"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class TextAttributes__1 {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("bold")
+    private Boolean bold;
+    @JsonProperty("strikethrough")
+    private Boolean strikethrough;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public TextAttributes__1() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param bold
+     * @param strikethrough
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public TextAttributes__1(Boolean bold, Boolean strikethrough) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.bold = bold;
+        this.strikethrough = strikethrough;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("bold")
+    public Boolean getBold() {
+        return bold;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("bold")
+    public void setBold(Boolean bold) {
+        this.bold = bold;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("strikethrough")
+    public Boolean getStrikethrough() {
+        return strikethrough;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("strikethrough")
+    public void setStrikethrough(Boolean strikethrough) {
+        this.strikethrough = strikethrough;
     }
 
     @JsonAnyGetter

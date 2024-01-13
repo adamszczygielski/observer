@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "text",
+    "icon"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class RegularLabel {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("text")
+    private String text;
+    @JsonProperty("icon")
+    private Object icon;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public RegularLabel() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param icon
+     * @param text
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public RegularLabel(String text, Object icon) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.text = text;
+        this.icon = icon;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("text")
+    public String getText() {
+        return text;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("text")
+    public void setText(String text) {
+        this.text = text;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("icon")
+    public Object getIcon() {
+        return icon;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("icon")
+    public void setIcon(Object icon) {
+        this.icon = icon;
     }
 
     @JsonAnyGetter

@@ -1,7 +1,9 @@
 
 package observer.application.service.source.allegro.model.listing;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,16 +15,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "labelParts"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Label__2 {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("labelParts")
+    private List<LabelPart__1> labelParts = new ArrayList<LabelPart__1>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +29,26 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Label__2() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param labelParts
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Label__2(List<LabelPart__1> labelParts) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.labelParts = labelParts;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("labelParts")
+    public List<LabelPart__1> getLabelParts() {
+        return labelParts;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
-    }
-
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
-    }
-
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("labelParts")
+    public void setLabelParts(List<LabelPart__1> labelParts) {
+        this.labelParts = labelParts;
     }
 
     @JsonAnyGetter

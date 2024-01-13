@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "textColor",
+    "backgroundColor"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Light {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("textColor")
+    private String textColor;
+    @JsonProperty("backgroundColor")
+    private String backgroundColor;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Light() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param backgroundColor
+     * @param textColor
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Light(String textColor, String backgroundColor) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.textColor = textColor;
+        this.backgroundColor = backgroundColor;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("textColor")
+    public String getTextColor() {
+        return textColor;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("textColor")
+    public void setTextColor(String textColor) {
+        this.textColor = textColor;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("backgroundColor")
+    public String getBackgroundColor() {
+        return backgroundColor;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("backgroundColor")
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 
     @JsonAnyGetter

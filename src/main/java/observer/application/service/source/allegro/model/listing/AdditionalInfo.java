@@ -1,31 +1,27 @@
 
 package observer.application.service.source.allegro.model.listing;
 
+import com.fasterxml.jackson.annotation.*;
+
+import javax.annotation.Generated;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "text",
-    "bold",
-    "superSeller"
+    "strikeThrough",
+    "bold"
 })
 @Generated("jsonschema2pojo")
-public class Title {
+public class AdditionalInfo {
 
     @JsonProperty("text")
     private String text;
+    @JsonProperty("strikeThrough")
+    private Boolean strikeThrough;
     @JsonProperty("bold")
     private Boolean bold;
-    @JsonProperty("superSeller")
-    private Boolean superSeller;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -33,20 +29,20 @@ public class Title {
      * No args constructor for use in serialization
      * 
      */
-    public Title() {
+    public AdditionalInfo() {
     }
 
     /**
      * 
-     * @param superSeller
+     * @param strikeThrough
      * @param text
      * @param bold
      */
-    public Title(String text, Boolean bold, Boolean superSeller) {
+    public AdditionalInfo(String text, Boolean strikeThrough, Boolean bold) {
         super();
         this.text = text;
+        this.strikeThrough = strikeThrough;
         this.bold = bold;
-        this.superSeller = superSeller;
     }
 
     @JsonProperty("text")
@@ -59,6 +55,16 @@ public class Title {
         this.text = text;
     }
 
+    @JsonProperty("strikeThrough")
+    public Boolean getStrikeThrough() {
+        return strikeThrough;
+    }
+
+    @JsonProperty("strikeThrough")
+    public void setStrikeThrough(Boolean strikeThrough) {
+        this.strikeThrough = strikeThrough;
+    }
+
     @JsonProperty("bold")
     public Boolean getBold() {
         return bold;
@@ -67,16 +73,6 @@ public class Title {
     @JsonProperty("bold")
     public void setBold(Boolean bold) {
         this.bold = bold;
-    }
-
-    @JsonProperty("superSeller")
-    public Boolean getSuperSeller() {
-        return superSeller;
-    }
-
-    @JsonProperty("superSeller")
-    public void setSuperSeller(Boolean superSeller) {
-        this.superSeller = superSeller;
     }
 
     @JsonAnyGetter

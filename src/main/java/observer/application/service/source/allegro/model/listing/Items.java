@@ -1,8 +1,14 @@
 
 package observer.application.service.source.allegro.model.listing;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -17,13 +23,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "categoryData",
     "searchPhrase",
     "listingType",
-    "filtersToClean"
+    "filtersToClean",
+    "isLoading"
 })
 @Generated("jsonschema2pojo")
 public class Items {
 
     @JsonProperty("elements")
-    private List<Element> elements = null;
+    private List<Element> elements = new ArrayList<Element>();
     @JsonProperty("showUserSellsNothingMessage")
     private Boolean showUserSellsNothingMessage;
     @JsonProperty("pageUrl")
@@ -33,13 +40,17 @@ public class Items {
     @JsonProperty("searchMeta")
     private SearchMeta searchMeta;
     @JsonProperty("categoryData")
-    private List<CategoryDatum> categoryData = null;
+    private List<CategoryDatum> categoryData = new ArrayList<CategoryDatum>();
     @JsonProperty("searchPhrase")
     private String searchPhrase;
     @JsonProperty("listingType")
     private String listingType;
     @JsonProperty("filtersToClean")
-    private List<Object> filtersToClean = null;
+    private List<String> filtersToClean = new ArrayList<String>();
+    @JsonProperty("isLoading")
+    private Boolean isLoading;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -50,6 +61,7 @@ public class Items {
 
     /**
      * 
+     * @param isLoading
      * @param showUserSellsNothingMessage
      * @param filtersToClean
      * @param searchPhrase
@@ -60,7 +72,7 @@ public class Items {
      * @param searchMeta
      * @param order
      */
-    public Items(List<Element> elements, Boolean showUserSellsNothingMessage, String pageUrl, String order, SearchMeta searchMeta, List<CategoryDatum> categoryData, String searchPhrase, String listingType, List<Object> filtersToClean) {
+    public Items(List<Element> elements, Boolean showUserSellsNothingMessage, String pageUrl, String order, SearchMeta searchMeta, List<CategoryDatum> categoryData, String searchPhrase, String listingType, List<String> filtersToClean, Boolean isLoading) {
         super();
         this.elements = elements;
         this.showUserSellsNothingMessage = showUserSellsNothingMessage;
@@ -71,6 +83,7 @@ public class Items {
         this.searchPhrase = searchPhrase;
         this.listingType = listingType;
         this.filtersToClean = filtersToClean;
+        this.isLoading = isLoading;
     }
 
     @JsonProperty("elements")
@@ -154,13 +167,33 @@ public class Items {
     }
 
     @JsonProperty("filtersToClean")
-    public List<Object> getFiltersToClean() {
+    public List<String> getFiltersToClean() {
         return filtersToClean;
     }
 
     @JsonProperty("filtersToClean")
-    public void setFiltersToClean(List<Object> filtersToClean) {
+    public void setFiltersToClean(List<String> filtersToClean) {
         this.filtersToClean = filtersToClean;
+    }
+
+    @JsonProperty("isLoading")
+    public Boolean getIsLoading() {
+        return isLoading;
+    }
+
+    @JsonProperty("isLoading")
+    public void setIsLoading(Boolean isLoading) {
+        this.isLoading = isLoading;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
 }

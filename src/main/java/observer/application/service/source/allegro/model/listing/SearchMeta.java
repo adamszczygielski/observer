@@ -1,7 +1,12 @@
 
 package observer.application.service.source.allegro.model.listing;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -11,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "availableCount",
     "productsCount",
     "totalCount",
+    "totalOffersCountForProductization",
     "lastAvailablePage",
     "appliedFiltersCount",
     "type",
@@ -18,13 +24,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "resultSetTooLarge",
     "productsListing",
     "containsEroticOffer",
-    "filtersSuggestedCategory",
     "searchId",
     "productNavigationEnabled",
     "softProductizationEnabled",
-    "motoCompatibilityFilter",
     "experimentsMap",
-    "listingId"
+    "listingId",
+    "isBetterSort",
+    "isProductFlowAvailable"
 })
 @Generated("jsonschema2pojo")
 public class SearchMeta {
@@ -35,6 +41,8 @@ public class SearchMeta {
     private Integer productsCount;
     @JsonProperty("totalCount")
     private Integer totalCount;
+    @JsonProperty("totalOffersCountForProductization")
+    private Integer totalOffersCountForProductization;
     @JsonProperty("lastAvailablePage")
     private Integer lastAvailablePage;
     @JsonProperty("appliedFiltersCount")
@@ -49,20 +57,22 @@ public class SearchMeta {
     private Boolean productsListing;
     @JsonProperty("containsEroticOffer")
     private Boolean containsEroticOffer;
-    @JsonProperty("filtersSuggestedCategory")
-    private FiltersSuggestedCategory filtersSuggestedCategory;
     @JsonProperty("searchId")
     private String searchId;
     @JsonProperty("productNavigationEnabled")
     private Boolean productNavigationEnabled;
     @JsonProperty("softProductizationEnabled")
     private Boolean softProductizationEnabled;
-    @JsonProperty("motoCompatibilityFilter")
-    private MotoCompatibilityFilter motoCompatibilityFilter;
     @JsonProperty("experimentsMap")
     private ExperimentsMap experimentsMap;
     @JsonProperty("listingId")
     private String listingId;
+    @JsonProperty("isBetterSort")
+    private Boolean isBetterSort;
+    @JsonProperty("isProductFlowAvailable")
+    private Boolean isProductFlowAvailable;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,26 +86,28 @@ public class SearchMeta {
      * @param availableCount
      * @param experimentsMap
      * @param lastAvailablePage
-     * @param filtersSuggestedCategory
      * @param productNavigationEnabled
      * @param listingId
      * @param totalCount
      * @param type
      * @param resultSetTooLarge
+     * @param isBetterSort
      * @param searchId
      * @param scenario
      * @param containsEroticOffer
      * @param appliedFiltersCount
      * @param softProductizationEnabled
      * @param productsCount
+     * @param totalOffersCountForProductization
      * @param productsListing
-     * @param motoCompatibilityFilter
+     * @param isProductFlowAvailable
      */
-    public SearchMeta(Integer availableCount, Integer productsCount, Integer totalCount, Integer lastAvailablePage, Integer appliedFiltersCount, String type, String scenario, Boolean resultSetTooLarge, Boolean productsListing, Boolean containsEroticOffer, FiltersSuggestedCategory filtersSuggestedCategory, String searchId, Boolean productNavigationEnabled, Boolean softProductizationEnabled, MotoCompatibilityFilter motoCompatibilityFilter, ExperimentsMap experimentsMap, String listingId) {
+    public SearchMeta(Integer availableCount, Integer productsCount, Integer totalCount, Integer totalOffersCountForProductization, Integer lastAvailablePage, Integer appliedFiltersCount, String type, String scenario, Boolean resultSetTooLarge, Boolean productsListing, Boolean containsEroticOffer, String searchId, Boolean productNavigationEnabled, Boolean softProductizationEnabled, ExperimentsMap experimentsMap, String listingId, Boolean isBetterSort, Boolean isProductFlowAvailable) {
         super();
         this.availableCount = availableCount;
         this.productsCount = productsCount;
         this.totalCount = totalCount;
+        this.totalOffersCountForProductization = totalOffersCountForProductization;
         this.lastAvailablePage = lastAvailablePage;
         this.appliedFiltersCount = appliedFiltersCount;
         this.type = type;
@@ -103,13 +115,13 @@ public class SearchMeta {
         this.resultSetTooLarge = resultSetTooLarge;
         this.productsListing = productsListing;
         this.containsEroticOffer = containsEroticOffer;
-        this.filtersSuggestedCategory = filtersSuggestedCategory;
         this.searchId = searchId;
         this.productNavigationEnabled = productNavigationEnabled;
         this.softProductizationEnabled = softProductizationEnabled;
-        this.motoCompatibilityFilter = motoCompatibilityFilter;
         this.experimentsMap = experimentsMap;
         this.listingId = listingId;
+        this.isBetterSort = isBetterSort;
+        this.isProductFlowAvailable = isProductFlowAvailable;
     }
 
     @JsonProperty("availableCount")
@@ -140,6 +152,16 @@ public class SearchMeta {
     @JsonProperty("totalCount")
     public void setTotalCount(Integer totalCount) {
         this.totalCount = totalCount;
+    }
+
+    @JsonProperty("totalOffersCountForProductization")
+    public Integer getTotalOffersCountForProductization() {
+        return totalOffersCountForProductization;
+    }
+
+    @JsonProperty("totalOffersCountForProductization")
+    public void setTotalOffersCountForProductization(Integer totalOffersCountForProductization) {
+        this.totalOffersCountForProductization = totalOffersCountForProductization;
     }
 
     @JsonProperty("lastAvailablePage")
@@ -212,16 +234,6 @@ public class SearchMeta {
         this.containsEroticOffer = containsEroticOffer;
     }
 
-    @JsonProperty("filtersSuggestedCategory")
-    public FiltersSuggestedCategory getFiltersSuggestedCategory() {
-        return filtersSuggestedCategory;
-    }
-
-    @JsonProperty("filtersSuggestedCategory")
-    public void setFiltersSuggestedCategory(FiltersSuggestedCategory filtersSuggestedCategory) {
-        this.filtersSuggestedCategory = filtersSuggestedCategory;
-    }
-
     @JsonProperty("searchId")
     public String getSearchId() {
         return searchId;
@@ -252,16 +264,6 @@ public class SearchMeta {
         this.softProductizationEnabled = softProductizationEnabled;
     }
 
-    @JsonProperty("motoCompatibilityFilter")
-    public MotoCompatibilityFilter getMotoCompatibilityFilter() {
-        return motoCompatibilityFilter;
-    }
-
-    @JsonProperty("motoCompatibilityFilter")
-    public void setMotoCompatibilityFilter(MotoCompatibilityFilter motoCompatibilityFilter) {
-        this.motoCompatibilityFilter = motoCompatibilityFilter;
-    }
-
     @JsonProperty("experimentsMap")
     public ExperimentsMap getExperimentsMap() {
         return experimentsMap;
@@ -280,6 +282,36 @@ public class SearchMeta {
     @JsonProperty("listingId")
     public void setListingId(String listingId) {
         this.listingId = listingId;
+    }
+
+    @JsonProperty("isBetterSort")
+    public Boolean getIsBetterSort() {
+        return isBetterSort;
+    }
+
+    @JsonProperty("isBetterSort")
+    public void setIsBetterSort(Boolean isBetterSort) {
+        this.isBetterSort = isBetterSort;
+    }
+
+    @JsonProperty("isProductFlowAvailable")
+    public Boolean getIsProductFlowAvailable() {
+        return isProductFlowAvailable;
+    }
+
+    @JsonProperty("isProductFlowAvailable")
+    public void setIsProductFlowAvailable(Boolean isProductFlowAvailable) {
+        this.isProductFlowAvailable = isProductFlowAvailable;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
 }

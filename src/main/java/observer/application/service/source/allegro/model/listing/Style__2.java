@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "themes",
+    "textAttributes"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class Style__2 {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("themes")
+    private Themes__1 themes;
+    @JsonProperty("textAttributes")
+    private TextAttributes__1 textAttributes;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public Style__2() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param themes
+     * @param textAttributes
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public Style__2(Themes__1 themes, TextAttributes__1 textAttributes) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.themes = themes;
+        this.textAttributes = textAttributes;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("themes")
+    public Themes__1 getThemes() {
+        return themes;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("themes")
+    public void setThemes(Themes__1 themes) {
+        this.themes = themes;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("textAttributes")
+    public TextAttributes__1 getTextAttributes() {
+        return textAttributes;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("textAttributes")
+    public void setTextAttributes(TextAttributes__1 textAttributes) {
+        this.textAttributes = textAttributes;
     }
 
     @JsonAnyGetter

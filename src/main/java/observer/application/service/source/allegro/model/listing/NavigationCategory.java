@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "regularLabel",
-    "charityLabel"
+    "id",
+    "tree"
 })
 @Generated("jsonschema2pojo")
-public class Labels {
+public class NavigationCategory {
 
-    @JsonProperty("regularLabel")
-    private RegularLabel regularLabel;
-    @JsonProperty("charityLabel")
-    private Object charityLabel;
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("tree")
+    private String tree;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -30,38 +30,38 @@ public class Labels {
      * No args constructor for use in serialization
      * 
      */
-    public Labels() {
+    public NavigationCategory() {
     }
 
     /**
      * 
-     * @param regularLabel
-     * @param charityLabel
+     * @param tree
+     * @param id
      */
-    public Labels(RegularLabel regularLabel, Object charityLabel) {
+    public NavigationCategory(String id, String tree) {
         super();
-        this.regularLabel = regularLabel;
-        this.charityLabel = charityLabel;
+        this.id = id;
+        this.tree = tree;
     }
 
-    @JsonProperty("regularLabel")
-    public RegularLabel getRegularLabel() {
-        return regularLabel;
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
 
-    @JsonProperty("regularLabel")
-    public void setRegularLabel(RegularLabel regularLabel) {
-        this.regularLabel = regularLabel;
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
     }
 
-    @JsonProperty("charityLabel")
-    public Object getCharityLabel() {
-        return charityLabel;
+    @JsonProperty("tree")
+    public String getTree() {
+        return tree;
     }
 
-    @JsonProperty("charityLabel")
-    public void setCharityLabel(Object charityLabel) {
-        this.charityLabel = charityLabel;
+    @JsonProperty("tree")
+    public void setTree(String tree) {
+        this.tree = tree;
     }
 
     @JsonAnyGetter
