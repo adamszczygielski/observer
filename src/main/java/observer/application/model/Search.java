@@ -35,18 +35,17 @@ public class Search {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String description;
+
     @EqualsAndHashCode.Include
-    private String keyword;
-    @EqualsAndHashCode.Include
-    private String categoryId;
-    private String categoryName;
-    private Integer priceFrom;
-    private Integer priceTo;
+    private String params;
     private Instant lastExecutionDate;
     private Short intervalMinutes;
+
     @EqualsAndHashCode.Include
     private Integer sourceId;
     private Integer statusId;
+
     @ToString.Exclude
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "searchId")

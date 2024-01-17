@@ -2,7 +2,7 @@ package observer.application.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import observer.application.model.Source;
+import observer.application.dto.Source;
 import observer.application.service.ItemNotificationService;
 import observer.application.service.NotificationService;
 import observer.application.service.SearchExecutionService;

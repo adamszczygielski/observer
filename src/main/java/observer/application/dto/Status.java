@@ -1,4 +1,4 @@
-package observer.application.model;
+package observer.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

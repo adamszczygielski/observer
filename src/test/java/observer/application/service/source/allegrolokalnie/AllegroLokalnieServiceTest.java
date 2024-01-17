@@ -2,7 +2,7 @@ package observer.application.service.source.allegrolokalnie;
 
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.model.Source;
+import observer.application.dto.Source;
 import observer.application.service.source.MockDocumentService;
 import observer.application.service.source.SourceServiceTest;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +23,6 @@ public class AllegroLokalnieServiceTest extends SourceServiceTest {
         Search search = Search.builder()
                 .id(1L)
                 .sourceId(Source.ALLEGRO_LOKALNIE.getId())
-                .keyword("ev3")
                 .build();
 
         //when

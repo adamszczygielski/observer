@@ -1,4 +1,4 @@
-package observer.application.model;
+package observer.application.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +37,4 @@ public enum Source {
     public static Source getSource(int sourceId) {
         return ENUM_MAP.get(sourceId);
     }
-
 }

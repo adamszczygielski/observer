@@ -12,11 +12,10 @@ public class OlxMapperTest {
     void shouldMapToMinAttributesUrl() {
         //given
         Search search = Search.builder()
-                .keyword("keyword")
                 .build();
 
         //when
-        String url = olxMapper.toUrl(search);
+        String url = search.getParams();
 
         //then
         Assertions.assertEquals("https://www.olx.pl" +
@@ -29,14 +28,10 @@ public class OlxMapperTest {
     void shouldMapToAllAttributesUrl() {
         //given
         Search search = Search.builder()
-                .keyword("keyword")
-                .categoryId("category-id")
-                .priceFrom(1)
-                .priceTo(9999)
                 .build();
 
         //when
-        String url = olxMapper.toUrl(search);
+        String url = search.getParams();
 
         //then
         Assertions.assertEquals("https://www.olx.pl" +

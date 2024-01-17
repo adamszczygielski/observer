@@ -19,7 +19,6 @@ public class EbayServiceTest extends SourceServiceTest {
         //given
         mockRestInvoker.setBody(createPageSource(ebayService.getSource(), "content.xml"));
         Search search = Search.builder()
-                .keyword("ev3")
                 .build();
 
         //when

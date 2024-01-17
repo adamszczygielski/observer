@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import observer.application.model.Source;
-import observer.application.model.Status;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -22,15 +20,13 @@ public class SearchDto {
 
     private Long id;
 
-    @Size(min = 3, max = 20)
+    @Size(min = 1, max = 255)
     @NotBlank
-    private String keyword;
+    private String description;
 
     @Size(min = 1, max = 255)
-    private String categoryId;
-
-    @Size(min = 1, max = 255)
-    private String categoryName;
+    @NotBlank
+    private String params;
     private Instant lastExecutionDate;
 
     @NotNull
@@ -41,13 +37,5 @@ public class SearchDto {
     @NotNull
     private Source source;
     private Status status;
-
-    @Min(1)
-    @Max(100000)
-    private Integer priceFrom;
-
-    @Min(1)
-    @Max(100000)
-    private Integer priceTo;
-
+    private Integer count;
 }

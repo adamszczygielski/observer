@@ -13,19 +13,17 @@
 <script src="/resources/table-utils.js"></script>
 <script src="/resources/searches.js"></script>
 <div th:replace="navbar"></div>
-<form th:action="@{/searches}" th:method="delete">
+<form name="form" th:action="@{/searches}" th:method="delete">
     <div class="container my-4">
         <table class="table table-md table-hover" id="items-table">
             <thead>
             <tr>
                 <th scope="col">
-                    <input id="checkAll" onclick="toggleCheckboxes(this.checked)" type="checkbox">
+                    <input id="0" onclick="toggleCheckboxes(this.checked)" type="checkbox">
                 </th>
-                <th scope="col">Keyword</th>
+                <th scope="col">Description</th>
                 <th scope="col">Source</th>
-                <th scope="col">Category</th>
-                <th scope="col">Price from</th>
-                <th scope="col">Price to</th>
+                <th scope="col">Params</th>
                 <th scope="col">Interval</th>
                 <th scope="col">Updated at</th>
                 <th scope="col">Status</th>
@@ -34,32 +32,27 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="searchViewDto : ${searchViewDtoList}">
+            <tr th:each="searchDto,iterator : ${searchDtos}">
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" name="id" th:value="${searchViewDto.id}" type="checkbox">
+                        <input class="form-check-input" name="id" th:id="${iterator.index + 1}" th:value="${searchDto.id}" type="checkbox">
                     </div>
                 </td>
+                <td th:text="${searchDto.description}"></td>
+                <td th:text="${searchDto.source.getLabel()}"></td>
+                <td th:text="${#strings.abbreviate(searchDto.params, 60)}"></td>
+                <td th:text="${searchDto.intervalMinutes}"></td>
+                <td th:text="${#dates.format(searchDto.lastExecutionDate, 'HH:mm:ss')}"></td>
+                <td th:text="${searchDto.status.getLabel()}"></td>
                 <td>
-                    <a th:href="@{/items/} + ${searchViewDto.id} + @{/preview}">
-                        <span th:text="${#strings.abbreviate(searchViewDto.keyword, 40)}"></span>
-                    </a>
-                </td>
-                <td th:text="${searchViewDto.source}"></td>
-                <td th:text="${#strings.abbreviate(searchViewDto.categoryName, 40)}"></td>
-                <td th:text="${searchViewDto.priceFrom}"></td>
-                <td th:text="${searchViewDto.priceTo}"></td>
-                <td th:text="${searchViewDto.intervalMinutes}"></td>
-                <td th:text="${#dates.format(searchViewDto.lastExecutionDate, 'HH:mm:ss')}"></td>
-                <td th:text="${searchViewDto.status}"></td>
-                <td>
-                    <span th:unless="${searchViewDto.count} == '0'">
-                        <a th:href="@{/items/} + ${searchViewDto.id}"><span th:text="${searchViewDto.count}"></span></a>
+                    <span th:unless="${searchDto.count} == '0'">
+                        <a th:href="@{/items/} + ${searchDto.id}"><span th:text="${searchDto.count}"></span></a>
                     </span>
                 </td>
                 <td class="text-nowrap">
-                    <button class="btn btn-danger" name="id" th:value="${searchViewDto.id}" type="submit" onclick="onDelete(event)">Delete</button>
-                    <button class="btn btn-primary" th:onclick="'editSearch('+${searchViewDto.id}+')'" type="button">Edit</button>
+                    <button class="btn btn-primary" th:onclick= "'editSearch('+${searchDto.id}+')'" type="button">Edit</button>
+                    <button class="btn btn-primary" th:onclick="'executeSearch('+${searchDto.id}+')'" type="button">Test</button>
+                    <button class="btn btn-danger" name="id" th:value="${searchDto.id}" type="submit" onclick="onDelete(event)">Delete</button>
                 </td>
             </tr>
             </tbody>

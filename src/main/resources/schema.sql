@@ -1,11 +1,8 @@
 create table if not exists searches
 (
     id bigint auto_increment not null,
-    keyword varchar(255) not null,
-    category_id varchar(255),
-    category_name varchar(255),
-    price_from int,
-    price_to int,
+    description varchar,
+    params varchar(255),
     last_execution_date timestamp,
     interval_minutes smallint not null,
     source_id smallint not null,
@@ -33,11 +30,8 @@ create view if not exists searches_v as
 (
     select
         s.id,
-        s.keyword,
-        s.category_id,
-        s.category_name,
-        s.price_from,
-        s.price_to,
+        s.description,
+        s.params,
         s.last_execution_date,
         s.interval_minutes,
         s.source_id,
@@ -46,5 +40,5 @@ create view if not exists searches_v as
     from searches s
     left join items i on s.id = i.search_id and i.is_deleted = false
     group by s.id
-    order by count desc, s.keyword, s.source_id
+    order by count desc, s.description, s.source_id
 );

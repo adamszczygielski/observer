@@ -1,6 +1,6 @@
 package observer.application.service.source;
 
-import observer.application.model.Source;
+import observer.application.dto.Source;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

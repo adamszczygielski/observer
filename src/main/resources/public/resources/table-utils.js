@@ -10,3 +10,19 @@ function displayCounter(val) {
         document.title = "(" + val + ")" + " " + document.title;
     }
 }
+
+function handleKeyDown(event) {
+    if (event.key >= '0' && event.key <= '9') {
+        const checkbox = document.getElementById(event.key);
+        if (checkbox) {
+            checkbox.checked = !checkbox.checked;
+            if (event.key === '0') {
+                toggleCheckboxes(checkbox.checked);
+            }
+        }
+    } else if (event.key == 'Delete') {
+        document.forms[0].submit();
+    }
+}
+
+document.addEventListener('keydown', handleKeyDown);

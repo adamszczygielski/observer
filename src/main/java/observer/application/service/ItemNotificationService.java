@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ApplicationConfig;
 import observer.application.mapper.ItemMapper;
 import observer.application.model.Item;
-import observer.application.model.Source;
+import observer.application.dto.Source;
 import observer.application.repository.ItemRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
@@ -58,7 +58,7 @@ public class ItemNotificationService {
     }
 
     private void uploadItemListFile() {
-        String html = generateHtml(itemRepository.findByIsDeletedFalseOrderByCreatedDateDesc());
+        String html = generateHtml(itemRepository.findByIsDeletedFalseOrderByCreatedDateDesc(PAGE_REQUEST));
         ftpService.uploadFile(new ByteArrayInputStream(html.getBytes()));
     }
 

@@ -16,7 +16,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByIsDeletedFalseAndSearchIdOrderByCreatedDateDesc(Long searchId);
 
-    List<Item> findByIsDeletedFalseOrderByCreatedDateDesc();
+    List<Item> findByIsDeletedFalseOrderByCreatedDateDesc(Pageable pageable);
 
     List<Item> findByIsDeletedFalseAndIsNotificationSentFalseOrderByCreatedDateDesc(Pageable pageable);
 

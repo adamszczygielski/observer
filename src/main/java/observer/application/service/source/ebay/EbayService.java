@@ -2,10 +2,9 @@ package observer.application.service.source.ebay;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.config.ApplicationConfig;
-import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.model.Source;
+import observer.application.dto.Source;
 import observer.application.rest.RestInvoker;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.ebay.mapper.EbayMapper;
@@ -38,7 +37,7 @@ public class EbayService implements SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        String url = mapper.toUrl(search, applicationConfig.getEbaySecurityAppname());
+        String url = search.getParams();
         FindItemsByKeywordsResponse findItemsByKeywordsResponse = restInvoker.get(url, null,
                 FindItemsByKeywordsResponse.class);
 
@@ -47,10 +46,5 @@ public class EbayService implements SourceService {
                 .map(SearchResult::getEbayItems)
                 .map(items -> mapper.toItems(items, search.getId()))
                 .orElse(Collections.emptyList());
-    }
-
-    @Override
-    public List<Category> fetchCategories(String parentId) {
-        return Collections.emptyList();
     }
 }

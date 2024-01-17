@@ -1,25 +1,26 @@
 package observer.application.mapper;
 
 import observer.application.dto.SearchDto;
+import observer.application.dto.Source;
+import observer.application.dto.Status;
 import observer.application.model.Search;
-import observer.application.model.Source;
-import observer.application.model.Status;
+import observer.application.model.SearchView;
 
-import java.text.Normalizer;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SearchMapper {
 
     public SearchDto toDto(Search search) {
         return SearchDto.builder()
                 .id(search.getId())
-                .keyword(search.getKeyword())
-                .categoryId(search.getCategoryId())
-                .categoryName(search.getCategoryName())
+                .description(search.getDescription())
+                .params(search.getParams())
                 .lastExecutionDate(search.getLastExecutionDate())
                 .intervalMinutes(search.getIntervalMinutes())
-                .priceFrom(search.getPriceFrom())
-                .priceTo(search.getPriceTo())
                 .source(Source.getSource(search.getSourceId()))
                 .status(Status.getStatus(search.getStatusId()))
                 .build();
@@ -28,24 +29,39 @@ public class SearchMapper {
     public Search toSearch(SearchDto searchDto) {
         return Search.builder()
                 .id(searchDto.getId())
-                .keyword(normalize(searchDto.getKeyword()))
-                .categoryId(searchDto.getCategoryId())
-                .categoryName(searchDto.getCategoryName())
+                .description(searchDto.getDescription())
+                .params(searchDto.getParams())
                 .sourceId(searchDto.getSource().getId())
                 .statusId(Status.PENDING.getId())
                 .intervalMinutes(searchDto.getIntervalMinutes())
                 .items(Collections.emptyList())
-                .priceFrom(searchDto.getPriceFrom())
-                .priceTo(searchDto.getPriceTo())
                 .build();
     }
 
-    private static String normalize(String string) {
-        return Normalizer
-                .normalize(string, Normalizer.Form.NFD)
-                .replaceAll("[^\\p{ASCII}]", "")
-                .replaceAll(" +", " ")
-                .toLowerCase();
+    public List<SearchDto> toDtos(List<SearchView> searchViews) {
+        return searchViews.stream()
+                .map(s -> SearchDto.builder()
+                        .id(s.getId())
+                        .description(s.getDescription())
+                        .source(Source.getSource(s.getSourceId()))
+                        .params(s.getParams())
+                        .status(toStatus(s))
+                        .lastExecutionDate(s.getLastExecutionDate())
+                        .intervalMinutes(s.getIntervalMinutes())
+                        .count(s.getCount())
+                        .build()).collect(Collectors.toList());
     }
 
+    private Status toStatus(SearchView searchView) {
+        Status status = Status.getStatus(searchView.getStatusId());
+        if (status == Status.SUCCESS) {
+            boolean isOverdue = searchView.getLastExecutionDate()
+                    .plus(searchView.getIntervalMinutes(), ChronoUnit.MINUTES)
+                    .isBefore(Instant.now());
+            if (isOverdue) {
+                return Status.PENDING;
+            }
+        }
+        return status;
+    }
 }

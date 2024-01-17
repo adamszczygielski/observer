@@ -2,10 +2,9 @@ package observer.application.service.source.loombard;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.model.Source;
+import observer.application.dto.Source;
 import observer.application.rest.RestInvoker;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.loombard.mapper.LoombardMapper;
@@ -36,14 +35,9 @@ public class LoombardService implements SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        String url = loombardMapper.toUrl(search);
+        String url = search.getParams();
         LoombardItem[] loombardItems = restInvoker.get(url, null, LoombardItem[].class);
         return loombardMapper.toItems(
                 List.of(Optional.ofNullable(loombardItems).orElse(new LoombardItem[0])), search.getId());
-    }
-
-    @Override
-    public List<Category> fetchCategories(String parentId) {
-        return List.of();
     }
 }

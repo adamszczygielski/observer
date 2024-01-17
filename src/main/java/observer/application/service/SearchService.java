@@ -61,11 +61,8 @@ public class SearchService {
 
     private void update(Search search) {
         searchRepository.findById(search.getId()).ifPresent(s -> {
-            s.setKeyword(search.getKeyword());
-            s.setCategoryId(search.getCategoryId());
-            s.setCategoryName(search.getCategoryName());
-            s.setPriceFrom(search.getPriceFrom());
-            s.setPriceTo(search.getPriceTo());
+            s.setDescription(search.getDescription());
+            s.setParams(search.getParams());
             s.setIntervalMinutes(search.getIntervalMinutes());
         });
     }

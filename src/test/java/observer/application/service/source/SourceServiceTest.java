@@ -2,7 +2,7 @@ package observer.application.service.source;
 
 import observer.application.config.ApplicationConfig;
 import observer.application.config.MockConfig;
-import observer.application.model.Source;
+import observer.application.dto.Source;
 
 import java.io.BufferedReader;
 import java.io.File;

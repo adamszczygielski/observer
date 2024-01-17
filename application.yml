@@ -15,14 +15,12 @@ observer:
     notification-delay: 20s
   allegro:
     delay: 2m
-    token-private: change-me
   allegro-lokalnie:
     delay: 10s
   olx:
     delay: 10s
   ebay:
     delay: 10s
-    security-appname: change-me
   onesignal:
     app-id: change-me
     api-key: change-me

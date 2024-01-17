@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,6 +20,8 @@ import java.util.HashMap;
 @Slf4j
 @RequiredArgsConstructor
 public class NotificationService {
+
+    private static final String REQUEST_URL = "https://onesignal.com/api/v1/notifications";
 
     private final JsonMapper jsonMapper;
     private final RestInvoker restInvoker;
@@ -31,7 +32,7 @@ public class NotificationService {
         NotificationRequestDto notificationRequest = getNotificationRequest(message);
         String requestBody = jsonMapper.toJson(notificationRequest);
         try {
-            restInvoker.post(getRequestUrl(), createHttpEntity(requestBody), NotificationResponseDto.class);
+            restInvoker.post(REQUEST_URL, createHttpEntity(requestBody), NotificationResponseDto.class);
             log.info("Notification has been sent");
         } catch (Exception e) {
             log.error("Sending notification failed", e);
@@ -51,13 +52,5 @@ public class NotificationService {
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.add("Authorization", applicationConfig.getOnesignalApiKey());
         return new HttpEntity<>(requestBody, requestHeaders);
-    }
-
-    private String getRequestUrl() {
-        return UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("onesignal.com")
-                .pathSegment("api", "v1", "notifications")
-                .build().toUriString();
     }
 }

@@ -1,7 +1,7 @@
 package observer.application.service;
 
 import lombok.extern.slf4j.Slf4j;
-import observer.application.model.Status;
+import observer.application.dto.Status;
 
 import java.text.MessageFormat;
 

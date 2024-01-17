@@ -3,15 +3,13 @@ package observer.application.service.source.allegro;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ApplicationConfig;
-import observer.application.model.Category;
+import observer.application.dto.Source;
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.model.Source;
 import observer.application.rest.JsonMapper;
 import observer.application.service.RandomUtils;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;
-import observer.application.service.source.allegro.model.listing.Element;
 import observer.application.service.source.allegro.model.listing.ListingResponse;
 import observer.application.webdriver.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
@@ -22,7 +20,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,11 +31,9 @@ public class AllegroService implements SourceService {
     private static final String JSON_END_PATTERN = "</script>";
     private static final List<String> FALLBACK_PATTERNS = Arrays.asList("first yellow information",
             "Przykro nam, nie znale");
-    private static final short STRICT_FILTER_THRESHOLD = 5;
 
     private final ApplicationConfig applicationConfig;
     private final JsonMapper jsonMapper;
-    private final AllegroCategoryService allegroCategoryService;
     private final WebDriverFactory webDriverFactory;
     private final AllegroMapper mapper = new AllegroMapper();
 
@@ -54,31 +49,23 @@ public class AllegroService implements SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        String url = mapper.toUrl(search);
-        String pageSource = fetchPageSource(url);
+        String pageSource = fetchPageSource(search.getParams());
         if (FALLBACK_PATTERNS.stream().anyMatch(pageSource::contains)) {
             return Collections.emptyList();
         }
 
         String listingResponseJson = getListingResponseJson(pageSource);
-        List<Element> elements = getElements(listingResponseJson);
-        if (elements.size() > STRICT_FILTER_THRESHOLD) {
-            return elements.stream()
-                    .filter(e -> containsAllKeywords(e.getTitle().getText(), search.getKeyword()))
-                    .map(element -> mapper.toItem(element, search.getId()))
-                    .collect(Collectors.toList());
-        } else {
-            return elements.stream()
-                    .map(element -> mapper.toItem(element, search.getId()))
-                    .distinct()
-                    .collect(Collectors.toList());
-        }
-    }
+        ListingResponse listingResponse = jsonMapper.toObject(listingResponseJson, ListingResponse.class);
 
-    @Override
-    public List<Category> fetchCategories(String parentId) {
-        return allegroCategoryService.fetchCategories(parentId).stream()
-                .map(mapper::toCategory)
+        List<String> keywords = extractKeywords(search.getParams());
+
+        return listingResponse.getListingStoreState().getItems().getElements().stream()
+                .filter(element -> element.getId() != null)
+                .filter(element -> !element.getType().equals("banner"))
+                .filter(element -> keywords.stream().anyMatch(k -> element.getTitle().getText().toLowerCase()
+                        .replaceAll(" ", "").replaceAll("-", "").contains(k)))
+                .map(element -> mapper.toItem(element, search.getId()))
+                .distinct()
                 .collect(Collectors.toList());
     }
 
@@ -88,15 +75,6 @@ public class AllegroService implements SourceService {
         webDriver.manage().deleteAllCookies();
         webDriver.navigate().to(url);
         return webDriver.getPageSource();
-    }
-
-    private List<Element> getElements(String listingResponseJson) {
-        ListingResponse listingResponse = jsonMapper.toObject(listingResponseJson, ListingResponse.class);
-
-        return listingResponse.getListingStoreState().getItems().getElements().stream()
-                .filter(element -> element.getId() != null)
-                .filter(element -> !element.getType().equals("banner"))
-                .collect(Collectors.toList());
     }
 
     private String getListingResponseJson(String pageSource) {
@@ -121,11 +99,23 @@ public class AllegroService implements SourceService {
         return endPatternIndex;
     }
 
-    private boolean containsAllKeywords(String title, String keyword) {
-        List<String> keywords = Arrays.asList(keyword.split(" "));
-        String normalizedTitle = title.replace(" ", "")
-                .replace("-", "")
-                .toLowerCase(Locale.ROOT);
-        return keywords.stream().allMatch(normalizedTitle::contains);
+    private List<String> extractKeywords(String url) {
+        int beginIndex = url.indexOf("string=");
+        if (beginIndex == -1) {
+            return List.of();
+        } else {
+            beginIndex += 7;
+        }
+
+        int endIndex = url.indexOf("&", beginIndex);
+        if (endIndex == -1) {
+            endIndex = url.length();
+        }
+
+        String[] keywords = url.substring(beginIndex, endIndex)
+                .toLowerCase()
+                .split("%20");
+
+        return List.of(keywords);
     }
 }

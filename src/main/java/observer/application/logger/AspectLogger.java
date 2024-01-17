@@ -41,5 +41,4 @@ public class AspectLogger {
         log.info(url);
         return joinPoint.proceed();
     }
-
 }

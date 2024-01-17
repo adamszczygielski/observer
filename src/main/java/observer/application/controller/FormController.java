@@ -6,9 +6,10 @@ import observer.application.mapper.SearchMapper;
 import observer.application.service.SearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(FormController.API_PATH)
@@ -30,5 +31,14 @@ public class FormController {
     public String getForm(Model model, @PathVariable(name = "id") Long searchId) {
         model.addAttribute("searchDto", searchMapper.toDto(searchService.getOrThrow(searchId)));
         return "form";
+    }
+
+    @PostMapping(value = "/search")
+    public String submitForm(@ModelAttribute("searchDto") @Valid SearchDto searchDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "form";
+        }
+        searchService.createOrUpdate(searchMapper.toSearch(searchDto));
+        return "redirect:" + SearchController.API_PATH;
     }
 }

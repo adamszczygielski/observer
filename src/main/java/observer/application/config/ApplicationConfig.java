@@ -26,9 +26,6 @@ public class ApplicationConfig {
     @Value("${observer.searches.error.threshold}")
     private Integer searchesErrorThreshold;
 
-    @Value("${observer.allegro.token-private}")
-    private String allegroTokenPrivate;
-
     @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.allegro.delay}')}")
     private Duration allegroDelay;
 
@@ -40,9 +37,6 @@ public class ApplicationConfig {
 
     @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.ebay.delay}')}")
     private Duration ebayDelay;
-
-    @Value("${observer.ebay.security-appname}")
-    private String ebaySecurityAppname;
 
     @Value("${observer.onesignal.app-id}")
     private String onesignalAppId;

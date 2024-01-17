@@ -2,7 +2,7 @@ package observer.application.mapper;
 
 import observer.application.dto.ItemDto;
 import observer.application.model.Item;
-import observer.application.model.Source;
+import observer.application.dto.Source;
 
 public class ItemMapper implements BaseMapper<Item, ItemDto> {
 
@@ -18,5 +18,4 @@ public class ItemMapper implements BaseMapper<Item, ItemDto> {
                 .source(Source.getLabel(item.getSourceId()))
                 .build();
     }
-
 }

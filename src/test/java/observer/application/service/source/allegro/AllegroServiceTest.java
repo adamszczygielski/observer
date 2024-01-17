@@ -14,14 +14,14 @@ public class AllegroServiceTest extends SourceServiceTest {
 
     private final MockDriverFactory mockDriverFactory = new MockDriverFactory();
     private final AllegroService allegroService = new AllegroService(mockConfig, new JsonMapperImpl(),
-            null, mockDriverFactory);
+            mockDriverFactory);
 
     @Test
     void shouldReturnItems() {
         //given
         mockDriverFactory.setPageSource(createPageSource(allegroService.getSource(), "content.html"));
         Search search = Search.builder()
-                .keyword("ev3")
+                //.keyword("ev3")
                 .build();
 
         //when

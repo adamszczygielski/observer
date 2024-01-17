@@ -20,5 +20,4 @@ public class DocumentService {
             throw new IllegalStateException("Could not fetch page content!");
         }
     }
-
 }

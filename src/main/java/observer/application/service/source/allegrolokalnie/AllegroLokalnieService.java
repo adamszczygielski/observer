@@ -2,10 +2,9 @@ package observer.application.service.source.allegrolokalnie;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.config.ApplicationConfig;
-import observer.application.model.Category;
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.model.Source;
+import observer.application.dto.Source;
 import observer.application.service.DocumentService;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegrolokalnie.mapper.AllegroLokalnieMapper;
@@ -13,7 +12,6 @@ import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +35,7 @@ public class AllegroLokalnieService implements SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        Document document = documentService.getDocument(allegroLokalnieMapper.toUrl(search));
+        Document document = documentService.getDocument(search.getParams());
         if (document.body().getElementsByClass("mlc-no-offers-to-show").first() != null) {
             return List.of();
         }
@@ -60,10 +58,5 @@ public class AllegroLokalnieService implements SourceService {
                 .collect(Collectors.toList());
 
         return allegroLokalnieMapper.toItems(originIds, titles, prices, urls, search.getId());
-    }
-
-    @Override
-    public List<Category> fetchCategories(String parentId) {
-        return Collections.emptyList();
     }
 }

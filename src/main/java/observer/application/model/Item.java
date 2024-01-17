@@ -29,8 +29,10 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotFound(action = NotFoundAction.IGNORE)
     private Long id;
+
     @EqualsAndHashCode.Include
     private String originId;
+
     @EqualsAndHashCode.Include
     private Integer sourceId;
     private Long searchId;

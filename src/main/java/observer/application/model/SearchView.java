@@ -16,11 +16,8 @@ public class SearchView {
 
     @Id
     private Long id;
-    private String keyword;
-    private String categoryId;
-    private String categoryName;
-    private Integer priceFrom;
-    private Integer priceTo;
+    private String description;
+    private String params;
     private Instant lastExecutionDate;
     private Short intervalMinutes;
     private Integer sourceId;
