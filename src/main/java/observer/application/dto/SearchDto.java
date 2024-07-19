@@ -24,7 +24,7 @@ public class SearchDto {
     @NotBlank
     private String description;
 
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 2047)
     @NotBlank
     private String params;
     private Instant lastExecutionDate;

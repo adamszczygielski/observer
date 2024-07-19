@@ -2,9 +2,9 @@ package observer.application.service.source.allegrolokalnie;
 
 import lombok.RequiredArgsConstructor;
 import observer.application.config.ApplicationConfig;
+import observer.application.dto.Source;
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.dto.Source;
 import observer.application.service.DocumentService;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegrolokalnie.mapper.AllegroLokalnieMapper;
@@ -35,7 +35,7 @@ public class AllegroLokalnieService implements SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        Document document = documentService.getDocument(search.getParams());
+        Document document = documentService.getDocumentByJsoup(search.getParams());
         if (document.body().getElementsByClass("mlc-no-offers-to-show").first() != null) {
             return List.of();
         }

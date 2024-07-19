@@ -14,6 +14,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class OlxService implements SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        String url = search.getParams();
+        String url = toUrl(search.getParams());
         String pageSource = restInvoker.get(url, null, String.class);
         String listingResponseJson = getListingResponseJson(pageSource);
         ListingResponse listingResponse = jsonMapper.toObject(listingResponseJson, ListingResponse.class);
@@ -61,6 +62,11 @@ public class OlxService implements SourceService {
                         .replaceAll(" ", "").replaceAll("-", "").contains(k)))
                 .map(ad -> olxMapper.toItem(ad, search.getId()))
                 .collect(Collectors.toList());
+    }
+
+    private String toUrl(String params) {
+        return params.replaceAll("%5B", "[")
+                .replaceAll("%5D", "]");
     }
 
     private String getListingResponseJson(String pageSource) {
@@ -86,23 +92,24 @@ public class OlxService implements SourceService {
         return endPatternIndex + JSON_END_PATTERN.length();
     }
 
-    public List<String> extractKeywords(String url) {
-        int beingIndex = url.indexOf("/q-");
-        if (beingIndex == -1) {
+    private List<String> extractKeywords(String url) {
+        int beginIndex = url.indexOf("/q-");
+        if (beginIndex == -1) {
             return List.of();
         } else {
-            beingIndex += 3;
+            beginIndex += 3;
         }
 
-        int endIndex = url.indexOf("?", beingIndex);
-        if (endIndex == -1) {
-            endIndex = url.length();
+        int endIndex = url.length();
+        for (int i = beginIndex; i < url.length(); i++) {
+            char c = url.charAt(i);
+            if (c == '/' || c == '?') {
+                endIndex = i;
+                break;
+            }
         }
 
-        String[] keywords = url.substring(beingIndex, endIndex)
-                .toLowerCase()
-                .split("-");
-
-        return List.of(keywords);
+        return Arrays.stream(url.substring(beginIndex, endIndex).split("-"))
+                .collect(Collectors.toList());
     }
 }

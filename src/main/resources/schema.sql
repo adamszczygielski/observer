@@ -2,7 +2,7 @@ create table if not exists searches
 (
     id bigint auto_increment not null,
     description varchar,
-    params varchar(255),
+    params varchar,
     last_execution_date timestamp,
     interval_minutes smallint not null,
     source_id smallint not null,
