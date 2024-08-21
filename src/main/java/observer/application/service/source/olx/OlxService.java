@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class OlxService implements SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "window.__PRERENDERED_STATE__= \"";
-    private static final String JSON_END_PATTERN = "\\\"cookies\\\":{}}";
+    private static final String JSON_END_PATTERN = "window.";
 
     private final ApplicationConfig applicationConfig;
     private final JsonMapper jsonMapper;
