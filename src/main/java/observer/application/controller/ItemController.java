@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,24 +21,12 @@ public class ItemController {
     public static final String API_PATH = "/items";
 
     private final ItemService itemService;
-    private final ItemMapper itemMapper = new ItemMapper();
+    private final ItemMapper itemMapper;
 
     @GetMapping
     public String getItems(Model model) {
         model.addAttribute("items", itemMapper.toDtoList(itemService.getItems()));
         return "items";
-    }
-
-    @GetMapping(value = "/{searchId}")
-    public String getItems(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemMapper.toDtoList(itemService.getItems(searchId)));
-        return "items";
-    }
-
-    @GetMapping(value = "/{searchId}/preview")
-    public String fetchItems(Model model, @PathVariable Long searchId) {
-        model.addAttribute("items", itemMapper.toDtoList(itemService.fetchItems(searchId)));
-        return "items-preview";
     }
 
     @DeleteMapping

@@ -25,34 +25,40 @@
                 <th scope="col">Source</th>
                 <th scope="col">Params</th>
                 <th scope="col">Interval</th>
-                <th scope="col">Updated at</th>
+                <th scope="col">Executed</th>
                 <th scope="col">Status</th>
-                <th>New</th>
+                <th>Items</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="searchDto,iterator : ${searchDtos}">
+            <tr th:each="search,iterator : ${searches}">
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" name="id" th:id="${iterator.index + 1}" th:value="${searchDto.id}" type="checkbox">
+                        <input class="form-check-input" name="id" th:id="${iterator.index + 1}" th:value="${search.id}" type="checkbox">
                     </div>
                 </td>
-                <td th:text="${searchDto.description}"></td>
-                <td th:text="${searchDto.source.getLabel()}"></td>
-                <td th:text="${#strings.abbreviate(searchDto.params, 60)}"></td>
-                <td th:text="${searchDto.intervalMinutes}"></td>
-                <td th:text="${#dates.format(searchDto.lastExecutionDate, 'HH:mm:ss')}"></td>
-                <td th:text="${searchDto.status.getLabel()}"></td>
+                <td th:text="${search.description}"></td>
+                <td th:text="${#strings.abbreviate(search.source.label, 14)}"></td>
+                <td th:text="${#strings.abbreviate(search.params, 60)}"></td>
+                <td th:text="${search.intervalMinutes}"></td>
+                <td th:text="${#dates.format(search.lastExecutionDate, 'HH:mm:ss')}"></td>
+                <td th:text="${search.status.label}"></td>
                 <td>
-                    <span th:unless="${searchDto.count} == '0'">
-                        <a th:href="@{/items/} + ${searchDto.id}"><span th:text="${searchDto.count}"></span></a>
+                    <span th:unless="${search.count} == '0'">
+                        <a th:href="@{/searches/} + ${search.id} + @{/items}"><span th:text="${search.count}"></span></a>
                     </span>
                 </td>
                 <td class="text-nowrap">
-                    <button class="btn btn-primary" th:onclick= "'editSearch('+${searchDto.id}+')'" type="button">Edit</button>
-                    <button class="btn btn-primary" th:onclick="'executeSearch('+${searchDto.id}+')'" type="button">Test</button>
-                    <button class="btn btn-danger" name="id" th:value="${searchDto.id}" type="submit" onclick="onDelete(event)">Delete</button>
+                    <button class="btn btn-primary" th:onclick="'editSearch('+${search.id}+')'" type="button">
+                        <img src="/resources/pencil.svg" alt="Edit" />
+                    </button>
+                    <button class="btn btn-primary" th:onclick="'executeSearch('+${search.id}+')'" type="button">
+                        <img src="/resources/gear.svg" alt="Fetch" />
+                    </button>
+                    <button class="btn btn-danger" name="id" th:value="${search.id}" type="submit" onclick="onDelete(event)">
+                        <img src="/resources/trash.svg" alt="Delete" />
+                    </button>
                 </td>
             </tr>
             </tbody>

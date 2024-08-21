@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Items preview</title>
+    <title>Fetched Items</title>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="/resources/bootstrap.min.css" rel="stylesheet">
@@ -28,7 +28,7 @@
                     <span th:text="${#strings.abbreviate(item.title, 40)}"></span>
                 </a>
             </td>
-            <td th:text="${item.source}"></td>
+            <td th:text="${#strings.abbreviate(item.source, 14)}"></td>
             <td th:text="${item.price}"></td>
         </tr>
         </tbody>

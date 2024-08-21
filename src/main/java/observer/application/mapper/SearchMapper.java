@@ -5,6 +5,7 @@ import observer.application.dto.Source;
 import observer.application.dto.Status;
 import observer.application.model.Search;
 import observer.application.model.SearchView;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class SearchMapper {
 
     public SearchDto toDto(Search search) {

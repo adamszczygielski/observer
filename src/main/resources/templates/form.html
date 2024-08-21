@@ -11,15 +11,19 @@
 <script src="/resources/bootstrap.min.js"></script>
 <div th:replace="navbar"></div>
 <div class="container my-4">
-    <form action="#" method="post" th:action="@{/form/search}" th:object="${searchDto}">
+    <form action="#" method="post" th:action="@{/form/search}" th:object="${search}">
         <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-2">
                 <label for="inputSearchId">Search ID</label>
-                <input class="form-control" id="inputSearchId" readonly th:field="*{id}" type="number">
+                <input class="form-control" id="inputSearchId" th:field="*{id}" type="number" readonly>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="inputStatus">Status</label>
+                <input class="form-control" id="inputStatus" th:field="*{status}" type="text" disabled>
             </div>
             <div class="form-group col-md-4">
-                <label for="inputSearchId">Last execution</label>
-                <input class="form-control" id="inputLastUpdate" th:field="*{lastExecutionDate}" type="text" disabled>
+                <label for="inputLastExecutionDate">Last execution</label>
+                <input class="form-control" id="inputLastExecutionDate" th:field="*{lastExecutionDate}" type="text" disabled>
             </div>
         </div>
         <div class="form-row">
@@ -34,12 +38,12 @@
             <div class="form-group col-md-4">
                 <label for="inputInterval">Interval</label>
                 <select class="form-control" id="inputInterval" th:field="*{intervalMinutes}">
-                    <option value="5">5</option>
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                    <option value="60">60</option>
-                    <option value="120">120</option>
-                    <option value="360">360</option>
+                    <option value="5">5 minutes</option>
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="120">2 hours</option>
+                    <option value="360">3 hours</option>
                 </select>
             </div>
         </div>
@@ -47,16 +51,18 @@
             <div class="form-group col-md-8">
                 <label for="description">Description</label>
                 <input class="form-control" id="description" name="description" th:field="*{description}" type="text">
+                <p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errorclass="error" th:errors="*{description}" />
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-8">
-                <label for="params">Request params</label>
+                <label for="params">Search params</label>
                 <input class="form-control" id="params" name="params" th:field="*{params}" type="text">
+                <p class="text-danger" th:if="${#fields.hasErrors('params')}" th:errorclass="error" th:errors="*{params}" />
             </div>
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>
-        <div class="text-danger" th:if="${#fields.hasErrors()}">Correct the errors and resubmit</div>
+        <p class="text-danger" th:if="${#fields.hasErrors()}">Form contains errors</p>
     </form>
 </div>
 </body>

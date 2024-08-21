@@ -7,7 +7,11 @@ import observer.application.service.SearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
@@ -19,22 +23,22 @@ public class FormController {
     public static final String API_PATH = "/form";
 
     private final SearchService searchService;
-    private final SearchMapper searchMapper = new SearchMapper();
+    private final SearchMapper searchMapper;
 
     @GetMapping(value = "/search")
     public String getForm(Model model) {
-        model.addAttribute("searchDto", new SearchDto());
+        model.addAttribute("search", new SearchDto());
         return "form";
     }
 
     @GetMapping(value = "/search/{id}")
     public String getForm(Model model, @PathVariable(name = "id") Long searchId) {
-        model.addAttribute("searchDto", searchMapper.toDto(searchService.getOrThrow(searchId)));
+        model.addAttribute("search", searchMapper.toDto(searchService.getOrThrow(searchId)));
         return "form";
     }
 
     @PostMapping(value = "/search")
-    public String submitForm(@ModelAttribute("searchDto") @Valid SearchDto searchDto, BindingResult bindingResult) {
+    public String submitForm(@ModelAttribute("search") @Valid SearchDto searchDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "form";
         }

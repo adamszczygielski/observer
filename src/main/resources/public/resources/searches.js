@@ -15,7 +15,7 @@ function editSearch(id) {
 }
 
 function executeSearch(id) {
-    window.location.href = "items/" + id + "/preview";
+    window.location.href = "searches/" + id + "/fetched-items";
 }
 
 function onDelete(event) {

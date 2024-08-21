@@ -20,11 +20,11 @@ public class SearchDto {
 
     private Long id;
 
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     @NotBlank
     private String description;
 
-    @Size(min = 1, max = 2047)
+    @Size(max = 2047)
     @NotBlank
     private String params;
     private Instant lastExecutionDate;
