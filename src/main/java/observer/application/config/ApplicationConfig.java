@@ -38,6 +38,9 @@ public class ApplicationConfig {
     @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.ebay.delay}')}")
     private Duration ebayDelay;
 
+    @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.rss.delay}')}")
+    private Duration rssDelay;
+
     @Value("${observer.onesignal.app-id}")
     private String onesignalAppId;
 
