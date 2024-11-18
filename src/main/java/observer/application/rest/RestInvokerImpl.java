@@ -1,5 +1,7 @@
 package observer.application.rest;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -13,7 +15,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -57,12 +61,13 @@ public class RestInvokerImpl implements RestInvoker {
         createSSLConnectionSocketFactory().ifPresent(httpClientBuilder::setSSLSocketFactory);
         CloseableHttpClient httpClient = httpClientBuilder.build();
 
-        RestTemplate rt = new RestTemplateBuilder()
+        return new RestTemplateBuilder()
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(httpClient))
+                .messageConverters(
+                        new StringHttpMessageConverter(),
+                        createMappingJackson2HttpMessageConverter(),
+                        createMappingJackson2XmlHttpMessageConverter())
                 .build();
-
-        rt.getMessageConverters().add(createMappingJackson2HttpMessageConverter());
-        return rt;
     }
 
     private MappingJackson2HttpMessageConverter createMappingJackson2HttpMessageConverter() {
@@ -71,12 +76,25 @@ public class RestInvokerImpl implements RestInvoker {
         return converter;
     }
 
+    private MappingJackson2XmlHttpMessageConverter createMappingJackson2XmlHttpMessageConverter() {
+        MappingJackson2XmlHttpMessageConverter converter = new MappingJackson2XmlHttpMessageConverter();
+        converter.setSupportedMediaTypes(List.of(MediaType.APPLICATION_RSS_XML));
+        converter.setObjectMapper(createXmlMapper());
+        return converter;
+    }
+
+    private XmlMapper createXmlMapper() {
+        XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return xmlMapper;
+    }
+
     private Optional<SSLConnectionSocketFactory> createSSLConnectionSocketFactory() {
         try {
             SSLContext sslContext = SSLContexts.custom()
                     .loadTrustMaterial(null, (X509Certificate[] chain, String authType) -> true)
                     .build();
-
             return Optional.of(new SSLConnectionSocketFactory(sslContext));
         } catch (Exception e) {
             log.error("Error creating SSL", e);

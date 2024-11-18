@@ -21,6 +21,8 @@ observer:
     delay: 10s
   ebay:
     delay: 10s
+  rss:
+    delay: 2m
   onesignal:
     app-id: change-me
     api-key: change-me
