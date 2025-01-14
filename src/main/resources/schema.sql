@@ -7,7 +7,7 @@ create table if not exists searches
     interval_minutes smallint not null,
     source_id smallint not null,
     status_id smallint not null,
-    primary key(id),
+    primary key(id)
 );
 
 create table if not exists items

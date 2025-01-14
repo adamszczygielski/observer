@@ -42,7 +42,7 @@ public class OlxService implements SourceService {
 
     @Override
     public List<Item> fetchItems(Search search) {
-        String url = toUrl(search.getParams());
+        String url = search.getParams();
         String pageSource = restInvoker.get(url, null, String.class);
         String listingResponseJson = getListingResponseJson(pageSource);
         ListingResponse listingResponse = jsonMapper.toObject(listingResponseJson, ListingResponse.class);
@@ -62,11 +62,6 @@ public class OlxService implements SourceService {
                         .replaceAll(" ", "").replaceAll("-", "").contains(k)))
                 .map(ad -> olxMapper.toItem(ad, search.getId()))
                 .collect(Collectors.toList());
-    }
-
-    private String toUrl(String params) {
-        return params.replaceAll("%5B", "[")
-                .replaceAll("%5D", "]");
     }
 
     private String getListingResponseJson(String pageSource) {
@@ -110,6 +105,7 @@ public class OlxService implements SourceService {
         }
 
         return Arrays.stream(url.substring(beginIndex, endIndex).split("-"))
+                .map(String::toLowerCase)
                 .collect(Collectors.toList());
     }
 }

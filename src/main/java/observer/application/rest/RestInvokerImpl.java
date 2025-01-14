@@ -20,6 +20,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import javax.net.ssl.SSLContext;
 import java.security.cert.X509Certificate;
@@ -61,8 +62,12 @@ public class RestInvokerImpl implements RestInvoker {
         createSSLConnectionSocketFactory().ifPresent(httpClientBuilder::setSSLSocketFactory);
         CloseableHttpClient httpClient = httpClientBuilder.build();
 
+        DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory();
+        defaultUriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE);
+
         return new RestTemplateBuilder()
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(httpClient))
+                .uriTemplateHandler(defaultUriBuilderFactory)
                 .messageConverters(
                         new StringHttpMessageConverter(),
                         createMappingJackson2HttpMessageConverter(),
