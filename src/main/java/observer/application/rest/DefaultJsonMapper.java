@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class JsonMapperImpl implements JsonMapper {
+public class DefaultJsonMapper implements JsonMapper {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -30,5 +30,4 @@ public class JsonMapperImpl implements JsonMapper {
             throw new IllegalArgumentException("Could not serialize object", e);
         }
     }
-
 }

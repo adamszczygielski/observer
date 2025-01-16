@@ -16,7 +16,7 @@ public class AspectLogger {
             "execution(* observer.application.service.source.SourceService.fetchItems(..))";
 
     private static final String REST_INVOKER_POINTCUT =
-            "execution(* observer.application.rest.RestInvokerImpl.*(..))";
+            "execution(* observer.application.rest.RestInvoker.*(..))";
 
     private static final String DOCUMENT_SERVICE_POINTCUT =
             "execution(* observer.application.service.DocumentService.getDocument(..))";

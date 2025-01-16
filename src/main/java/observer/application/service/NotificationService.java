@@ -32,8 +32,9 @@ public class NotificationService {
         NotificationRequestDto notificationRequest = getNotificationRequest(message);
         String requestBody = jsonMapper.toJson(notificationRequest);
         try {
-            restInvoker.post(REQUEST_URL, createHttpEntity(requestBody), NotificationResponseDto.class);
-            log.info("Notification has been sent");
+            NotificationResponseDto responseDto = restInvoker.post(REQUEST_URL, createHttpEntity(requestBody),
+                    NotificationResponseDto.class);
+            log.info("Notification has been sent with ID {}", responseDto.getId());
         } catch (Exception e) {
             log.error("Sending notification failed", e);
         }
