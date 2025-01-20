@@ -51,15 +51,12 @@ public class OlxService implements SourceService {
                 .getListingDetails()
                 .getTotalElements();
 
-        List<String> keywords = extractKeywords(url);
-
         return listingResponse.getListing()
                 .getListingDetails()
                 .getAds()
                 .stream()
                 .limit(totalElements)
-                .filter(ad -> keywords.stream().allMatch(k -> ad.getTitle().toLowerCase()
-                        .replaceAll(" ", "").replaceAll("-", "").contains(k)))
+                .filter(ad -> containsAllKeywordsIgnoreCase(ad.getTitle(), extractKeywords(url)))
                 .map(ad -> olxMapper.toItem(ad, search.getId()))
                 .collect(Collectors.toList());
     }
@@ -87,6 +84,11 @@ public class OlxService implements SourceService {
         return endPatternIndex + JSON_END_PATTERN.length();
     }
 
+    private boolean containsAllKeywordsIgnoreCase(String title, List<String> keywords) {
+        String t = title.toLowerCase().replaceAll("[^a-z0-9]", "");
+        return keywords.stream().allMatch(k -> t.contains(k.toLowerCase()));
+    }
+
     private List<String> extractKeywords(String url) {
         int beginIndex = url.indexOf("/q-");
         if (beginIndex == -1) {
@@ -105,7 +107,6 @@ public class OlxService implements SourceService {
         }
 
         return Arrays.stream(url.substring(beginIndex, endIndex).split("-"))
-                .map(String::toLowerCase)
                 .collect(Collectors.toList());
     }
 }
