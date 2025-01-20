@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +25,7 @@ public class OlxService implements SourceService {
 
     private static final String JSON_BEGIN_PATTERN = "window.__PRERENDERED_STATE__= \"";
     private static final String JSON_END_PATTERN = "window.";
+    private static final Pattern NON_ALPHANUMERIC_PATTERN = Pattern.compile("[^a-zA-Z0-9]");
 
     private final ApplicationConfig applicationConfig;
     private final JsonMapper jsonMapper;
@@ -51,15 +53,12 @@ public class OlxService implements SourceService {
                 .getListingDetails()
                 .getTotalElements();
 
-        List<String> keywords = extractKeywords(url);
-
         return listingResponse.getListing()
                 .getListingDetails()
                 .getAds()
                 .stream()
                 .limit(totalElements)
-                .filter(ad -> keywords.stream().allMatch(k -> ad.getTitle().toLowerCase()
-                        .replaceAll(" ", "").replaceAll("-", "").contains(k)))
+                .filter(ad -> containsAllKeywordsIgnoreCase(ad.getTitle(), extractKeywords(url)))
                 .map(ad -> olxMapper.toItem(ad, search.getId()))
                 .collect(Collectors.toList());
     }
@@ -87,6 +86,11 @@ public class OlxService implements SourceService {
         return endPatternIndex + JSON_END_PATTERN.length();
     }
 
+    private boolean containsAllKeywordsIgnoreCase(String title, List<String> keywords) {
+        String t = NON_ALPHANUMERIC_PATTERN.matcher(title).replaceAll("").toLowerCase();
+        return keywords.stream().allMatch(k -> t.contains(k.toLowerCase()));
+    }
+
     private List<String> extractKeywords(String url) {
         int beginIndex = url.indexOf("/q-");
         if (beginIndex == -1) {
@@ -105,7 +109,6 @@ public class OlxService implements SourceService {
         }
 
         return Arrays.stream(url.substring(beginIndex, endIndex).split("-"))
-                .map(String::toLowerCase)
                 .collect(Collectors.toList());
     }
 }
