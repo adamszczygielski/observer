@@ -1,5 +1,6 @@
 package observer.application.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import observer.application.dto.SearchDto;
 import observer.application.mapper.SearchMapper;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping(FormController.API_PATH)

@@ -2,7 +2,6 @@ package observer.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import observer.application.rest.RestInvoker;
 import observer.application.webdriver.WebDriverFactory;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -17,7 +16,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class DocumentService {
 
-    private final RestInvoker restInvoker;
     private final WebDriverFactory webDriverFactory;
 
     public Document getDocumentByJsoup(String url) {
@@ -27,11 +25,6 @@ public class DocumentService {
         } catch (IOException e) {
             throw new IllegalStateException("Could not fetch page content!", e);
         }
-    }
-
-    public Document getDocumentByRestTemplate(String url) {
-        String html = restInvoker.get(url, null, String.class);
-        return Jsoup.parse(html);
     }
 
     public Document getDocumentByWebDriver(String url) {

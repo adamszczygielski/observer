@@ -9,10 +9,10 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,7 +37,7 @@ public class SearchController {
         return "searches";
     }
 
-    @DeleteMapping
+    @PostMapping("/delete")
     public String deleteSearches(@RequestParam("id") List<Long> searchIds, HttpServletRequest request) {
         searchService.delete(searchIds);
         return "redirect:" + request.getHeader("Referer");

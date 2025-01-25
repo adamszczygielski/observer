@@ -42,18 +42,20 @@ public class Category {
     protected String value;
     @XmlAttribute(name = "domain")
     protected String domain;
-
     public Category(String value) {
         this.value = value;
     }
 
+    public Category() {
+    }
+
     /**
      * Gets the value of the value property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getValue() {
         return value;

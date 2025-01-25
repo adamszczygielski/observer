@@ -6,16 +6,19 @@ import observer.application.dto.Source;
 import observer.application.model.Item;
 import observer.application.model.Search;
 import observer.application.rest.JsonMapper;
-import observer.application.rest.RestInvoker;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.olx.mapper.OlxMapper;
 import observer.application.service.source.olx.model.ListingResponse;
 import org.apache.commons.text.StringEscapeUtils;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -29,7 +32,7 @@ public class OlxService implements SourceService {
 
     private final ApplicationConfig applicationConfig;
     private final JsonMapper jsonMapper;
-    private final RestInvoker restInvoker;
+    private final WebClient webClient;
     private final OlxMapper olxMapper = new OlxMapper();
 
     @Override
@@ -45,7 +48,17 @@ public class OlxService implements SourceService {
     @Override
     public List<Item> fetchItems(Search search) {
         String url = search.getParams();
-        String pageSource = restInvoker.get(url, null, String.class);
+
+        ResponseEntity<String> responseEntity = webClient.get()
+                .uri(url)
+                .retrieve()
+                .toEntity(String.class)
+                .block();
+
+        String pageSource = Optional.ofNullable(responseEntity)
+                .map(HttpEntity::getBody)
+                .orElseThrow(() -> new IllegalStateException("No response body!"));
+
         String listingResponseJson = getListingResponseJson(pageSource);
         ListingResponse listingResponse = jsonMapper.toObject(listingResponseJson, ListingResponse.class);
 

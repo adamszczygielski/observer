@@ -15,9 +15,6 @@ public class AspectLogger {
     private static final String SOURCE_SERVICE_POINTCUT =
             "execution(* observer.application.service.source.SourceService.fetchItems(..))";
 
-    private static final String REST_INVOKER_POINTCUT =
-            "execution(* observer.application.rest.RestInvoker.*(..))";
-
     private static final String DOCUMENT_SERVICE_POINTCUT =
             "execution(* observer.application.service.DocumentService.getDocument(..))";
 
@@ -25,13 +22,6 @@ public class AspectLogger {
     public Object logSourceService(ProceedingJoinPoint joinPoint) throws Throwable {
         Search search = (Search) joinPoint.getArgs()[0];
         log.info(search.toString());
-        return joinPoint.proceed();
-    }
-
-    @Around(REST_INVOKER_POINTCUT)
-    public Object logRestInvoker(ProceedingJoinPoint joinPoint) throws Throwable {
-        String url = (String) joinPoint.getArgs()[0];
-        log.info(url);
         return joinPoint.proceed();
     }
 
