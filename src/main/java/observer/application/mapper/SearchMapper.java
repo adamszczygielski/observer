@@ -30,12 +30,12 @@ public class SearchMapper {
 
     public Search toSearch(SearchDto searchDto) {
         return Search.builder()
-                .id(searchDto.getId())
-                .description(searchDto.getDescription())
-                .params(searchDto.getParams())
-                .sourceId(searchDto.getSource().getId())
+                .id(searchDto.id())
+                .description(searchDto.description())
+                .params(searchDto.params())
+                .sourceId(searchDto.source().getId())
                 .statusId(Status.PENDING.getId())
-                .intervalMinutes(searchDto.getIntervalMinutes())
+                .intervalMinutes(searchDto.intervalMinutes())
                 .items(Collections.emptyList())
                 .build();
     }

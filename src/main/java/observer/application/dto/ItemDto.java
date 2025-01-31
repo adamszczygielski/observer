@@ -1,19 +1,10 @@
 package observer.application.dto;
 
 import lombok.Builder;
-import lombok.Getter;
 
 import java.time.Instant;
 
-@Getter
 @Builder
-public class ItemDto {
-
-    private final Long id;
-    private final String originId;
-    private final String title;
-    private final Instant createdDate;
-    private final String price;
-    private final String url;
-    private final String source;
+public record ItemDto(Long id, String originId, String title, Instant createdDate, String price, String url,
+                      String source) {
 }

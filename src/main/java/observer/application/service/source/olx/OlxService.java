@@ -73,7 +73,7 @@ public class OlxService implements SourceService {
                 .limit(totalElements)
                 .filter(ad -> containsAllKeywordsIgnoreCase(ad.getTitle(), extractKeywords(url)))
                 .map(ad -> olxMapper.toItem(ad, search.getId()))
-                .collect(Collectors.toList());
+               .toList();
     }
 
     private String getListingResponseJson(String pageSource) {
@@ -122,6 +122,6 @@ public class OlxService implements SourceService {
         }
 
         return Arrays.stream(url.substring(beginIndex, endIndex).split("-"))
-                .collect(Collectors.toList());
+               .toList();
     }
 }

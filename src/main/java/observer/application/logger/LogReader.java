@@ -7,8 +7,8 @@ import org.apache.commons.io.input.ReversedLinesFileReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -16,12 +16,15 @@ public class LogReader {
 
     private static final File LOG_FILE = new File("application.log");
 
-    public static String getApplicationLogs(int limit) {
-        List<String> logLines = new ArrayList<>(limit);
+    public static synchronized String getApplicationLogs(int limit) {
+        List<String> logLines = new LinkedList<>();
         int counter = 0;
         String line;
 
-        try (ReversedLinesFileReader reader = new ReversedLinesFileReader(LOG_FILE, StandardCharsets.UTF_8)) {
+        try (ReversedLinesFileReader reader = ReversedLinesFileReader.builder()
+                .setFile(LOG_FILE)
+                .setCharset(StandardCharsets.UTF_8)
+                .get()) {
             while ((line = reader.readLine()) != null && counter++ < limit) {
                 logLines.add(line);
             }

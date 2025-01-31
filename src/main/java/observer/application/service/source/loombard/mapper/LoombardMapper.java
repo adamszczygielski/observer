@@ -15,7 +15,7 @@ public class LoombardMapper {
     public List<Item> toItems(List<LoombardItem> loombardItems, Long searchId) {
         return loombardItems.stream()
                 .map(i -> toItem(i, searchId))
-                .collect(Collectors.toList());
+               .toList();
     }
 
     private Item toItem(LoombardItem loombardItem, Long searchId) {

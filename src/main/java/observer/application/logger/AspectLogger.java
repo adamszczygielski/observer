@@ -15,20 +15,10 @@ public class AspectLogger {
     private static final String SOURCE_SERVICE_POINTCUT =
             "execution(* observer.application.service.source.SourceService.fetchItems(..))";
 
-    private static final String DOCUMENT_SERVICE_POINTCUT =
-            "execution(* observer.application.service.DocumentService.getDocument(..))";
-
     @Around(SOURCE_SERVICE_POINTCUT)
     public Object logSourceService(ProceedingJoinPoint joinPoint) throws Throwable {
         Search search = (Search) joinPoint.getArgs()[0];
         log.info(search.toString());
-        return joinPoint.proceed();
-    }
-
-    @Around(DOCUMENT_SERVICE_POINTCUT)
-    public Object logDocumentService(ProceedingJoinPoint joinPoint) throws Throwable {
-        String url = (String) joinPoint.getArgs()[0];
-        log.info(url);
         return joinPoint.proceed();
     }
 }

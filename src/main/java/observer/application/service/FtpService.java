@@ -17,10 +17,10 @@ import java.io.InputStream;
 public class FtpService {
 
     private final ApplicationConfig applicationConfig;
-    private final FTPClient ftpClient = new FTPClient();
 
     @Async
     public void uploadFile(InputStream inputStream) {
+        FTPClient ftpClient = new FTPClient();
         try {
             ftpClient.connect(applicationConfig.getFtpHostname());
             ftpClient.login(applicationConfig.getFtpUsername(), applicationConfig.getFtpPassword());

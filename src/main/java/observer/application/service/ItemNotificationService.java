@@ -3,9 +3,9 @@ package observer.application.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ApplicationConfig;
+import observer.application.dto.Source;
 import observer.application.mapper.ItemMapper;
 import observer.application.model.Item;
-import observer.application.dto.Source;
 import observer.application.repository.ItemRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +19,6 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -50,7 +49,7 @@ public class ItemNotificationService {
     private boolean sendPushNotification() {
         List<Item> items = itemRepository.findByIsDeletedFalseAndIsNotificationSentFalseOrderByCreatedDateDesc(PAGE_REQUEST);
         if (!items.isEmpty()) {
-            itemRepository.setIsNotificationSentTrue(items.stream().map(Item::getId).collect(Collectors.toList()));
+            itemRepository.setIsNotificationSentTrue(items.stream().map(Item::getId).toList());
             notificationService.sendNotification(createMessage(items));
             return true;
         }

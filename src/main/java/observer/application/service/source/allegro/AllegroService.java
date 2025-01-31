@@ -66,7 +66,7 @@ public class AllegroService implements SourceService {
                         .replaceAll(" ", "").replaceAll("-", "").contains(k)))
                 .map(element -> mapper.toItem(element, search.getId()))
                 .distinct()
-                .collect(Collectors.toList());
+               .toList();
     }
 
     private String fetchPageSource(String url) {

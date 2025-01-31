@@ -13,7 +13,7 @@ public class EbayMapper {
 
     public List<Item> toItems(List<EbayItem> ebayItems, Long searchId) {
         return ebayItems.stream().map(ebayItem -> toItem(ebayItem, searchId))
-                .collect(Collectors.toList());
+               .toList();
     }
 
     private Item toItem(EbayItem ebayItem, Long searchId) {

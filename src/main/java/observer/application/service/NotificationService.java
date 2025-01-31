@@ -33,7 +33,7 @@ public class NotificationService {
                 .bodyToMono(NotificationResponseDto.class)
                 .subscribe(
                         notificationResponseDto -> {
-                            log.info("Notification has been sent with ID: {}", notificationResponseDto.getId());
+                            log.info("Notification has been sent with ID: {}", notificationResponseDto.id());
                         },
                         error -> {
                             log.error("Sending notification failed!", error);

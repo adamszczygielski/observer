@@ -27,7 +27,7 @@ public class FormController {
 
     @GetMapping(value = "/search")
     public String getForm(Model model) {
-        model.addAttribute("search", new SearchDto());
+        model.addAttribute("search", SearchDto.builder().build());
         return "form";
     }
 

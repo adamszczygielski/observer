@@ -3,10 +3,10 @@ package observer.application.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import observer.application.config.ApplicationConfig;
-import observer.application.model.Item;
-import observer.application.model.Search;
 import observer.application.dto.Source;
 import observer.application.dto.Status;
+import observer.application.model.Item;
+import observer.application.model.Search;
 import observer.application.service.source.SourceServiceSolver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +61,7 @@ public class SearchExecutionService extends SearchExecutionTemplate<Search, List
             Set<String> originIds = itemService.getOriginIds(search.getSourceId());
             List<Item> newItems = fetchedItems.stream()
                     .filter(fetchedItem -> !originIds.contains(fetchedItem.getOriginId()))
-                    .collect(toList());
+                    .toList();
             search.getItems().addAll(newItems);
             log.info(MessageFormat.format("Items found: {0}/{1}", newItems.size(), fetchedItems.size()));
         }
