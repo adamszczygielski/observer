@@ -49,7 +49,7 @@ public class AllegroLokalnieService implements SourceService {
 
         List<String> urls = document.getElementsByClass("mlc-card mlc-itembox").stream()
                 .map(e -> e.attr("href"))
-                .map(s -> "https://allegrolokalnie.pl" + s)
+                .map(s -> s.contains("allegro.pl") ? s : "https://allegrolokalnie.pl" + s)
                .toList();
 
         List<String> originIds = document.getElementsByClass("mlc-card mlc-itembox").stream()
