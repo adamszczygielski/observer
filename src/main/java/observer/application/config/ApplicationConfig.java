@@ -41,12 +41,6 @@ public class ApplicationConfig {
     @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.rss.delay}')}")
     private Duration rssDelay;
 
-    @Value("${observer.onesignal.app-id}")
-    private String onesignalAppId;
-
-    @Value("${observer.onesignal.api-key}")
-    private String onesignalApiKey;
-
     @Value("${observer.chromedriver.logging}")
     private Boolean chromedriverLogging;
 

@@ -23,9 +23,6 @@ observer:
     delay: 10s
   rss:
     delay: 2m
-  onesignal:
-    app-id: change-me
-    api-key: change-me
   chromedriver:
     logging: false
     arguments: change-me
