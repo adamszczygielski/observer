@@ -72,7 +72,7 @@ public class OlxService implements SourceService {
                 .stream()
                 .limit(totalElements)
                 .filter(ad -> containsAllKeywordsIgnoreCase(ad.getTitle(), extractKeywords(url)))
-                .map(ad -> olxMapper.toItem(ad, search.getId()))
+                .map(ad -> olxMapper.toItem(ad, search))
                .toList();
     }
 

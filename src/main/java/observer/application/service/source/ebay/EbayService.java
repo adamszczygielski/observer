@@ -48,7 +48,7 @@ public class EbayService implements SourceService {
                 .map(ResponseEntity::getBody)
                 .map(FindItemsByKeywordsResponse::getSearchResult)
                 .map(SearchResult::getEbayItems)
-                .map(items -> mapper.toItems(items, search.getId()))
+                .map(items -> mapper.toItems(items, search))
                 .orElse(Collections.emptyList());
     }
 }

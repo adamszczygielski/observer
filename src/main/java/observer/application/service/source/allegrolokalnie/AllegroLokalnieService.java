@@ -56,6 +56,6 @@ public class AllegroLokalnieService implements SourceService {
                 .map(e -> e.attr("data-card-analytics-click"))
                .toList();
 
-        return allegroLokalnieMapper.toItems(originIds, titles, prices, urls, search.getId());
+        return allegroLokalnieMapper.toItems(originIds, titles, prices, urls, search);
     }
 }

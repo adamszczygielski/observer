@@ -13,13 +13,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.Instant;
 
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "ITEMS")
 @Entity
@@ -35,11 +37,14 @@ public class Item {
 
     @EqualsAndHashCode.Include
     private Integer sourceId;
-    private Long searchId;
     private Instant createdDate;
     private String title;
     private String price;
     private String url;
     private Boolean isDeleted;
     private Boolean isNotificationSent;
+
+    @ManyToOne
+    @JoinColumn(name = "search_id")
+    private Search search;
 }

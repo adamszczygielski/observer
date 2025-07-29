@@ -2,6 +2,7 @@ package observer.application.service.source.olx.mapper;
 
 import observer.application.model.Item;
 import observer.application.dto.Source;
+import observer.application.model.Search;
 import observer.application.service.source.olx.model.Ad;
 import observer.application.service.source.olx.model.Price;
 
@@ -10,10 +11,10 @@ import java.util.Optional;
 
 public class OlxMapper {
 
-    public Item toItem(Ad ad, Long searchId) {
+    public Item toItem(Ad ad, Search search) {
         return Item.builder()
                 .originId(ad.getId())
-                .searchId(searchId)
+                .search(search)
                 .createdDate(Instant.now())
                 .title(ad.getTitle())
                 .price(toPrice(ad.getPrice()))

@@ -50,6 +50,6 @@ public class LoombardService implements SourceService {
                 .orElseThrow(() -> new IllegalStateException("No response body!"));
 
         return loombardMapper.toItems(
-                List.of(Optional.ofNullable(loombardItems).orElse(new LoombardItem[0])), search.getId());
+                List.of(Optional.ofNullable(loombardItems).orElse(new LoombardItem[0])), search);
     }
 }

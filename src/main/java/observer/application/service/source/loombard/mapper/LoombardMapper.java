@@ -1,27 +1,27 @@
 package observer.application.service.source.loombard.mapper;
 
-import observer.application.model.Item;
 import observer.application.dto.Source;
+import observer.application.model.Item;
+import observer.application.model.Search;
 import observer.application.service.source.loombard.model.LoombardItem;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class LoombardMapper {
 
-    public List<Item> toItems(List<LoombardItem> loombardItems, Long searchId) {
+    public List<Item> toItems(List<LoombardItem> loombardItems, Search search) {
         return loombardItems.stream()
-                .map(i -> toItem(i, searchId))
+                .map(i -> toItem(i, search))
                .toList();
     }
 
-    private Item toItem(LoombardItem loombardItem, Long searchId) {
+    private Item toItem(LoombardItem loombardItem, Search search) {
         return Item.builder()
                 .originId(String.valueOf(loombardItem.getId()))
-                .searchId(searchId)
+                .search(search)
                 .createdDate(Instant.now())
                 .title(loombardItem.getName())
                 .price(loombardItem.getPrice().getFormatted() + " PLN")

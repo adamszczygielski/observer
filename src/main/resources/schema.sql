@@ -1,8 +1,8 @@
 create table if not exists searches
 (
     id bigint auto_increment not null,
-    description varchar,
-    params varchar,
+    description varchar not null,
+    params varchar not null,
     last_execution_date timestamp,
     interval_minutes smallint not null,
     source_id smallint not null,
@@ -14,7 +14,7 @@ create table if not exists items
 (
    id bigint auto_increment not null,
    origin_id varchar(255) not null,
-   search_id bigint,
+   search_id bigint not null,
    created_date timestamp not null,
    title varchar(255) not null,
    price varchar(255) not null,

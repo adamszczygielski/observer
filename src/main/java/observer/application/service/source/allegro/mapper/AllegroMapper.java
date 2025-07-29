@@ -2,6 +2,7 @@ package observer.application.service.source.allegro.mapper;
 
 import observer.application.model.Item;
 import observer.application.dto.Source;
+import observer.application.model.Search;
 import observer.application.service.source.allegro.model.listing.Element;
 import observer.application.service.source.allegro.model.listing.Price;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -10,10 +11,10 @@ import java.time.Instant;
 
 public class AllegroMapper {
 
-    public Item toItem(Element element, Long searchId) {
+    public Item toItem(Element element, Search search) {
         return Item.builder()
                 .originId(element.getId())
-                .searchId(searchId)
+                .search(search)
                 .createdDate(Instant.now())
                 .title(element.getTitle().getText())
                 .price(toPrice(element.getPrice()))

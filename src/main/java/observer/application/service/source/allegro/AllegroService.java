@@ -20,7 +20,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -64,9 +63,9 @@ public class AllegroService implements SourceService {
                 .filter(element -> !element.getType().equals("banner"))
                 .filter(element -> keywords.stream().anyMatch(k -> element.getTitle().getText().toLowerCase()
                         .replaceAll(" ", "").replaceAll("-", "").contains(k)))
-                .map(element -> mapper.toItem(element, search.getId()))
+                .map(element -> mapper.toItem(element, search))
                 .distinct()
-               .toList();
+                .toList();
     }
 
     private String fetchPageSource(String url) {

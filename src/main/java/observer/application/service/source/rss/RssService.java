@@ -49,6 +49,6 @@ public class RssService implements SourceService {
                 .map(HttpEntity::getBody)
                 .orElseThrow(() -> new IllegalStateException("No response body!"));
 
-        return rssMapper.toItems(search.getId(), rss);
+        return rssMapper.toItems(search, rss);
     }
 }
