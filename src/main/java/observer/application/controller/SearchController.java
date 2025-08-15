@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping(SearchController.API_PATH)
@@ -38,7 +38,7 @@ public class SearchController {
     }
 
     @PostMapping("/delete")
-    public String deleteSearches(@RequestParam("id") List<Long> searchIds, HttpServletRequest request) {
+    public String deleteSearches(@RequestParam("id") Set<Long> searchIds, HttpServletRequest request) {
         searchService.delete(searchIds);
         return "redirect:" + request.getHeader("Referer");
     }

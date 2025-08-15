@@ -36,5 +36,4 @@ public class SourceServiceSolver {
     public List<SourceService> getAll() {
         return new ArrayList<>(sourceServiceEnumMap.values());
     }
-
 }

@@ -10,8 +10,24 @@ import lombok.Builder;
 import java.time.Instant;
 
 @Builder
-public record SearchDto(Long id, @Size(max = 255) @NotBlank String description,
-                        @Size(max = 2047) @NotBlank String params, Instant lastExecutionDate,
-                        @NotNull @Min(5) @Max(360) Short intervalMinutes, @NotNull Source source, Status status,
-                        Integer count) {
+public record SearchDto(
+        Long id,
+
+        @Size(max = 255)
+        @NotBlank
+        String description,
+
+        @Size(max = 2047)
+        @NotBlank String params,
+        Instant lastExecutionDate,
+
+        @NotNull
+        @Min(5)
+        @Max(360)
+        Short intervalMinutes,
+
+        @NotNull
+        Source source,
+        Status status,
+        Integer count) {
 }

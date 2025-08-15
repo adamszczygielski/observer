@@ -3,14 +3,12 @@ package observer.application.config;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.time.Duration;
 
 @Configuration
 @EnableAsync
-@EnableJpaRepositories("observer.application.repository")
 @Getter
 public class ApplicationConfig {
 

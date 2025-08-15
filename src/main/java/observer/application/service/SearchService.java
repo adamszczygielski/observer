@@ -13,6 +13,7 @@ import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +40,8 @@ public class SearchService {
     }
 
     @Transactional
-    public void delete(List<Long> searchIds) {
-        searchRepository.deleteByIdIn(searchIds);
+    public void delete(Set<Long> searchIds) {
+        searchRepository.deleteAllById(searchIds);
     }
 
     @Transactional
