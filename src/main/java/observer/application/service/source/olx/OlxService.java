@@ -5,7 +5,7 @@ import observer.application.config.ApplicationConfig;
 import observer.application.dto.Source;
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.rest.JsonMapper;
+import observer.application.mapper.JsonMapper;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.olx.mapper.OlxMapper;
 import observer.application.service.source.olx.model.ListingResponse;
@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

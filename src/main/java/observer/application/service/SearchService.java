@@ -46,25 +46,25 @@ public class SearchService {
 
     @Transactional
     public void createOrUpdate(Search search) {
-        if (search.getId() != null) {
-            update(search);
-        } else {
+        if (search.getId() == null) {
             create(search);
+        } else {
+            update(search);
         }
     }
 
     private void create(Search search) {
         List<Search> searches = searchRepository.findBySourceId(search.getSourceId());
-        if (!searches.contains(search)) {
-            searchRepository.save(search);
+        if (searches.contains(search)) {
+            throw new IllegalArgumentException("Search already exists");
         }
+        searchRepository.save(search);
     }
 
     private void update(Search search) {
-        searchRepository.findById(search.getId()).ifPresent(s -> {
-            s.setDescription(search.getDescription());
-            s.setParams(search.getParams());
-            s.setIntervalMinutes(search.getIntervalMinutes());
-        });
+        Search s = getOrThrow(search.getId());
+        s.setDescription(search.getDescription());
+        s.setParams(search.getParams());
+        s.setIntervalMinutes(search.getIntervalMinutes());
     }
 }

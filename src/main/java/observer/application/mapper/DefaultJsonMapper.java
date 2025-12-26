@@ -1,4 +1,4 @@
-package observer.application.rest;
+package observer.application.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;

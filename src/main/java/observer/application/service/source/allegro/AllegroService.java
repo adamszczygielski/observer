@@ -6,7 +6,7 @@ import observer.application.config.ApplicationConfig;
 import observer.application.dto.Source;
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.rest.JsonMapper;
+import observer.application.mapper.JsonMapper;
 import observer.application.service.RandomUtils;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.allegro.mapper.AllegroMapper;

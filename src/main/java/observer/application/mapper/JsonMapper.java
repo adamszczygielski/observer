@@ -1,4 +1,4 @@
-package observer.application.rest;
+package observer.application.mapper;
 
 public interface JsonMapper {
 
