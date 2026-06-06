@@ -3,15 +3,13 @@ package observer.application.service.source.olx;
 import lombok.RequiredArgsConstructor;
 import observer.application.config.ApplicationConfig;
 import observer.application.dto.Source;
+import observer.application.mapper.JsonMapper;
 import observer.application.model.Item;
 import observer.application.model.Search;
-import observer.application.mapper.JsonMapper;
 import observer.application.service.source.SourceService;
 import observer.application.service.source.olx.mapper.OlxMapper;
 import observer.application.service.source.olx.model.ListingResponse;
 import org.apache.commons.text.StringEscapeUtils;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -48,38 +46,44 @@ public class OlxService implements SourceService {
     public List<Item> fetchItems(Search search) {
         String url = search.getParams();
 
-        ResponseEntity<String> responseEntity = webClient.get()
-                .uri(url)
-                .retrieve()
-                .toEntity(String.class)
-                .block();
+        String pageSource = fetchPageSource(url);
 
-        String pageSource = Optional.ofNullable(responseEntity)
-                .map(HttpEntity::getBody)
-                .orElseThrow(() -> new IllegalStateException("No response body!"));
-
-        String listingResponseJson = getListingResponseJson(pageSource);
+        String listingResponseJson = extractListingResponseJson(pageSource);
         ListingResponse listingResponse = jsonMapper.toObject(listingResponseJson, ListingResponse.class);
 
         int totalElements = listingResponse.getListing()
                 .getListingDetails()
                 .getTotalElements();
 
+        List<String> keywords = extractKeywords(url).stream()
+                .map(this::normalize)
+                .filter(s -> !s.isBlank())
+                .toList();
+
         return listingResponse.getListing()
                 .getListingDetails()
                 .getAds()
                 .stream()
                 .limit(totalElements)
-                .filter(ad -> containsAllKeywordsIgnoreCase(ad.getTitle(), extractKeywords(url)))
+                .filter(ad -> containsAllKeywords(ad.getTitle(), keywords))
                 .map(ad -> olxMapper.toItem(ad, search))
-               .toList();
+                .toList();
     }
 
-    private String getListingResponseJson(String pageSource) {
+    private String fetchPageSource(String url) {
+        return webClient.get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(String.class)
+                .blockOptional()
+                .orElseThrow(() -> new IllegalStateException("No response body!"));
+    }
+
+    private String extractListingResponseJson(String pageSource) {
         int jsonBeginIndex = getJsonBeginIndex(pageSource);
         int jsonEndIndex = getJsonEndIndex(pageSource, jsonBeginIndex);
-        String unescapedJson = pageSource.substring(jsonBeginIndex, jsonEndIndex);
-        return StringEscapeUtils.unescapeJson(unescapedJson);
+        String escapedJson = pageSource.substring(jsonBeginIndex, jsonEndIndex);
+        return StringEscapeUtils.unescapeJson(escapedJson);
     }
 
     private int getJsonBeginIndex(String pageSource) {
@@ -95,12 +99,21 @@ public class OlxService implements SourceService {
         if (endPatternIndex == -1) {
             throw new IllegalArgumentException("Json end index has not been found!");
         }
-        return endPatternIndex + JSON_END_PATTERN.length();
+        return endPatternIndex;
     }
 
-    private boolean containsAllKeywordsIgnoreCase(String title, List<String> keywords) {
-        String t = NON_ALPHANUMERIC_PATTERN.matcher(title).replaceAll("").toLowerCase();
-        return keywords.stream().allMatch(k -> t.contains(k.toLowerCase()));
+    private boolean containsAllKeywords(String title, List<String> normalizedKeywords) {
+        if (normalizedKeywords.isEmpty()) {
+            return true;
+        }
+        String normalizedTitle = normalize(title);
+        return normalizedKeywords.stream().allMatch(normalizedTitle::contains);
+    }
+
+    private String normalize(String value) {
+        return NON_ALPHANUMERIC_PATTERN.matcher(Optional.ofNullable(value).orElse(""))
+                .replaceAll("")
+                .toLowerCase();
     }
 
     private List<String> extractKeywords(String url) {
@@ -121,6 +134,6 @@ public class OlxService implements SourceService {
         }
 
         return Arrays.stream(url.substring(beginIndex, endIndex).split("-"))
-               .toList();
+                .toList();
     }
 }
