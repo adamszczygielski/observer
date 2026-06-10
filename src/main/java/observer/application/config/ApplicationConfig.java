@@ -36,9 +36,6 @@ public class ApplicationConfig {
     @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.ebay.delay}')}")
     private Duration ebayDelay;
 
-    @Value("#{T(org.springframework.boot.convert.DurationStyle).detectAndParse('${observer.rss.delay}')}")
-    private Duration rssDelay;
-
     @Value("${observer.chromedriver.logging}")
     private Boolean chromedriverLogging;
 
@@ -53,6 +50,15 @@ public class ApplicationConfig {
 
     @Value("${observer.ftp.password}")
     private String ftpPassword;
+
+    @Value("${observer.notification.user}")
+    private String notificationUser;
+
+    @Value("${observer.notification.token}")
+    private String notificationToken;
+
+    @Value("${observer.notification.app-url}")
+    private String notificationAppUrl;
 
     @Value("${observer.ftp.filepath}")
     private String ftpFilepath;

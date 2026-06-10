@@ -21,6 +21,7 @@ public class FtpService {
     @Async
     public void uploadFile(InputStream inputStream) {
         FTPClient ftpClient = new FTPClient();
+        log.info("Uploading file");
         try {
             ftpClient.connect(applicationConfig.getFtpHostname());
             ftpClient.login(applicationConfig.getFtpUsername(), applicationConfig.getFtpPassword());

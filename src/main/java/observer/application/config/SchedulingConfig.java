@@ -51,7 +51,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
 
     private void addNotificationTask(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.addTriggerTask(itemNotificationService::execute,
-                createTrigger(itemNotificationService::getDelay));
+                createTrigger(applicationConfig::getItemsNotificationDelay));
     }
 
     private Trigger createTrigger(Supplier<Duration> durationSupplier) {
@@ -76,7 +76,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
         log.error(errorMessage);
 
         if (applicationConfig.getErrorNotification()) {
-            notificationService.sendNotification(errorMessage);
+            notificationService.sendNotification(errorMessage, errorMessage);
         }
         return estimatedDelay;
     }

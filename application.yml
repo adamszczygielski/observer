@@ -6,6 +6,10 @@ observer:
     username: change-me
     password: change-me
     filepath: change-me
+  notification:
+    user: change-me
+    token: change-me
+    app-url: change-me
   searches:
     error:
       threshold: 2
@@ -21,8 +25,6 @@ observer:
     delay: 10s
   ebay:
     delay: 10s
-  rss:
-    delay: 2m
   chromedriver:
     logging: false
     arguments: change-me

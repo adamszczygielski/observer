@@ -25,11 +25,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Item i SET i.isNotificationSent = true WHERE i.id IN :itemIds")
-    void setIsNotificationSentTrue(List<Long> itemIds);
-
-    @Modifying
-    @Transactional
     @Query("UPDATE Item i SET i.isDeleted = true WHERE i.id IN :itemIds")
     void setIsDeletedTrue(List<Long> itemIds);
 
